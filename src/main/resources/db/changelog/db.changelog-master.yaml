@@ -6,3 +6,17 @@ databaseChangeLog:
       validCheckSum: ANY
       changes:
         - sqlFile: { dbms: postgresql, path: db/changelog/updates/1.0.0/create.table.users.sql }
+  - changeSet:
+      id: create.table.test
+      author: Sweets
+      failOnError: true
+      validCheckSum: ANY
+      changes:
+        - sqlFile: { dbms: postgresql, path: db/changelog/updates/1.0.0/create.table.test.sql }
+  - changeSet:
+      id: add.column.users
+      author: Sweets
+      failOnError: true
+      validCheckSum: ANY
+      changes:
+        - sqlFile: { dbms: postgresql, path: db/changelog/updates/1.0.0/add.column.icc.sql }
