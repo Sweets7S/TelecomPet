@@ -53,11 +53,11 @@ public class TestService {
 
     public TestDTO update(TestDTO testDTO) {
         TestEntity testEntity = testRepository.getReferenceById(testDTO.getId());
+//        log.info(testEntity.toString());
         testEntity.setName(testDTO.getName());
         testEntity.setAge(testDTO.getAge());
         testEntity.setRch(testDTO.getRch());
-        TestEntity save  = testRepository.save(testEntity);
-        testDTO = ConversionDTO.transformToDTO(save);
-        return testDTO;
+//        log.info(testEntity.toString());
+        return ConversionDTO.transformToDTO(testRepository.save(testEntity));
     }
 }
