@@ -7,6 +7,9 @@ import ru.fintech.example.models.TestEntity;
 import ru.fintech.example.repository.TestRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 public class TestService {
@@ -28,5 +31,18 @@ public class TestService {
     public TestDTO get(int testId) {
         TestEntity testEntity = testRepository.getReferenceById(testId);
         return ConversionDTO.transformToDTO(testEntity);
+    }
+
+
+    public List<TestDTO> getAll() {
+        List<TestDTO> testDTOList = new ArrayList<>();
+        List<TestEntity> testEntityList = testRepository.findAll();
+        for (int i = 0; i < testEntityList.size(); i++) {
+            log.info("Count " + i);
+            TestDTO dto = ConversionDTO.transformToDTO(testEntityList.get(i));
+            testDTOList.add(dto);
+//            testDTOList.add(ConversionDTO.transformToDTO(testEntityList.get(i)));
+        }
+            return testDTOList;
     }
 }

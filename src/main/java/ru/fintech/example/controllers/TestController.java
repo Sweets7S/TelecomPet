@@ -34,8 +34,7 @@ public class TestController {
 
     @GetMapping("")
     public List<TestDTO> getAll(){
-//        return testService.getAll();
-        return null;
+        return testService.getAll();
     }
 
     @PutMapping("/update")
