@@ -57,7 +57,7 @@ public class TestService {
         testEntity.setName(testDTO.getName());
         testEntity.setAge(testDTO.getAge());
         testEntity.setRch(testDTO.getRch());
-//        log.info(testEntity.toString());
+        log.info(testEntity.toString());
         return ConversionDTO.transformToDTO(testRepository.save(testEntity));
     }
 }

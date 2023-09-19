@@ -40,6 +40,7 @@ public class TestController {
 
     @PutMapping("/update")
     public TestDTO update(@RequestBody TestDTO testDTO){
+        log.info(testDTO.toString());
         return testService.update(testDTO);
     }
 
