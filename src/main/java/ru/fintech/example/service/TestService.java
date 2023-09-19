@@ -50,4 +50,14 @@ public class TestService {
     public void delete(int testId) {
        testRepository.deleteById(testId);
     }
+
+    public TestDTO update(TestDTO testDTO) {
+        TestEntity testEntity = testRepository.getReferenceById(testDTO.getId());
+        testEntity.setName(testDTO.getName());
+        testEntity.setAge(testDTO.getAge());
+        testEntity.setRch(testDTO.getRch());
+        TestEntity save  = testRepository.save(testEntity);
+        testDTO = ConversionDTO.transformToDTO(save);
+        return testDTO;
+    }
 }

@@ -39,8 +39,8 @@ public class TestController {
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody TestDTO testDTO){
-//        testService.update(testDTO);
+    public TestDTO update(@RequestBody TestDTO testDTO){
+        return testService.update(testDTO);
     }
 
     @DeleteMapping("/{testId}")
