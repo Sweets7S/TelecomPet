@@ -1,6 +1,7 @@
 package ru.fintech.example.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.TestDTO;
 import ru.fintech.example.service.TestService;
@@ -43,7 +44,13 @@ public class TestController {
     }
 
     @DeleteMapping("/{testId}")
-    public void delete(@PathVariable("testId") int testId){
-//        testService.delete(testId);
+    public void delete(@PathVariable("testId") int testId) {
+        testService.delete(testId);
     }
+
+//    @DeleteMapping("") // RequestParam = QueryParam
+//    public void delete(@RequestParam(value = "testId") int testId, @RequestParam(value = "age") int age, @RequestParam(value = "name") String name){
+//        log.info("{} {} {}", testId, age, name);
+//        testService.delete(testId);
+//    }
 }

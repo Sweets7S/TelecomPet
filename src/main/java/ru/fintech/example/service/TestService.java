@@ -45,4 +45,9 @@ public class TestService {
         }
             return testDTOList;
     }
+
+
+    public void delete(int testId) {
+       testRepository.deleteById(testId);
+    }
 }
