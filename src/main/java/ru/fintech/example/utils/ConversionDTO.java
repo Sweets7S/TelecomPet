@@ -7,7 +7,7 @@ import ru.fintech.example.models.TestEntity;
 @Slf4j
 public class ConversionDTO {
 
-    public static TestEntity transformToEntity(TestDTO testDTO){
+    public static TestEntity transformToTestEntity(TestDTO testDTO){
         TestEntity testEntity = new TestEntity();
         testEntity.setName(testDTO.getName());
         testEntity.setAge(testDTO.getAge());
@@ -15,7 +15,7 @@ public class ConversionDTO {
         return testEntity;
     }
 
-    public static TestDTO transformToDTO(TestEntity testEntity){
+    public static TestDTO transformToTestDTO(TestEntity testEntity){
         TestDTO testDTO = new TestDTO();
         testDTO.setId(testEntity.getId());
         testDTO.setName(testEntity.getName());

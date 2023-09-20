@@ -21,16 +21,16 @@ public class TestService {
     }
 
     public TestDTO create(TestDTO testDTO){
-        TestEntity entity = ConversionDTO.transformToEntity(testDTO);
+        TestEntity entity = ConversionDTO.transformToTestEntity(testDTO);
         TestEntity entityAfterSave = testRepository.save(entity);
-        TestDTO dto = ConversionDTO.transformToDTO(entityAfterSave);
+        TestDTO dto = ConversionDTO.transformToTestDTO(entityAfterSave);
         return dto;
     }
 
 
     public TestDTO get(int testId) {
         TestEntity testEntity = testRepository.getReferenceById(testId);
-        return ConversionDTO.transformToDTO(testEntity);
+        return ConversionDTO.transformToTestDTO(testEntity);
     }
 
 
@@ -39,7 +39,7 @@ public class TestService {
         List<TestEntity> testEntityList = testRepository.findAll();
         for (int i = 0; i < testEntityList.size(); i++) {
             log.info("Count " + i);
-            TestDTO dto = ConversionDTO.transformToDTO(testEntityList.get(i));
+            TestDTO dto = ConversionDTO.transformToTestDTO(testEntityList.get(i));
             testDTOList.add(dto);
 //            testDTOList.add(ConversionDTO.transformToDTO(testEntityList.get(i)));
         }
@@ -58,6 +58,6 @@ public class TestService {
         testEntity.setAge(testDTO.getAge());
         testEntity.setRch(testDTO.getRch());
         log.info(testEntity.toString());
-        return ConversionDTO.transformToDTO(testRepository.save(testEntity));
+        return ConversionDTO.transformToTestDTO(testRepository.save(testEntity));
     }
 }
