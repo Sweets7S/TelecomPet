@@ -34,17 +34,22 @@ public class TestController {
 
     @GetMapping("")
     public List<TestDTO> getAll(){
-//        return testService.getAll();
-        return null;
+        return testService.getAll();
     }
 
     @PutMapping("/update")
     public void update(@RequestBody TestDTO testDTO){
-//        testService.update(testDTO);
+        testService.update(testDTO);
     }
 
-    @DeleteMapping("/{testId}")
+    @DeleteMapping("/{testId}}")
     public void delete(@PathVariable("testId") int testId){
-//        testService.delete(testId);
+        testService.delete(testId);
     }
+
+//    @DeleteMapping("") // RequestParam = QueryParam
+//    public void delete(@RequestParam(value = "testId") int testId, @RequestParam(value = "age") int age, @RequestParam(value = "name") String name){
+//        log.info("{} {} {}", testId, age, name);
+//        testService.delete(testId);
+//    }
 }
