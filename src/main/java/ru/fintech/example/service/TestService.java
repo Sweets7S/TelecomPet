@@ -39,9 +39,7 @@ public class TestService {
         List<TestEntity> testEntityList = testRepository.findAll();
         for (int i = 0; i < testEntityList.size(); i++) {
             log.info("Count " + i);
-            TestDTO dto = ConversionDTO.transformToDTO(testEntityList.get(i));
-            testDTOList.add(dto);
-//            testDTOList.add(ConversionDTO.transformToDTO(testEntityList.get(i)));
+            testDTOList.add(ConversionDTO.transformToDTO(testEntityList.get(i)));
         }
             return testDTOList;
     }
