@@ -21,14 +21,14 @@ public class UserService {
     }
 
     public UserDTO create(UserDTO userDTO){
-        UserEntity userEntity = ConversionDTO.transformToUserEntity(userDTO);
+        UserEntity userEntity = ConversionDTO.transformToEntity(userDTO);
         UserEntity userEntityAfterSave = userRepository.save(userEntity);
-        return ConversionDTO.transformToUserDTO(userEntityAfterSave);
+        return ConversionDTO.transformToDTO(userEntityAfterSave);
     }
 
     public UserDTO get(int userId){
         UserEntity userEntity = userRepository.getReferenceById(userId);
-        return ConversionDTO.transformToUserDTO(userEntity);
+        return ConversionDTO.transformToDTO(userEntity);
     }
 
     public List<UserDTO> getAll(){
@@ -36,7 +36,7 @@ public class UserService {
         List<UserEntity> userEntityList = userRepository.findAll();
         for (int i = 0; i < userEntityList.size(); i++) {
             log.info("Count " + i);
-            userDTOList.add(ConversionDTO.transformToUserDTO(userEntityList.get(i)));
+            userDTOList.add(ConversionDTO.transformToDTO(userEntityList.get(i)));
         }
         return userDTOList;
     }
@@ -52,9 +52,9 @@ public class UserService {
         userEntity.setFio(userDTO.getFio());
         userEntity.setDocument(userDTO.getDocument());
         userEntity.setNumber(userDTO.getNumber());
-        userEntity.setActive(userDTO.getActive());
+        userEntity.setActive(userDTO.isActive());
         userEntity.setIcc(userDTO.getIcc());
         log.info(userEntity.toString());
-        return ConversionDTO.transformToUserDTO(userRepository.save(userEntity));
+        return ConversionDTO.transformToDTO(userRepository.save(userEntity));
     }
 }

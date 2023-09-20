@@ -9,7 +9,7 @@ import ru.fintech.example.models.UserEntity;
 @Slf4j
 public class ConversionDTO {
 
-    public static TestEntity transformToTestEntity(TestDTO testDTO){
+    public static TestEntity transformToEntity(TestDTO testDTO){
         TestEntity testEntity = new TestEntity();
         testEntity.setName(testDTO.getName());
         testEntity.setAge(testDTO.getAge());
@@ -17,7 +17,7 @@ public class ConversionDTO {
         return testEntity;
     }
 
-    public static TestDTO transformToTestDTO(TestEntity testEntity){
+    public static TestDTO transformToDTO(TestEntity testEntity){
         TestDTO testDTO = new TestDTO();
         testDTO.setId(testEntity.getId());
         testDTO.setName(testEntity.getName());
@@ -26,28 +26,28 @@ public class ConversionDTO {
         return testDTO;
     }
 
-    public static UserEntity transformToUserEntity(UserDTO userDTO){
+    public static UserEntity transformToEntity(UserDTO userDTO){
         UserEntity userEntity = new UserEntity();
         userEntity.setLogin(userDTO.getLogin());
         userEntity.setPassword(userDTO.getPassword());
         userEntity.setFio(userDTO.getFio());
         userEntity.setDocument(userDTO.getDocument());
         userEntity.setNumber(userDTO.getNumber());
-        userEntity.setActive(userDTO.getActive());
+        userEntity.setActive(userDTO.isActive());
         userEntity.setIcc(userDTO.getIcc());
         return userEntity;
     }
 
-    public static UserDTO transformToUserDTO(UserEntity userEntity){
+    public static UserDTO transformToDTO(UserEntity userEntity){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userEntity.getId());
-        userEntity.setLogin(userEntity.getLogin());
-        userEntity.setPassword(userEntity.getPassword());
-        userEntity.setFio(userEntity.getFio());
-        userEntity.setDocument(userEntity.getDocument());
-        userEntity.setNumber(userEntity.getNumber());
-        userEntity.setActive(userEntity.isActive());
-        userEntity.setIcc(userEntity.getIcc());
+        userDTO.setLogin(userEntity.getLogin());
+        userDTO.setPassword(userEntity.getPassword());
+        userDTO.setFio(userEntity.getFio());
+        userDTO.setDocument(userEntity.getDocument());
+        userDTO.setNumber(userEntity.getNumber());
+        userDTO.setActive(userEntity.isActive());
+        userDTO.setIcc(userEntity.getIcc());
         return userDTO;
     }
 }

@@ -12,7 +12,7 @@ public class UserDTO {
     private String fio;
     private String document;
     private String number;
-    private Boolean active;
+    private boolean active;
     private String icc;
 
     public int getId() {
@@ -63,11 +63,11 @@ public class UserDTO {
         this.number = number;
     }
 
-    public boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void isActive(boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
