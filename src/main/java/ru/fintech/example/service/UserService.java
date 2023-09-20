@@ -22,7 +22,8 @@ public class UserService {
 
     public UserDTO createUser(UserDTO userDTO){
         UserEntity userEntity = ConversionDTO.transformToUserEntity(userDTO);
-        return ConversionDTO.transformToUserDTO(userEntity);
+        UserEntity userEntityAfterSave = userRepository.save(userEntity);
+        return ConversionDTO.transformToUserDTO(userEntityAfterSave);
     }
 
     public UserDTO getUser(int userId){
