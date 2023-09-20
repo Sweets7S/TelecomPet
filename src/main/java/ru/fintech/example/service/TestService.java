@@ -46,7 +46,8 @@ public class TestService {
 
 
     public void delete(int testId) {
-       testRepository.deleteById(testId);
+        log.info("Deleted element with id - " + testId);
+        testRepository.deleteById(testId);
     }
 
     public TestDTO update(TestDTO testDTO) {
