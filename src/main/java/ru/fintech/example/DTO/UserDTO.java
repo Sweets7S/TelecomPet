@@ -1,13 +1,18 @@
 package ru.fintech.example.DTO;
 
+
 import lombok.ToString;
 
 @ToString
 public class UserDTO {
     private int id;
-    private String name;
-    private int age;
-    private int rch;
+    private String login;
+    private String password;
+    private String fio;
+    private String document;
+    private String number;
+    private boolean active;
+    private String icc;
 
     public int getId() {
         return id;
@@ -17,27 +22,59 @@ public class UserDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public int getAge() {
-        return age;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public int getRch() {
-        return rch;
+    public String getFio() {
+        return fio;
     }
 
-    public void setRch(int rch) {
-        this.rch = rch;
+    public void setFio(String fio) {
+        this.fio = fio;
+    }
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getIcc() {
+        return icc;
+    }
+
+    public void setIcc(String icc) {
+        this.icc = icc;
     }
 }

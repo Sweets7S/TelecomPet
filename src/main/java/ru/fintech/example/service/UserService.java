@@ -53,9 +53,13 @@ public class UserService {
     public UserDTO update(UserDTO userDTO) {
         UserEntity userEntity = userRepository.getReferenceById(userDTO.getId());
 //        log.info(userEntity.toString());
-        userEntity.setName(userDTO.getName());
-        userEntity.setAge(userDTO.getAge());
-        userEntity.setRch(userDTO.getRch());
+        userEntity.setLogin(userDTO.getLogin());
+        userEntity.setPassword(userDTO.getPassword());
+        userEntity.setFio(userDTO.getFio());
+        userEntity.setDocument(userDTO.getDocument());
+        userEntity.setNumber(userDTO.getNumber());
+        userEntity.setActive(userDTO.isActive());
+        userEntity.setIcc(userDTO.getIcc());
         log.info(userEntity.toString());
         return ConversionDTO.transformToDTO(userRepository.save(userEntity));
     }

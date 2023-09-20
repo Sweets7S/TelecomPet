@@ -27,17 +27,26 @@ public class ConversionDTO {
     }
     public static UserEntity transformToEntity(UserDTO userDTO){
         UserEntity userEntity = new UserEntity();
-        userEntity.setName(userDTO.getName());
-        userEntity.setAge(userDTO.getAge());
-        userEntity.setRch(userDTO.getRch());
+        userEntity.setId(userDTO.getId());
+        userEntity.setLogin(userDTO.getLogin());
+        userEntity.setPassword(userDTO.getPassword());
+        userEntity.setFio(userDTO.getFio());
+        userEntity.setDocument(userDTO.getDocument());
+        userEntity.setNumber(userDTO.getNumber());
+        userEntity.setActive(userDTO.isActive());
+        userEntity.setIcc(userDTO.getIcc());
         return userEntity;
     }
     public static UserDTO transformToDTO(UserEntity userEntity){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userEntity.getId());
-        userDTO.setName(userEntity.getName());
-        userDTO.setAge(userEntity.getAge());
-        userDTO.setRch(userEntity.getRch());
+        userDTO.setLogin(userEntity.getLogin());
+        userDTO.setPassword(userEntity.getPassword());
+        userDTO.setFio(userEntity.getFio());
+        userDTO.setDocument(userEntity.getDocument());
+        userDTO.setNumber(userEntity.getNumber());
+        userDTO.setActive(userEntity.isActive());
+        userDTO.setIcc(userEntity.getIcc());
         return userDTO;
     }
 }
