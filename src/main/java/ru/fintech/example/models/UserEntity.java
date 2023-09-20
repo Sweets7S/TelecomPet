@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @ToString
 @NoArgsConstructor
 public class UserEntity {
