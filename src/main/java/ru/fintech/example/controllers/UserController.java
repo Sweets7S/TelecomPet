@@ -21,28 +21,28 @@ public class UserController {
     @PostMapping("/add")
     public UserDTO create(@RequestBody UserDTO userDTO){
         log.info("Coming request {}", userDTO);
-        return userService.createUser(userDTO);
+        return userService.create(userDTO);
     }
 
     @GetMapping("/{userId}")
     public UserDTO get(@PathVariable("userId") int userId){
         log.info("Coming id - {}", userId);
-        return userService.getUser(userId);
+        return userService.get(userId);
     }
 
     @GetMapping("")
     public List<UserDTO> getAll(){
-        return userService.getAllUsers();
+        return userService.getAll();
     }
 
     @PutMapping("/update")
     public UserDTO update(@RequestBody UserDTO userDTO){
         log.info(userDTO.toString());
-        return userService.updateUser(userDTO);
+        return userService.update(userDTO);
     }
 
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable("userId") int userId){
-        userService.deleteUser(userId);
+        userService.delete(userId);
     }
 }

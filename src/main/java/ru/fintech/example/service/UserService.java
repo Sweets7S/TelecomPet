@@ -20,18 +20,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO createUser(UserDTO userDTO){
+    public UserDTO create(UserDTO userDTO){
         UserEntity userEntity = ConversionDTO.transformToUserEntity(userDTO);
         UserEntity userEntityAfterSave = userRepository.save(userEntity);
         return ConversionDTO.transformToUserDTO(userEntityAfterSave);
     }
 
-    public UserDTO getUser(int userId){
+    public UserDTO get(int userId){
         UserEntity userEntity = userRepository.getReferenceById(userId);
         return ConversionDTO.transformToUserDTO(userEntity);
     }
 
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTO> getAll(){
         List<UserDTO> userDTOList = new ArrayList<>();
         List<UserEntity> userEntityList = userRepository.findAll();
         for (int i = 0; i < userEntityList.size(); i++) {
@@ -41,15 +41,19 @@ public class UserService {
         return userDTOList;
     }
 
-    public void deleteUser(int userId){
+    public void delete(int userId){
         userRepository.deleteById(userId);
     }
 
-    public UserDTO updateUser(UserDTO userDTO){
+    public UserDTO update(UserDTO userDTO){
         UserEntity userEntity = userRepository.getReferenceById(userDTO.getId());
-        userEntity.setName(userDTO.getName());
-        userEntity.setAge(userDTO.getAge());
-        userEntity.setRch(userDTO.getRch());
+        userEntity.setLogin(userDTO.getLogin());
+        userEntity.setPassword(userDTO.getPassword());
+        userEntity.setFio(userDTO.getFio());
+        userEntity.setDocument(userDTO.getDocument());
+        userEntity.setNumber(userDTO.getNumber());
+        userEntity.setActive(userDTO.getActive());
+        userEntity.setIcc(userDTO.getIcc());
         log.info(userEntity.toString());
         return ConversionDTO.transformToUserDTO(userRepository.save(userEntity));
     }

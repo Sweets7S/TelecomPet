@@ -28,18 +28,26 @@ public class ConversionDTO {
 
     public static UserEntity transformToUserEntity(UserDTO userDTO){
         UserEntity userEntity = new UserEntity();
-        userEntity.setName(userDTO.getName());
-        userEntity.setAge(userDTO.getAge());
-        userEntity.setRch(userDTO.getRch());
+        userEntity.setLogin(userDTO.getLogin());
+        userEntity.setPassword(userDTO.getPassword());
+        userEntity.setFio(userDTO.getFio());
+        userEntity.setDocument(userDTO.getDocument());
+        userEntity.setNumber(userDTO.getNumber());
+        userEntity.setActive(userDTO.getActive());
+        userEntity.setIcc(userDTO.getIcc());
         return userEntity;
     }
 
     public static UserDTO transformToUserDTO(UserEntity userEntity){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userEntity.getId());
-        userDTO.setName(userEntity.getName());
-        userDTO.setAge(userEntity.getAge());
-        userDTO.setRch(userEntity.getRch());
+        userEntity.setLogin(userEntity.getLogin());
+        userEntity.setPassword(userEntity.getPassword());
+        userEntity.setFio(userEntity.getFio());
+        userEntity.setDocument(userEntity.getDocument());
+        userEntity.setNumber(userEntity.getNumber());
+        userEntity.setActive(userEntity.isActive());
+        userEntity.setIcc(userEntity.getIcc());
         return userDTO;
     }
 }
