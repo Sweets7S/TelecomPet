@@ -2,7 +2,9 @@ package ru.fintech.example.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.fintech.example.DTO.TestDTO;
+import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.models.TestEntity;
+import ru.fintech.example.models.UserEntity;
 
 @Slf4j
 public class ConversionDTO {
@@ -22,5 +24,22 @@ public class ConversionDTO {
         testDTO.setAge(testEntity.getAge());
         testDTO.setRch(testEntity.getRch());
         return testDTO;
+    }
+
+    public static UserEntity transformToUserEntity(UserDTO userDTO){
+        UserEntity userEntity = new UserEntity();
+        userEntity.setName(userDTO.getName());
+        userEntity.setAge(userDTO.getAge());
+        userEntity.setRch(userDTO.getRch());
+        return userEntity;
+    }
+
+    public static UserDTO transformToUserDTO(UserEntity userEntity){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userEntity.getId());
+        userDTO.setName(userEntity.getName());
+        userDTO.setAge(userEntity.getAge());
+        userDTO.setRch(userEntity.getRch());
+        return userDTO;
     }
 }
