@@ -3,7 +3,7 @@ package ru.fintech.example.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.UserDTO;
-import ru.fintech.example.models.UserEntity;
+import ru.fintech.example.models.User;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
@@ -21,22 +21,22 @@ public class UserService {
     }
 
     public UserDTO create(UserDTO userDTO){
-        UserEntity userEntity = ConversionDTO.transformToEntity(userDTO);
-        UserEntity userEntityAfterSave = userRepository.save(userEntity);
-        return ConversionDTO.transformToDTO(userEntityAfterSave);
+        User user = ConversionDTO.transformToEntity(userDTO);
+        User userAfterSave = userRepository.save(user);
+        return ConversionDTO.transformToDTO(userAfterSave);
     }
 
     public UserDTO get(int userId){
-        UserEntity userEntity = userRepository.getReferenceById(userId);
-        return ConversionDTO.transformToDTO(userEntity);
+        User user = userRepository.getReferenceById(userId);
+        return ConversionDTO.transformToDTO(user);
     }
 
     public List<UserDTO> getAll(){
         List<UserDTO> userDTOList = new ArrayList<>();
-        List<UserEntity> userEntityList = userRepository.findAll();
-        for (int i = 0; i < userEntityList.size(); i++) {
+        List<User> userList = userRepository.findAll();
+        for (int i = 0; i < userList.size(); i++) {
             log.info("Count " + i);
-            userDTOList.add(ConversionDTO.transformToDTO(userEntityList.get(i)));
+            userDTOList.add(ConversionDTO.transformToDTO(userList.get(i)));
         }
         return userDTOList;
     }
@@ -46,15 +46,15 @@ public class UserService {
     }
 
     public UserDTO update(UserDTO userDTO){
-        UserEntity userEntity = userRepository.getReferenceById(userDTO.getId());
-        userEntity.setLogin(userDTO.getLogin());
-        userEntity.setPassword(userDTO.getPassword());
-        userEntity.setFio(userDTO.getFio());
-        userEntity.setDocument(userDTO.getDocument());
-        userEntity.setNumber(userDTO.getNumber());
-        userEntity.setActive(userDTO.isActive());
-        userEntity.setIcc(userDTO.getIcc());
-        log.info(userEntity.toString());
-        return ConversionDTO.transformToDTO(userRepository.save(userEntity));
+        User user = userRepository.getReferenceById(userDTO.getId());
+        user.setLogin(userDTO.getLogin());
+        user.setPassword(userDTO.getPassword());
+        user.setFio(userDTO.getFio());
+        user.setDocument(userDTO.getDocument());
+        user.setNumber(userDTO.getNumber());
+        user.setActive(userDTO.isActive());
+        user.setIcc(userDTO.getIcc());
+        log.info(user.toString());
+        return ConversionDTO.transformToDTO(userRepository.save(user));
     }
 }
