@@ -39,16 +39,15 @@ public class TestService {
         List<TestEntity> testEntityList = testRepository.findAll();
         for (int i = 0; i < testEntityList.size(); i++) {
             log.info("Count " + i);
-            TestDTO dto = ConversionDTO.transformToDTO(testEntityList.get(i));
-            testDTOList.add(dto);
-//            testDTOList.add(ConversionDTO.transformToDTO(testEntityList.get(i)));
+            testDTOList.add(ConversionDTO.transformToDTO(testEntityList.get(i)));
         }
             return testDTOList;
     }
 
 
     public void delete(int testId) {
-       testRepository.deleteById(testId);
+        log.info("Deleted element with id - " + testId);
+        testRepository.deleteById(testId);
     }
 
     public TestDTO update(TestDTO testDTO) {

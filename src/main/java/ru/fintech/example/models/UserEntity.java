@@ -1,16 +1,37 @@
-package ru.fintech.example.DTO;
+package ru.fintech.example.models;
 
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
+@Table(name = "users")
 @ToString
-public class UserDTO {
+@NoArgsConstructor
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "login")
     private String login;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "fio")
     private String fio;
+
+    @Column(name = "document")
     private String document;
+
+    @Column(name = "number")
     private String number;
+
+    @Column(name = "active")
     private boolean active;
+
+    @Column(name = "icc")
     private String icc;
 
     public int getId() {
