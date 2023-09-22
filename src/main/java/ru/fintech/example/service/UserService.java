@@ -1,0 +1,60 @@
+package ru.fintech.example.service;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.models.User;
+import ru.fintech.example.repository.UserRepository;
+import ru.fintech.example.utils.ConversionDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
+@Service
+public class UserService {
+
+    private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
+    public UserDTO create(UserDTO userDTO){
+        User user = ConversionDTO.transformToEntity(userDTO);
+        User userAfterSave = userRepository.save(user);
+        return ConversionDTO.transformToDTO(userAfterSave);
+    }
+
+    public UserDTO get(int userId){
+        User user = userRepository.getReferenceById(userId);
+        return ConversionDTO.transformToDTO(user);
+    }
+
+    public List<UserDTO> getAll(){
+        List<UserDTO> userDTOList = new ArrayList<>();
+        List<User> userList = userRepository.findAll();
+        for (int i = 0; i < userList.size(); i++) {
+            log.info("Count " + i);
+            userDTOList.add(ConversionDTO.transformToDTO(userList.get(i)));
+        }
+        return userDTOList;
+    }
+
+    public void delete(int userId){
+        userRepository.deleteById(userId);
+    }
+
+    public UserDTO update(UserDTO userDTO){
+        User user = userRepository.getReferenceById(userDTO.getId());
+        user.setLogin(userDTO.getLogin());
+        user.setPassword(userDTO.getPassword());
+        user.setFio(userDTO.getFio());
+        user.setDocument(userDTO.getDocument());
+        user.setNumber(userDTO.getNumber());
+        user.setActive(userDTO.isActive());
+        user.setIcc(userDTO.getIcc());
+        log.info(user.toString());
+        return ConversionDTO.transformToDTO(userRepository.save(user));
+    }
+}
