@@ -1,10 +1,16 @@
 package ru.fintech.example.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.TestDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.TestEntity;
 import ru.fintech.example.models.User;
+import ru.fintech.example.repository.MsisdnRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class ConversionDTO {
@@ -32,9 +38,7 @@ public class ConversionDTO {
         user.setPassword(userDTO.getPassword());
         user.setFio(userDTO.getFio());
         user.setDocument(userDTO.getDocument());
-        user.setNumber(userDTO.getNumber());
         user.setActive(userDTO.isActive());
-        user.setIcc(userDTO.getIcc());
         return user;
     }
 
@@ -45,9 +49,23 @@ public class ConversionDTO {
         userDTO.setPassword(user.getPassword());
         userDTO.setFio(user.getFio());
         userDTO.setDocument(user.getDocument());
-        userDTO.setNumber(user.getNumber());
         userDTO.setActive(user.isActive());
-        userDTO.setIcc(user.getIcc());
+        userDTO.setMsisdnDTOS(transformToDTOs(user.getMsisdns()));
         return userDTO;
+    }
+    public static List<MsisdnDTO> transformToDTOs(List<Msisdn> msisdn){
+        List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
+        if (msisdn != null) {
+            for (int i = 0; i < msisdn.size(); i++) {
+                MsisdnDTO msisdnDTO = new MsisdnDTO();
+                msisdnDTO.setMsisdnId(msisdn.get(i).getMsisdnId());
+                msisdnDTO.setUserId(msisdn.get(i).getUser().getId());
+                msisdnDTO.setMsisdn(msisdn.get(i).getMsisdn());
+                msisdnDTO.setIcc(msisdn.get(i).getIcc());
+                msisdnDTO.setActive(msisdn.get(i).isActive());
+                msisdnDTOS.add(msisdnDTO);
+            }
+        }
+        return msisdnDTOS;
     }
 }

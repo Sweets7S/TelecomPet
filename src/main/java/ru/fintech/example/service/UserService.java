@@ -2,8 +2,11 @@ package ru.fintech.example.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.User;
+import ru.fintech.example.repository.MsisdnRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
@@ -15,9 +18,11 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
+    private MsisdnRepository msisdnRepository;
 
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, MsisdnRepository msisdnRepository){
         this.userRepository = userRepository;
+        this.msisdnRepository = msisdnRepository;
     }
 
     public UserDTO create(UserDTO userDTO){
@@ -42,6 +47,11 @@ public class UserService {
     }
 
     public void delete(int userId){
+        List<Msisdn> msisdnList = userRepository.getReferenceById(userId).getMsisdns();
+        for (int i = 0; i < msisdnList.size(); i++) {
+            msisdnList.get(i).setUser(userRepository.getReferenceById(8));
+            msisdnRepository.save(msisdnList.get(i));
+        }
         userRepository.deleteById(userId);
     }
 
@@ -51,9 +61,7 @@ public class UserService {
         user.setPassword(userDTO.getPassword());
         user.setFio(userDTO.getFio());
         user.setDocument(userDTO.getDocument());
-        user.setNumber(userDTO.getNumber());
         user.setActive(userDTO.isActive());
-        user.setIcc(userDTO.getIcc());
         log.info(user.toString());
         return ConversionDTO.transformToDTO(userRepository.save(user));
     }
