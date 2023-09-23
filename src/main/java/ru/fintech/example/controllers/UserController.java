@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.service.UserService;
 
-
 import java.util.List;
 
 @Slf4j
@@ -19,13 +18,11 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @PostMapping("/add")
     public UserDTO create(@RequestBody UserDTO userDTO){
         log.info("Coming request {}", userDTO);
         return userService.create(userDTO);
     }
-
 
     @GetMapping("/{userId}")
     public UserDTO get(@PathVariable("userId") int userId){
@@ -33,19 +30,16 @@ public class UserController {
         return userService.get(userId);
     }
 
-
     @GetMapping("")
     public List<UserDTO> getAll(){
         return userService.getAll();
     }
-
 
     @PutMapping("/update")
     public UserDTO update(@RequestBody UserDTO userDTO){
         log.info(userDTO.toString());
         return userService.update(userDTO);
     }
-
 
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable("userId") int userId){

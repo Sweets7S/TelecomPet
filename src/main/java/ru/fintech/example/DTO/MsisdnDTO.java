@@ -1,5 +1,8 @@
 package ru.fintech.example.DTO;
 
+import lombok.ToString;
+
+@ToString
 public class MsisdnDTO {
     private int msisdnId;
     private int userId;

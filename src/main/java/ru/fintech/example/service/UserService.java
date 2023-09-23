@@ -3,6 +3,7 @@ package ru.fintech.example.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.User;
@@ -48,11 +49,10 @@ public class UserService {
     }
 
     public void delete(int userId){
-        User user = userRepository.getReferenceById(userId);
-        List<Msisdn> msisdns = user.getMsisdns();
-        for (int i = 0; i < msisdns.size(); i++) {
-            msisdns.get(i).setUser(userRepository.getReferenceById(1));
-            msisdnRepository.save(msisdns.get(i));
+        List<Msisdn> msisdnList = userRepository.getReferenceById(userId).getMsisdns();
+        for (int i = 0; i < msisdnList.size(); i++) {
+            msisdnList.get(i).setUser(userRepository.getReferenceById(8));
+            msisdnRepository.save(msisdnList.get(i));
         }
         userRepository.deleteById(userId);
     }

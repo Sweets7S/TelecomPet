@@ -1,20 +1,15 @@
 package ru.fintech.example.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.TestDTO;
 import ru.fintech.example.DTO.UserDTO;
-import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.TestEntity;
 import ru.fintech.example.models.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class ConversionDTO {
 
-    public static TestEntity transformToEntity(TestDTO testDTO) {
+    public static TestEntity transformToEntity(TestDTO testDTO){
         TestEntity testEntity = new TestEntity();
         testEntity.setName(testDTO.getName());
         testEntity.setAge(testDTO.getAge());
@@ -22,7 +17,7 @@ public class ConversionDTO {
         return testEntity;
     }
 
-    public static TestDTO transformToDTO(TestEntity testEntity) {
+    public static TestDTO transformToDTO(TestEntity testEntity){
         TestDTO testDTO = new TestDTO();
         testDTO.setId(testEntity.getId());
         testDTO.setName(testEntity.getName());
@@ -31,15 +26,13 @@ public class ConversionDTO {
         return testDTO;
     }
 
-    public static User transformToEntity(UserDTO userDTO) {
+    public static User transformToEntity(UserDTO userDTO){
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setPassword(userDTO.getPassword());
         user.setFio(userDTO.getFio());
         user.setDocument(userDTO.getDocument());
-//        user.setNumber(userDTO.getNumber());
         user.setActive(userDTO.isActive());
-//        user.setIcc(userDTO.getIcc());
         return user;
     }
 
@@ -54,22 +47,7 @@ public class ConversionDTO {
 //            msisdn.setUser(msisdnDTOS.get(i).getUserId());
 //        }
 //    }
-    public static List<MsisdnDTO> transformToDTOs(List<Msisdn> msisdns) {
 
-        List<MsisdnDTO> msisdnDTOList = new ArrayList<>();
-        if (msisdns != null) {
-            for (int i = 0; i < msisdns.size(); i++) {
-                MsisdnDTO msisdnDTO = new MsisdnDTO();
-                msisdnDTO.setMsisdnId(msisdns.get(i).getMsisdnId());
-                msisdnDTO.setIcc(msisdns.get(i).getIcc());
-                msisdnDTO.setActive(msisdns.get(i).isActive());
-                msisdnDTO.setMsisdn(msisdns.get(i).getMsisdn());
-                msisdnDTO.setUserId(msisdns.get(i).getUser().getId());
-                msisdnDTOList.add(msisdnDTO);
-            }
-        }
-        return msisdnDTOList;
-    }
 
     public static UserDTO transformToDTO(User user) {
         UserDTO userDTO = new UserDTO();
@@ -81,5 +59,20 @@ public class ConversionDTO {
         userDTO.setActive(user.isActive());
         userDTO.setMsisdnDTOS(transformToDTOs(user.getMsisdns()));
         return userDTO;
+    }
+    public static List<MsisdnDTO> transformToDTOs(List<Msisdn> msisdn){
+        List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
+        if (msisdn != null) {
+            for (int i = 0; i < msisdn.size(); i++) {
+                MsisdnDTO msisdnDTO = new MsisdnDTO();
+                msisdnDTO.setMsisdnId(msisdn.get(i).getMsisdnId());
+                msisdnDTO.setUserId(msisdn.get(i).getUser().getId());
+                msisdnDTO.setMsisdn(msisdn.get(i).getMsisdn());
+                msisdnDTO.setIcc(msisdn.get(i).getIcc());
+                msisdnDTO.setActive(msisdn.get(i).isActive());
+                msisdnDTOS.add(msisdnDTO);
+            }
+        }
+        return msisdnDTOS;
     }
 }
