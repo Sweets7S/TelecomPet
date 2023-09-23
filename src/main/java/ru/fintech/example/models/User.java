@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @ToString
@@ -25,14 +28,11 @@ public class User {
     @Column(name = "document")
     private String document;
 
-    @Column(name = "number")
-    private String number;
-
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "icc")
-    private String icc;
+    @OneToMany(mappedBy = "user")
+    private List<Msisdn> msisdns;
 
     public int getId() {
         return id;
@@ -74,14 +74,6 @@ public class User {
         this.document = document;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -90,11 +82,11 @@ public class User {
         this.active = active;
     }
 
-    public String getIcc() {
-        return icc;
+    public List<Msisdn> getMsisdns() {
+        return msisdns;
     }
 
-    public void setIcc(String icc) {
-        this.icc = icc;
+    public void setMsisdns(List<Msisdn> msisdns) {
+        this.msisdns = msisdns;
     }
 }
