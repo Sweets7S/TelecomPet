@@ -1,10 +1,15 @@
 package ru.fintech.example.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.TestDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.TestEntity;
 import ru.fintech.example.models.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class ConversionDTO {
