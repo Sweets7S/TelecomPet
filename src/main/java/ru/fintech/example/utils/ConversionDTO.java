@@ -70,6 +70,11 @@ public class ConversionDTO {
         if (msisdn != null) {
             for (int i = 0; i < msisdn.size(); i++) {
                 MsisdnDTO msisdnDTO = new MsisdnDTO();
+//                        .msisdnId(msisdn.get(i).getMsisdnId())
+//                        .userId(msisdn.get(i).getUser().getId())
+//                        .msisdn(msisdn.get(i).getMsisdn())
+//                        .icc(msisdn.get(i).getIcc())
+//                        .active(msisdn.get(i).isActive());
                 msisdnDTO.setMsisdnId(msisdn.get(i).getMsisdnId());
                 msisdnDTO.setUserId(msisdn.get(i).getUser().getId());
                 msisdnDTO.setMsisdn(msisdn.get(i).getMsisdn());

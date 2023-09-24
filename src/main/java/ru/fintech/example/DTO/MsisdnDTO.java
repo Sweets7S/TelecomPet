@@ -49,4 +49,25 @@ public class MsisdnDTO {
     public void setIcc(String icc) {
         this.icc = icc;
     }
+
+    public MsisdnDTO msisdnId(int msisdnId){
+        this.setMsisdnId(msisdnId);
+        return this;
+    }
+    public MsisdnDTO userId(int userId){
+        this.setUserId(userId);
+        return this;
+    }
+    public MsisdnDTO msisdn(String msisdn){
+        this.setMsisdn(msisdn);
+        return this;
+    }
+    public MsisdnDTO icc(String icc){
+        this.setIcc(icc);
+        return this;
+    }
+    public MsisdnDTO active(boolean active) {
+        this.setActive(active);
+        return this;
+    }
 }
