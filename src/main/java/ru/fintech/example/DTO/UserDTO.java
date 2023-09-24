@@ -2,6 +2,8 @@ package ru.fintech.example.DTO;
 
 import lombok.ToString;
 
+import java.util.List;
+
 @ToString
 public class UserDTO {
     private int id;
@@ -9,9 +11,8 @@ public class UserDTO {
     private String password;
     private String fio;
     private String document;
-    private String number;
     private boolean active;
-    private String icc;
+    private List<MsisdnDTO> msisdnDTOS;
 
     public int getId() {
         return id;
@@ -53,14 +54,6 @@ public class UserDTO {
         this.document = document;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -69,11 +62,11 @@ public class UserDTO {
         this.active = active;
     }
 
-    public String getIcc() {
-        return icc;
+    public List<MsisdnDTO> getMsisdnDTOS() {
+        return msisdnDTOS;
     }
 
-    public void setIcc(String icc) {
-        this.icc = icc;
+    public void setMsisdnDTOS(List<MsisdnDTO> msisdnDTOS) {
+        this.msisdnDTOS = msisdnDTOS;
     }
 }
