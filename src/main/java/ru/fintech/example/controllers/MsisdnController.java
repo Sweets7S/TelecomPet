@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.service.MsisdnService;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/msisdn")
@@ -20,8 +22,8 @@ public class MsisdnController {
     }
 
     @PostMapping("/add")
-    public MsisdnDTO create(@RequestBody MsisdnDTO msisdnDTO) {
-        log.info("Coming request {}", msisdnDTO);
-        return msisdnService.createMsisdn(msisdnDTO);
+    public void create(@RequestBody List<MsisdnDTO> msisdnDTOs) {
+        log.info("Coming request {}", msisdnDTOs);
+        msisdnService.createMsisdn(msisdnDTOs);
     }
 }

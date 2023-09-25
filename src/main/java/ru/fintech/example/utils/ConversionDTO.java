@@ -99,4 +99,14 @@ public class ConversionDTO {
         msisdnDTO.setActive(msisdn.isActive());
         return msisdnDTO;
     }
+
+    public static List<Msisdn> transformToEntities(List<MsisdnDTO> msisdnDTOs, User user) {
+        List<Msisdn> msisdnList = new ArrayList<>();
+        for (int i = 0; i < msisdnDTOs.size(); i++) {
+//            Msisdn msisdn = transformToEntity(msisdnDTOs.get(i), user);
+//            msisdnList.add(msisdn);
+            msisdnList.add(transformToEntity(msisdnDTOs.get(i), user));
+        }
+        return msisdnList;
+    }
 }
