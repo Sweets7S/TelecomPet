@@ -41,6 +41,12 @@ public class UserController {
         return userService.update(userDTO);
     }
 
+    @PutMapping("/updatePassword")
+    public UserDTO updatePassword(@RequestBody UserDTO userDTO) {
+        log.info(userDTO.toString());
+        return userService.updatePassword(userDTO);
+    }
+
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable("userId") int userId) {
         userService.delete(userId);

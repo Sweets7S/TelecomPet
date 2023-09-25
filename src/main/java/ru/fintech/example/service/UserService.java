@@ -1,5 +1,6 @@
 package ru.fintech.example.service;
 
+import jakarta.jws.soap.SOAPBinding;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,10 +61,16 @@ public class UserService {
     public UserDTO update(UserDTO userDTO){
         User user = userRepository.getReferenceById(userDTO.getId());
         user.setLogin(userDTO.getLogin());
-        user.setPassword(userDTO.getPassword());
         user.setFio(userDTO.getFio());
         user.setDocument(userDTO.getDocument());
         user.setActive(userDTO.isActive());
+        log.info(user.toString());
+        return ConversionDTO.transformToDTO(userRepository.save(user));
+    }
+
+    public UserDTO updatePassword(UserDTO userDTO){
+        User user = userRepository.getReferenceById(userDTO.getId());
+        user.setPassword(userDTO.getPassword());
         log.info(user.toString());
         return ConversionDTO.transformToDTO(userRepository.save(user));
     }
