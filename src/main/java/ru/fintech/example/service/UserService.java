@@ -1,12 +1,11 @@
 package ru.fintech.example.service;
 
-import jakarta.jws.soap.SOAPBinding;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.models.Msisdn;
+import ru.fintech.example.models.UpdateUser;
+import ru.fintech.example.models.PassportData;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.MsisdnRepository;
 import ru.fintech.example.repository.UserRepository;
@@ -34,6 +33,7 @@ public class UserService {
         return ConversionDTO.transformToDTO(userAfterSave);
     }
 
+
     public UserDTO get(int userId) {
         User user = userRepository.getReferenceById(userId);
         return ConversionDTO.transformToDTO(user);
@@ -58,26 +58,26 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public UserDTO update(UserDTO userDTO) {
-        User user = userRepository.getReferenceById(userDTO.getId());
-        user.setLogin(userDTO.getLogin());
-        user.setActive(userDTO.isActive());
+    public void update(UpdateUser updateUser) {
+        User user = userRepository.getReferenceById(updateUser.getId());
+        user.setLogin(updateUser.getLogin());
+        user.setActive(updateUser.isActive());
         log.info(user.toString());
-        return ConversionDTO.transformToDTO(userRepository.save(user));
+        userRepository.save(user);
     }
 
-    public UserDTO updatePassword(UserDTO userDTO) {
-        User user = userRepository.getReferenceById(userDTO.getId());
-        user.setPassword(userDTO.getPassword());
+    public void updatePassword(int id, String password) {
+        User user = userRepository.getReferenceById(id);
+        user.setPassword(password);
         log.info(user.toString());
-        return ConversionDTO.transformToDTO(userRepository.save(user));
+        ConversionDTO.transformToDTO(userRepository.save(user));
     }
 
-    public UserDTO updatePassportData(UserDTO userDTO) {
-        User user = userRepository.getReferenceById(userDTO.getId());
-        user.setFio(userDTO.getFio());
-        user.setDocument(userDTO.getDocument());
+    public void updatePassportData(PassportData passportData) {
+        User user = userRepository.getReferenceById(passportData.getId());
+        user.setFio(passportData.getFio());
+        user.setDocument(passportData.getDocument());
         log.info(user.toString());
-        return ConversionDTO.transformToDTO(userRepository.save(user));
+        userRepository.save(user);
     }
 }

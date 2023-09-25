@@ -69,20 +69,34 @@ public class ConversionDTO {
         List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
         if (msisdn != null) {
             for (int i = 0; i < msisdn.size(); i++) {
-                MsisdnDTO msisdnDTO = new MsisdnDTO();
-//                        .msisdnId(msisdn.get(i).getMsisdnId())
-//                        .userId(msisdn.get(i).getUser().getId())
-//                        .msisdn(msisdn.get(i).getMsisdn())
-//                        .icc(msisdn.get(i).getIcc())
-//                        .active(msisdn.get(i).isActive());
-                msisdnDTO.setMsisdnId(msisdn.get(i).getMsisdnId());
-                msisdnDTO.setUserId(msisdn.get(i).getUser().getId());
-                msisdnDTO.setMsisdn(msisdn.get(i).getMsisdn());
-                msisdnDTO.setIcc(msisdn.get(i).getIcc());
-                msisdnDTO.setActive(msisdn.get(i).isActive());
-                msisdnDTOS.add(msisdnDTO);
+                msisdnDTOS.add(transformToDTO(msisdn.get(i)));
             }
         }
         return msisdnDTOS;
+    }
+
+    public static Msisdn transformToEntity(MsisdnDTO msisdnDTO, User user) {
+        Msisdn msisdn = new Msisdn();
+        msisdn.setUser(user);
+        msisdn.setMsisdnId(msisdnDTO.getMsisdnId());
+        msisdn.setMsisdn(msisdnDTO.getMsisdn());
+        msisdn.setIcc(msisdnDTO.getIcc());
+        msisdn.setActive(msisdnDTO.isActive());
+        return msisdn;
+    }
+
+    public static MsisdnDTO transformToDTO(Msisdn msisdn) {
+        MsisdnDTO msisdnDTO = new MsisdnDTO();
+//            .msisdnId(msisdn.get(i).getMsisdnId())
+//            .userId(msisdn.get(i).getUser().getId())
+//            .msisdn(msisdn.get(i).getMsisdn())
+//            .icc(msisdn.get(i).getIcc())
+//            .active(msisdn.get(i).isActive());
+        msisdnDTO.setMsisdnId(msisdn.getMsisdnId());
+        msisdnDTO.setUserId(msisdn.getUser().getId());
+        msisdnDTO.setMsisdn(msisdn.getMsisdn());
+        msisdnDTO.setIcc(msisdn.getIcc());
+        msisdnDTO.setActive(msisdn.isActive());
+        return msisdnDTO;
     }
 }

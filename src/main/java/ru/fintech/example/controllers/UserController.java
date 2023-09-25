@@ -3,6 +3,8 @@ package ru.fintech.example.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.models.UpdateUser;
+import ru.fintech.example.models.PassportData;
 import ru.fintech.example.service.UserService;
 
 import java.util.List;
@@ -36,22 +38,26 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public UserDTO update(@RequestBody UserDTO userDTO) {
-        log.info(userDTO.toString());
-        return userService.update(userDTO);
+    public void update(@RequestBody UpdateUser updateUser) {
+        log.info(updateUser.toString());
+        userService.update(updateUser);
     }
 
-    @PutMapping("/updatePassword")
-    public UserDTO updatePassword(@RequestBody UserDTO userDTO) {
-        log.info(userDTO.toString());
-        return userService.updatePassword(userDTO);
+    @PatchMapping("/{userId}/updatePassword")
+    public void updatePassword(@PathVariable("userId") int userId, @RequestParam(value = "password") String userPassword) {
+        userService.updatePassword(userId, userPassword);
     }
 
     @PutMapping("/updatePassportData")
-    public UserDTO updatePassportData(@RequestBody UserDTO userDTO) {
-        log.info(userDTO.toString());
-        return userService.updatePassportData(userDTO);
+    public void updatePassportData(@RequestBody PassportData passportData) {
+        log.info(passportData.toString());
+        userService.updatePassportData(passportData);
     }
+
+//    @PutMapping("/updateMsisdn")
+//    public UserDTO updateMsisdn(@RequestBody UserDTO userDTO) {
+//        log.info(userDTO.toString());
+//        return userService.updateMsisdn(userDTO);
 
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable("userId") int userId) {

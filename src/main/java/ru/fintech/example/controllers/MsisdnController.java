@@ -19,9 +19,9 @@ public class MsisdnController {
         this.msisdnService = msisdnService;
     }
 
-//    @PostMapping("/add")
-//    public MsisdnDTO create(@RequestBody MsisdnDTO msisdnDTO) {
-//        log.info("Coming request {}", msisdnDTO);
-//        return msisdnService.create(msisdnDTO);
-//    }
+    @PostMapping("/add")
+    public MsisdnDTO create(@RequestBody MsisdnDTO msisdnDTO) {
+        log.info("Coming request {}", msisdnDTO);
+        return msisdnService.createMsisdn(msisdnDTO);
+    }
 }
