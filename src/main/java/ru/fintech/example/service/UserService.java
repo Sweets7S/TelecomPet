@@ -20,26 +20,26 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
-//    @Autowired
+    //    @Autowired
     private MsisdnRepository msisdnRepository;
 
-    public UserService(UserRepository userRepository, MsisdnRepository msisdnRepository){
+    public UserService(UserRepository userRepository, MsisdnRepository msisdnRepository) {
         this.userRepository = userRepository;
         this.msisdnRepository = msisdnRepository;
     }
 
-    public UserDTO create(UserDTO userDTO){
+    public UserDTO create(UserDTO userDTO) {
         User user = ConversionDTO.transformToEntity(userDTO);
         User userAfterSave = userRepository.save(user);
         return ConversionDTO.transformToDTO(userAfterSave);
     }
 
-    public UserDTO get(int userId){
+    public UserDTO get(int userId) {
         User user = userRepository.getReferenceById(userId);
         return ConversionDTO.transformToDTO(user);
     }
 
-    public List<UserDTO> getAll(){
+    public List<UserDTO> getAll() {
         List<UserDTO> userDTOList = new ArrayList<>();
         List<User> userList = userRepository.findAll();
         for (int i = 0; i < userList.size(); i++) {
@@ -49,7 +49,7 @@ public class UserService {
         return userDTOList;
     }
 
-    public void delete(int userId){
+    public void delete(int userId) {
         List<Msisdn> msisdnList = userRepository.getReferenceById(userId).getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
             msisdnList.get(i).setUser(userRepository.getReferenceById(8));
@@ -58,19 +58,25 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public UserDTO update(UserDTO userDTO){
+    public UserDTO update(UserDTO userDTO) {
         User user = userRepository.getReferenceById(userDTO.getId());
         user.setLogin(userDTO.getLogin());
-        user.setFio(userDTO.getFio());
-        user.setDocument(userDTO.getDocument());
         user.setActive(userDTO.isActive());
         log.info(user.toString());
         return ConversionDTO.transformToDTO(userRepository.save(user));
     }
 
-    public UserDTO updatePassword(UserDTO userDTO){
+    public UserDTO updatePassword(UserDTO userDTO) {
         User user = userRepository.getReferenceById(userDTO.getId());
         user.setPassword(userDTO.getPassword());
+        log.info(user.toString());
+        return ConversionDTO.transformToDTO(userRepository.save(user));
+    }
+
+    public UserDTO updatePassportData(UserDTO userDTO) {
+        User user = userRepository.getReferenceById(userDTO.getId());
+        user.setFio(userDTO.getFio());
+        user.setDocument(userDTO.getDocument());
         log.info(user.toString());
         return ConversionDTO.transformToDTO(userRepository.save(user));
     }
