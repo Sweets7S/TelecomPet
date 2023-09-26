@@ -27,7 +27,18 @@ public class MsisdnService {
         this.msisdnRepository = msisdnRepository;
     }
 
-    public List<MsisdnDTO> getAllFreeMsisdns() {
+    //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
+    public List<MsisdnDTO> addMsisdnsToVacant(List<MsisdnDTO> msisdnDTOS) {
+        List<Msisdn> msisdns = ConversionDTO.transformToEntities(msisdnDTOS,
+                userRepository.getReferenceById(8));
+        List<Msisdn> msisdnsResult = new ArrayList<>();
+        for (int i = 0; i < msisdns.size(); i++) {
+            msisdnsResult.add(msisdnRepository.save(msisdns.get(i)));
+        }
+        return ConversionDTO.transformToDTOs(msisdnsResult);
+    }
+
+    public List<MsisdnDTO> getAllAvailivbleMsisdns() {
         List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
         User vacant = userRepository.getReferenceById(8);
         List<Msisdn> msisdnList = vacant.getMsisdns();
@@ -36,16 +47,5 @@ public class MsisdnService {
             msisdnDTOS.add(ConversionDTO.transformToDTO(msisdnList.get(i)));
         }
         return msisdnDTOS;
-    }
-
-//    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
-    public List<MsisdnDTO> addMsisdnToVacant(List<MsisdnDTO> msisdnDTOS) {
-        List<Msisdn> msisdns = ConversionDTO.transformToEntities(msisdnDTOS,
-                userRepository.getReferenceById(8));
-        List<Msisdn> msisdnsResult = new ArrayList<>();
-        for (int i = 0; i < msisdns.size(); i++) {
-           msisdnsResult.add(msisdnRepository.save(msisdns.get(i)));
-        }
-        return ConversionDTO.transformToDTOs(msisdnsResult);
     }
 }

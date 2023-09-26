@@ -19,10 +19,10 @@ public class MsisdnController {
 
     @PostMapping("/add")
     public List<MsisdnDTO> addMsisdnToVacant(@RequestBody List<MsisdnDTO> msisdnDTOS) {
-        return msisdnService.addMsisdnToVacant(msisdnDTOS);
+        return msisdnService.addMsisdnsToVacant(msisdnDTOS);
     }
-    @GetMapping("/getAllFreeMsisdns")
-    public List<MsisdnDTO> getAllFreeMsisdns() {
-        return msisdnService.getAllFreeMsisdns();
+    @GetMapping("/get")
+    public List<MsisdnDTO> getAllAvailibleMsisdns() {
+        return msisdnService.getAllAvailivbleMsisdns();
     }
 }

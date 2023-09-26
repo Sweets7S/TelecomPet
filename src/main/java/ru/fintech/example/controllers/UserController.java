@@ -4,9 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
-import ru.fintech.example.models.Msisdn;
-import ru.fintech.example.models.Renewal;
-import ru.fintech.example.models.UpdateUser;
+import ru.fintech.example.models.*;
 import ru.fintech.example.service.UserService;
 
 import java.util.List;
@@ -50,38 +48,45 @@ public class UserController {
     public void delete(@PathVariable("userId") int userId) {
         userService.delete(userId);
     }
-//    public void terminationContract(int userID) {
+
+    //    public void terminationContract(int userID) {
 //        //same as delete method?
 //    }
     @PutMapping("/renewal")
-    public void msisdnRenewal(@RequestBody Renewal renewal){
+    public void msisdnRenewal(@RequestBody Renewal renewal) {
         userService.msisdnRenewal(renewal.getOldUserId(),
                 renewal.getMsisdnId(), renewal.getNewUserId());
     }
-    @PatchMapping("/{userId}/change/icc")
-    public MsisdnDTO changeIcc(@PathVariable("userId")int userId, @RequestParam(value = "icc") String icc ) {
-        return userService.changeIcc(userId, icc);
+
+    @PatchMapping("/{msisdnId}/change/icc")
+    public MsisdnDTO changeIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String icc) {
+        return userService.changeIcc(msisdnId, icc);
     }
 
     @PostMapping("/add/msisdn")
-    public void addMsisdnToUser( @RequestBody MsisdnDTO msisdnDTO) {
+    public void addMsisdnToUser(@RequestBody MsisdnDTO msisdnDTO) {
         userService.addMsisdnToUser(msisdnDTO);
     }
 
-    @PatchMapping("/{userId}/change/msisdn")
-    public MsisdnDTO msisdnChange(@PathVariable("userId") int userId, @RequestParam(value = "msisdn") String msisdn) {
-        return userService.changeMsisdn(userId, msisdn);
+    @PatchMapping("/{msisdnId}/change/msisdn")
+    public MsisdnDTO msisdnChange(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "msisdn") String newMsisdn) {
+        return userService.changeMsisdn(msisdnId, newMsisdn);
     }
+
     @PutMapping("/change/passport")
-    public UserDTO updatePassportData(@RequestBody UserDTO userDTO) {
-        return userService.changePassportData(userDTO);
+    public UserDTO changePassport(@RequestBody UpdatePassport updatePassport) {
+        return userService.changePassport(updatePassport.getUserId(),
+                updatePassport.getDocument(), updatePassport.getFio());
     }
+
     @PatchMapping("/{userId}/change/password")
-    public UserDTO changePassword(@PathVariable("userId") int userId,@RequestParam(value = "password") String password) {
+    public UserDTO changePassword(@PathVariable("userId") int userId, @RequestParam(value = "password") String password) {
         return userService.changePassword(userId, password);
     }
-    @PostMapping("/contract/with/msisdn")
-    public UserDTO contractWithMsisdn(UserDTO userDTO, Msisdn msisdn){
-        return userService.contractWithMsisdn(userDTO, msisdn);
+
+    @PostMapping("/{msisdnId}/contract")
+    public UserDTO contractWithMsisdn(@RequestBody UserDTO userDTO,
+                                      @PathVariable("msisdnId") int msisdnId) {
+        return userService.contractWithMsisdn(userDTO, msisdnId);
     }
 }

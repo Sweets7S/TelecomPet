@@ -1,11 +1,13 @@
 package ru.fintech.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.models.Msisdn;
+import ru.fintech.example.models.UpdatePassport;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.MsisdnRepository;
@@ -77,8 +79,8 @@ public class UserService {
         msisdnRepository.save(msisdn);
     }
 
-    public MsisdnDTO changeIcc(int userId, String icc) {
-        Msisdn msisdn = msisdnRepository.getReferenceById(userId);
+    public MsisdnDTO changeIcc(int msisdnId, String icc) {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
         msisdn.setIcc(icc);
         return ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
     }
@@ -92,16 +94,16 @@ public class UserService {
     }
 
 
-    public MsisdnDTO changeMsisdn(int userId, String msisdnCh) {
-        Msisdn msisdn = msisdnRepository.getReferenceById(userId);
-        msisdn.setMsisdn(msisdnCh);
+    public MsisdnDTO changeMsisdn(int msisdnId, String newMsisdn) {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        msisdn.setMsisdn(newMsisdn);
         return ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
     }
 
-    public UserDTO changePassportData(UserDTO userDTO) {
-        User user = userRepository.getReferenceById(userDTO.getId());
-        user.setDocument(userDTO.getDocument());
-        user.setFio(userDTO.getFio());
+    public UserDTO changePassport(int userId, String document, String fio) {
+        User user = userRepository.getReferenceById(userId);
+        user.setDocument(document);
+        user.setFio(fio);
         return ConversionDTO.transformToDTO(userRepository.save(user));
     }
 
@@ -111,11 +113,21 @@ public class UserService {
         return ConversionDTO.transformToDTO(userRepository.save(user));
     }
 
-    public UserDTO contractWithMsisdn(UserDTO userDTO, Msisdn msisdn) {
-        User user = ConversionDTO.transformToEntity(userDTO);
-        msisdn.setUser(userRepository.getReferenceById(user.getId()));
+    public UserDTO contractWithMsisdn(UserDTO userDTO, int msisdnId) {
+        User user = null;
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        try {
+            user = userRepository.getReferenceById(userDTO.getId());
+            log.info(user.toString()); // если User не найден в базе, бросит EntityNotFoundException
+            msisdn.setUser(user);
+        } catch (EntityNotFoundException e) {
+            log.info("User with this id-{} not found", userDTO.getId());
+            user = ConversionDTO.transformToEntity(userDTO);
+            User userAfterSave = userRepository.save(user);
+            user = userAfterSave;
+            msisdn.setUser(user);
+        }
         msisdnRepository.save(msisdn);
-        User userAfterSave = userRepository.save(user);
-        return ConversionDTO.transformToDTO(userAfterSave);
+        return ConversionDTO.transformToDTO(user);
     }
 }
