@@ -26,11 +26,11 @@ public class UserController {
         return userService.create(userDTO);
     }
 
-    @PostMapping("/addSim")
-    public UserDTO createSim(@RequestBody UserDTO userDTO) {
-        log.info("Coming request {}", userDTO);
-        return userService.create(userDTO);
-    }
+//    @PostMapping("/addSim")
+//    public UserDTO createSim(@RequestBody UserDTO userDTO) {
+//        log.info("Coming request {}", userDTO);
+//        return userService.create(userDTO);
+//    }
 
     @GetMapping("/{userId}")
     public UserDTO get(@PathVariable("userId") int userId) {
@@ -52,6 +52,11 @@ public class UserController {
     @PatchMapping("/{userId}/updatePassword")
     public void updatePassword(@PathVariable("userId") int userId, @RequestParam(value = "password") String userPassword) {
         userService.updatePassword(userId, userPassword);
+    }
+
+    @PatchMapping("/{msisdnId}/updateIcc")
+    public void updateIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String msisdnIcc) {
+        userService.updateIcc(msisdnId, msisdnIcc);
     }
 
     @PutMapping("/updatePassportData")

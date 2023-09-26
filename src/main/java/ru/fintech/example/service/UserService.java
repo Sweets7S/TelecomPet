@@ -85,4 +85,11 @@ public class UserService {
         User userAfterSave = userRepository.save(user);
         userRepository.save(userAfterSave);
     }
+
+    public void updateIcc(int msisdnId, String msisdnIcc) {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        log.info(msisdnIcc);
+        msisdn.setIcc(msisdnIcc);
+        ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+    }
 }
