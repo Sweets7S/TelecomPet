@@ -9,6 +9,7 @@ import ru.fintech.example.repository.MsisdnRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,5 +32,15 @@ public class MsisdnService {
             msisdnRepository.save(msisdnList.get(i));
             log.info("Count " + i);
         }
+    }
+
+    public List<MsisdnDTO> getAllMsisdns() {
+        List<MsisdnDTO> msisdnDTOList = new ArrayList<>();
+        List<Msisdn> msisdnList = userRepository.getReferenceById(8).getMsisdns();
+        for (int i = 0; i < msisdnList.size(); i++) {
+            log.info("Count " + i);
+            msisdnDTOList.add(ConversionDTO.transformToDTO(msisdnList.get(i)));
+        }
+        return msisdnDTOList;
     }
 }
