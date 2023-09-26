@@ -49,9 +49,11 @@ public class UserController {
         userService.delete(userId);
     }
 
-    //    public void terminationContract(int userID) {
-//        //same as delete method?
-//    }
+    @PutMapping("/termination")
+    public MsisdnDTO terminationContract(@PathVariable("msisdnId") int msisdnId) {
+        return userService.terminationContract(msisdnId);
+    }
+
     @PutMapping("/renewal")
     public void msisdnRenewal(@RequestBody Renewal renewal) {
         userService.msisdnRenewal(renewal.getOldUserId(),

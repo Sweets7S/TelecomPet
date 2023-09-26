@@ -68,8 +68,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void terminationContract(int userID) {
-        //same as delete method?
+    public MsisdnDTO terminationContract(int msisdnId) {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        msisdn.setUser(userRepository.getReferenceById(8));
+        Msisdn msisdnAutoSave = msisdnRepository.save(msisdn);
+        return ConversionDTO.transformToDTO(msisdnAutoSave);
     }
 
     public void msisdnRenewal(int oldUserId, int msisdnId, int newUserId) {
