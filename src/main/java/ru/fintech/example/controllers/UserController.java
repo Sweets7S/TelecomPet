@@ -49,7 +49,7 @@ public class UserController {
         userService.delete(userId);
     }
 
-    @PutMapping("/termination")
+    @PutMapping("/{msisdnId}/termination")
     public MsisdnDTO terminationContract(@PathVariable("msisdnId") int msisdnId) {
         return userService.terminationContract(msisdnId);
     }
