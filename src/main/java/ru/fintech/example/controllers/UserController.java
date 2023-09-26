@@ -59,6 +59,11 @@ public class UserController {
         userService.updateIcc(msisdnId, msisdnIcc);
     }
 
+    @PatchMapping("/{msisdnId}/updateMsisdn")
+    public void updateMsisdn(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "msisdn") String newMsisdn) {
+        userService.updateMsisdn(msisdnId, newMsisdn);
+    }
+
     @PutMapping("/updatePassportData")
     public void updatePassportData(@RequestBody PassportData passportData) {
         log.info(passportData.toString());

@@ -92,4 +92,11 @@ public class UserService {
         msisdn.setIcc(msisdnIcc);
         ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
     }
+
+    public void updateMsisdn(int msisdnId, String newMsisdn) {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        log.info(newMsisdn);
+        msisdn.setMsisdn(newMsisdn);
+        ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+    }
 }
