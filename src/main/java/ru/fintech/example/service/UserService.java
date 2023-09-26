@@ -2,6 +2,7 @@ package ru.fintech.example.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.UpdateUser;
@@ -98,5 +99,17 @@ public class UserService {
         log.info(newMsisdn);
         msisdn.setMsisdn(newMsisdn);
         ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+    }
+
+    public MsisdnDTO addAvailableNumber(int newUserId, int msisdnId) {
+        MsisdnDTO msisdnDTO = new MsisdnDTO();
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        if (8 == msisdn.getUser().getId()) {
+            msisdn.setUser(userRepository.getReferenceById(newUserId));
+            msisdnDTO = ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+        } else {
+            log.info("Number is already used, UserId - {}", msisdn.getUser().getId());
+        }
+        return msisdnDTO;
     }
 }

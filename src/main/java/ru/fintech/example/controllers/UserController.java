@@ -1,7 +1,9 @@
 package ru.fintech.example.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
+import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.PassportData;
@@ -24,6 +26,11 @@ public class UserController {
     public UserDTO create(@RequestBody UserDTO userDTO) {
         log.info("Coming request {}", userDTO);
         return userService.create(userDTO);
+    }
+
+    @PostMapping("/addAvailableNumber")
+    public MsisdnDTO addAvailableNumber(@RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
+        return userService.addAvailableNumber(newUserId, msisdnId);
     }
 
 //    @PostMapping("/addSim")
