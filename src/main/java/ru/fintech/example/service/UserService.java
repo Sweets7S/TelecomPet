@@ -112,4 +112,14 @@ public class UserService {
         }
         return msisdnDTO;
     }
+
+    public MsisdnDTO renuvalNumberToUser(int oldUserId, int newUserId, int msisdnId) {
+        MsisdnDTO msisdnDTO = new MsisdnDTO();
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        if (oldUserId == msisdn.getUser().getId()) {
+            msisdn.setUser(userRepository.getReferenceById(newUserId));
+            msisdnDTO = ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+        }
+        return msisdnDTO;
+    }
 }

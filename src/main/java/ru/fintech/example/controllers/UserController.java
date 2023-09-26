@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.PassportData;
 import ru.fintech.example.service.UserService;
@@ -39,6 +40,11 @@ public class UserController {
     @PostMapping("/addAvailableNumber")
     public MsisdnDTO addAvailableNumber(@RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
         return userService.addAvailableNumber(newUserId, msisdnId);
+    }
+
+    @PostMapping("/renuvalNumberToUser")
+    public MsisdnDTO renuvalNumberToUser(@RequestParam(value = "oldUserId") int oldUserId, @RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
+        return userService.renuvalNumberToUser(oldUserId, newUserId, msisdnId);
     }
 
 //    @PostMapping("/addSim")
