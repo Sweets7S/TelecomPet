@@ -28,6 +28,14 @@ public class UserController {
         return userService.create(userDTO);
     }
 
+    @PostMapping("/addWithSim")
+    public UserDTO addWithSim(@RequestBody UserDTO userDTO, @RequestParam(value = "msisdnId") int msisdnId) {
+        UserDTO userDTO1 = userService.create(userDTO);
+        userService.addAvailableNumber(userDTO1.getId(), msisdnId);
+        log.info("Coming request {}", userDTO);
+        return userService.get(userDTO1.getId());
+    }
+
     @PostMapping("/addAvailableNumber")
     public MsisdnDTO addAvailableNumber(@RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
         return userService.addAvailableNumber(newUserId, msisdnId);
