@@ -34,11 +34,6 @@ public class UserService {
         return ConversionDTO.transformToDTO(userAfterSave);
     }
 
-//    public UserDTO createSim(UserDTO userDTO) {
-//
-//        return UserDTO;
-//    }
-
     public UserDTO get(int userId) {
         User user = userRepository.getReferenceById(userId);
         return ConversionDTO.transformToDTO(user);
@@ -121,5 +116,14 @@ public class UserService {
             msisdnDTO = ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
         }
         return msisdnDTO;
+    }
+
+    public void deleteMsisdn(int msisdnId) {
+        List<Msisdn> msisdnList = msisdnRepository.getReferenceById(msisdnId).getUser().getMsisdns();
+        for (int i = 0; i < msisdnList.size(); i++) {
+            msisdnList.get(i).setUser(userRepository.getReferenceById(8));
+            msisdnRepository.save(msisdnList.get(i));
+        }
+        userRepository.deleteById(msisdnId);
     }
 }

@@ -47,12 +47,6 @@ public class UserController {
         return userService.renuvalNumberToUser(oldUserId, newUserId, msisdnId);
     }
 
-//    @PostMapping("/addSim")
-//    public UserDTO createSim(@RequestBody UserDTO userDTO) {
-//        log.info("Coming request {}", userDTO);
-//        return userService.create(userDTO);
-//    }
-
     @GetMapping("/{userId}")
     public UserDTO get(@PathVariable("userId") int userId) {
         log.info("Coming id - {}", userId);
@@ -91,13 +85,13 @@ public class UserController {
         userService.updatePassportData(passportData);
     }
 
-//    @PutMapping("/updateMsisdn")
-//    public UserDTO updateMsisdn(@RequestBody UserDTO userDTO) {
-//        log.info(userDTO.toString());
-//        return userService.updateMsisdn(userDTO);
-
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable("userId") int userId) {
         userService.delete(userId);
+    }
+
+    @DeleteMapping("/deleteMsisdn/{msisdnId}")
+    public void deleteMsisdn(@PathVariable("msisdnId") int msisdnId) {
+        userService.deleteMsisdn(msisdnId);
     }
 }
