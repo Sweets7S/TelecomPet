@@ -24,8 +24,8 @@ public class MsisdnController {
         msisdnService.createMsisdn(msisdnDTOs);
     }
 
-    @GetMapping("")
-    public List<MsisdnDTO> getAllMsisdns() {
-        return msisdnService.getAllMsisdns();
+    @GetMapping("/get")
+    public List<MsisdnDTO> getAvailableMsisdns() {
+        return msisdnService.getAvailableMsisdns();
     }
 }

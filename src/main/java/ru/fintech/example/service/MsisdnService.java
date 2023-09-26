@@ -2,7 +2,6 @@ package ru.fintech.example.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.repository.MsisdnRepository;
@@ -34,7 +33,7 @@ public class MsisdnService {
         }
     }
 
-    public List<MsisdnDTO> getAllMsisdns() {
+    public List<MsisdnDTO> getAvailableMsisdns() {
         List<MsisdnDTO> msisdnDTOList = new ArrayList<>();
         List<Msisdn> msisdnList = userRepository.getReferenceById(8).getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {

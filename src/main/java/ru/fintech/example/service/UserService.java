@@ -33,6 +33,10 @@ public class UserService {
         return ConversionDTO.transformToDTO(userAfterSave);
     }
 
+//    public UserDTO createSim(UserDTO userDTO) {
+//
+//        return UserDTO;
+//    }
 
     public UserDTO get(int userId) {
         User user = userRepository.getReferenceById(userId);
@@ -60,24 +64,25 @@ public class UserService {
 
     public void update(UpdateUser updateUser) {
         User user = userRepository.getReferenceById(updateUser.getId());
+        log.info(updateUser.toString());
         user.setLogin(updateUser.getLogin());
         user.setActive(updateUser.isActive());
-        log.info(user.toString());
         userRepository.save(user);
     }
 
     public void updatePassword(int id, String password) {
         User user = userRepository.getReferenceById(id);
+        log.info(password);
         user.setPassword(password);
-        log.info(user.toString());
         ConversionDTO.transformToDTO(userRepository.save(user));
     }
 
     public void updatePassportData(PassportData passportData) {
         User user = userRepository.getReferenceById(passportData.getId());
+        log.info(passportData.toString());
         user.setFio(passportData.getFio());
         user.setDocument(passportData.getDocument());
-        log.info(user.toString());
-        userRepository.save(user);
+        User userAfterSave = userRepository.save(user);
+        userRepository.save(userAfterSave);
     }
 }
