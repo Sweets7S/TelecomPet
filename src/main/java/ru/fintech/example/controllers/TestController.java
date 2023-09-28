@@ -1,8 +1,11 @@
 package ru.fintech.example.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.TestDTO;
+import ru.fintech.example.Exceptions.TestException;
 import ru.fintech.example.service.TestService;
 
 import java.util.List;
@@ -26,10 +29,10 @@ public class TestController {
     }
 
     @GetMapping("/{testId}")
-    public TestDTO get(@PathVariable("testId") int testId){
+    public ResponseEntity<TestDTO> get(@PathVariable("testId") int testId) throws Exception {
         log.info("Coming id - {}", testId);
         log.info("Coming id - " + testId);
-      return testService.get(testId);
+      return ResponseEntity.ok(testService.get(testId));
     }
 
     @GetMapping("")
@@ -48,6 +51,10 @@ public class TestController {
         testService.delete(testId);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(TestException e){
+        return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
+    }
 //    @DeleteMapping("") // RequestParam = QueryParam
 //    public void delete(@RequestParam(value = "testId") int testId, @RequestParam(value = "age") int age, @RequestParam(value = "name") String name){
 //        log.info("{} {} {}", testId, age, name);
