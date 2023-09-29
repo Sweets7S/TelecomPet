@@ -110,10 +110,10 @@ public class UserService {
         return ConversionDTO.transformToDTO(userRepository.save(user));
     }
 
-    public UserDTO changePassword(int userId, String password) {
+    public void changePassword(int userId, String password) {
         User user = userRepository.getReferenceById(userId);
         user.setPassword(password);
-        return ConversionDTO.transformToDTO(userRepository.save(user));
+        ConversionDTO.transformToDTO(userRepository.save(user));
     }
 
     public UserDTO contractWithMsisdn(UserDTO userDTO, int msisdnId) {

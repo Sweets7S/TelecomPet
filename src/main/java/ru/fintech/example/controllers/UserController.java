@@ -82,8 +82,8 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}/change/password")
-    public UserDTO changePassword(@PathVariable("userId") int userId, @RequestParam(value = "password") String password) {
-        return userService.changePassword(userId, password);
+    public void changePassword(@PathVariable("userId") int userId, @RequestParam(value = "password") String password) {
+       userService.changePassword(userId, password);
     }
 
     @PostMapping("/{msisdnId}/contract")
