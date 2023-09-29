@@ -1,11 +1,13 @@
 package ru.fintech.example.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.MsisdnRepository;
@@ -30,12 +32,17 @@ public class MsisdnService {
     }
 
     //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
-    public List<MsisdnDTO> addMsisdnsToVacant(List<MsisdnDTO> msisdnDTOS) {
+    public List<MsisdnDTO> addMsisdnsToVacant(List<MsisdnDTO> msisdnDTOS) throws FaultException {
         List<Msisdn> msisdns = ConversionDTO.transformToEntities(msisdnDTOS,
                 userRepository.getReferenceById(technicalUserId));
         List<Msisdn> msisdnsResult = new ArrayList<>();
         for (int i = 0; i < msisdns.size(); i++) {
-            msisdnsResult.add(msisdnRepository.save(msisdns.get(i)));
+            try {
+                msisdnsResult.add(msisdnRepository.save(msisdns.get(i)));
+            } catch (Throwable e) {
+                log.info("Такой Msisdn уже существует - {} ", msisdns.get(i));
+                throw new FaultException(1001, "Такой номер уже существует");
+            }
         }
         return ConversionDTO.transformToDTOs(msisdnsResult);
     }

@@ -21,7 +21,7 @@ public class MsisdnController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<List<MsisdnDTO>> addMsisdnToVacant(@RequestBody List<MsisdnDTO> msisdnDTOS) {
+    public ResponseEntity<List<MsisdnDTO>> addMsisdnToVacant(@RequestBody List<MsisdnDTO> msisdnDTOS) throws FaultException {
         return ResponseEntity.ok(msisdnService.addMsisdnsToVacant(msisdnDTOS));
     }
     @GetMapping("/get")

@@ -68,9 +68,10 @@ public class UserController {
         return ResponseEntity.ok(userService.changeIcc(msisdnId, icc));
     }
 
-    @PostMapping("/add/msisdn")
-    public void addMsisdnToUser(@RequestBody MsisdnDTO msisdnDTO) {
-        userService.addMsisdnToUser(msisdnDTO);
+    @PostMapping("/{newUserId}/add/msisdn")
+    public void addMsisdnToUser(@PathVariable("newUserId") int newUserId,
+                                @RequestParam(value = "msisdnId") int msisdnId) throws FaultException {
+        userService.addMsisdnToUser(newUserId, msisdnId);
     }
 
     @PatchMapping("/{userId}/change/msisdn")
@@ -93,8 +94,12 @@ public class UserController {
 
     @PostMapping("/{msisdnId}/contract")
     public ResponseEntity<UserDTO> contractWithMsisdn(@RequestBody UserDTO userDTO,
-                                      @PathVariable("msisdnId") int msisdnId) {
-        return ResponseEntity.ok(userService.contractWithMsisdn(userDTO, msisdnId));
+                                      @PathVariable("msisdnId") int msisdnId) throws FaultException {
+        UserDTO userDTO1 = userService.create(userDTO);
+        userService.addMsisdnToUser(userDTO1.getId(), msisdnId);
+        UserDTO user = userService.get(userDTO1.getId());
+        log.info(user.toString());
+        return ResponseEntity.ok(user);
     }
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
