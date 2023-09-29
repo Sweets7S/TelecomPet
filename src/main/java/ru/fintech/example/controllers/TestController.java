@@ -51,9 +51,14 @@ public class TestController {
         testService.delete(testId);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(FaultException e){
+    @ExceptionHandler(FaultException.class)
+    public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e){
+        return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 //    @DeleteMapping("") // RequestParam = QueryParam
 //    public void delete(@RequestParam(value = "testId") int testId, @RequestParam(value = "age") int age, @RequestParam(value = "name") String name){
