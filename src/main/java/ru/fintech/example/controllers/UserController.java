@@ -1,9 +1,12 @@
 package ru.fintech.example.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.*;
 import ru.fintech.example.service.UserService;
 
@@ -70,9 +73,11 @@ public class UserController {
         userService.addMsisdnToUser(msisdnDTO);
     }
 
-    @PatchMapping("/{msisdnId}/change/msisdn")
-    public MsisdnDTO msisdnChange(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "msisdn") String newMsisdn) {
-        return userService.changeMsisdn(msisdnId, newMsisdn);
+    @PatchMapping("/{userId}/change/msisdn")
+    public ResponseEntity<MsisdnDTO> msisdnChange(@PathVariable("userId") int userId,
+                                  @RequestParam(value = "oldMsisdnId") int oldMsisdnId,
+                                  @RequestParam(value = "newMsisdnId") int newMsisdnId) throws FaultException {
+        return ResponseEntity.ok(userService.changeMsisdn(userId, oldMsisdnId, newMsisdnId));
     }
 
     @PutMapping("/change/passport")
@@ -83,12 +88,21 @@ public class UserController {
 
     @PatchMapping("/{userId}/change/password")
     public void changePassword(@PathVariable("userId") int userId, @RequestParam(value = "password") String password) {
-       userService.changePassword(userId, password);
+        userService.changePassword(userId, password);
     }
 
     @PostMapping("/{msisdnId}/contract")
     public UserDTO contractWithMsisdn(@RequestBody UserDTO userDTO,
                                       @PathVariable("msisdnId") int msisdnId) {
         return userService.contractWithMsisdn(userDTO, msisdnId);
+    }
+    @ExceptionHandler(FaultException.class)
+    public ResponseEntity<String> handleFaultException(FaultException e){
+        return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e){
+        return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.UpdatePassport;
 import ru.fintech.example.models.UpdateUser;
@@ -95,12 +96,21 @@ public class UserService {
         Msisdn msisdnAutoSave = msisdnRepository.save(msisdn);
         return ConversionDTO.transformToDTO(msisdnAutoSave);
     }
-
-
-    public MsisdnDTO changeMsisdn(int msisdnId, String newMsisdn) {
-        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
-        msisdn.setMsisdn(newMsisdn);
-        return ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+    public MsisdnDTO changeMsisdn(int userId, int oldMsisdnId, int newMsisdnId) throws FaultException {
+        Msisdn oldMsisdn = msisdnRepository.getReferenceById(oldMsisdnId);
+        Msisdn msisdn = null;
+        if (oldMsisdn.getUser().getId() == userId) {
+            Msisdn newMsisdn = msisdnRepository.getReferenceById(newMsisdnId);
+            String oldMsisdnNum = oldMsisdn.getMsisdn();
+            String newMsisdnNum = newMsisdn.getMsisdn();
+            newMsisdn.setMsisdn("55555");
+            msisdnRepository.save(newMsisdn);
+            oldMsisdn.setMsisdn(newMsisdnNum);
+            msisdn = msisdnRepository.save(oldMsisdn);
+            newMsisdn.setMsisdn(oldMsisdnNum);
+            msisdnRepository.save(newMsisdn);
+        } else throw new FaultException(1000, "User doesnt own the msisdnId: " + oldMsisdnId);
+        return ConversionDTO.transformToDTO(msisdn);
     }
 
     public UserDTO changePassport(int userId, String document, String fio) {
