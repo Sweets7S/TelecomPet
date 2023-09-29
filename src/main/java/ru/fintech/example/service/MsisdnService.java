@@ -15,6 +15,8 @@ import ru.fintech.example.utils.ConversionDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.fintech.example.service.UserService.technicalUserId;
+
 @Slf4j
 @Service
 public class MsisdnService {
@@ -30,7 +32,7 @@ public class MsisdnService {
     //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
     public List<MsisdnDTO> addMsisdnsToVacant(List<MsisdnDTO> msisdnDTOS) {
         List<Msisdn> msisdns = ConversionDTO.transformToEntities(msisdnDTOS,
-                userRepository.getReferenceById(8));
+                userRepository.getReferenceById(technicalUserId));
         List<Msisdn> msisdnsResult = new ArrayList<>();
         for (int i = 0; i < msisdns.size(); i++) {
             msisdnsResult.add(msisdnRepository.save(msisdns.get(i)));
@@ -40,7 +42,7 @@ public class MsisdnService {
 
     public List<MsisdnDTO> getAllAvailivbleMsisdns() {
         List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
-        User vacant = userRepository.getReferenceById(8);
+        User vacant = userRepository.getReferenceById(technicalUserId);
         List<Msisdn> msisdnList = vacant.getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
             log.info("Count " + i);

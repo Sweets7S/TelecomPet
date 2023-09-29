@@ -2,13 +2,11 @@ package ru.fintech.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Msisdn;
-import ru.fintech.example.models.UpdatePassport;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.MsisdnRepository;
@@ -25,6 +23,7 @@ public class UserService {
     private UserRepository userRepository;
     //    @Autowired
     private MsisdnRepository msisdnRepository;
+    protected static int technicalUserId = 8;
 
     public UserService(UserRepository userRepository, MsisdnRepository msisdnRepository) {
         this.userRepository = userRepository;
@@ -55,7 +54,7 @@ public class UserService {
     public void delete(int userId) {
         List<Msisdn> msisdnList = userRepository.getReferenceById(userId).getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
-            msisdnList.get(i).setUser(userRepository.getReferenceById(8));
+            msisdnList.get(i).setUser(userRepository.getReferenceById(technicalUserId));
             msisdnRepository.save(msisdnList.get(i));
         }
         userRepository.deleteById(userId);
@@ -69,18 +68,22 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public MsisdnDTO terminationContract(int msisdnId) {
-        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
-        msisdn.setUser(userRepository.getReferenceById(8));
-        Msisdn msisdnAutoSave = msisdnRepository.save(msisdn);
-        return ConversionDTO.transformToDTO(msisdnAutoSave);
-    }
-
-    public void msisdnRenewal(int oldUserId, int msisdnId, int newUserId) {
-        List<Msisdn> msisdnList = userRepository.getReferenceById(oldUserId).getMsisdns();
+    private Msisdn changeUser(int msisdnId, int newUserId) {
         Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
         msisdn.setUser(userRepository.getReferenceById(newUserId));
-        msisdnRepository.save(msisdn);
+        return msisdnRepository.save(msisdn);
+    }
+
+    public MsisdnDTO terminationContract(int msisdnId) {
+        return ConversionDTO.transformToDTO(changeUser(msisdnId, technicalUserId));
+    }
+
+    public void msisdnRenewal(int oldUserId, int msisdnId, int newUserId) throws FaultException {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        if (msisdn.getUser().getId() != oldUserId) {
+            throw new FaultException(1000, "User doesnt own the msisdnId: " + msisdnId);
+        }
+        changeUser(msisdnId, newUserId);
     }
 
     public MsisdnDTO changeIcc(int msisdnId, String icc) {
@@ -96,6 +99,7 @@ public class UserService {
         Msisdn msisdnAutoSave = msisdnRepository.save(msisdn);
         return ConversionDTO.transformToDTO(msisdnAutoSave);
     }
+
     public MsisdnDTO changeMsisdn(int userId, int oldMsisdnId, int newMsisdnId) throws FaultException {
         Msisdn oldMsisdn = msisdnRepository.getReferenceById(oldMsisdnId);
         Msisdn msisdn = null;

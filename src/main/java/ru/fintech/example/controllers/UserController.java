@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @PutMapping("/renewal")
-    public void msisdnRenewal(@RequestBody Renewal renewal) {
+    public void msisdnRenewal(@RequestBody Renewal renewal) throws FaultException {
         userService.msisdnRenewal(renewal.getOldUserId(),
                 renewal.getMsisdnId(), renewal.getNewUserId());
     }
