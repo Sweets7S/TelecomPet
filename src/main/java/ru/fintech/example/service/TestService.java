@@ -3,6 +3,7 @@ package ru.fintech.example.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.TestDTO;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.TestEntity;
 import ru.fintech.example.repository.TestRepository;
 import ru.fintech.example.utils.ConversionDTO;
@@ -28,8 +29,9 @@ public class TestService {
     }
 
 
-    public TestDTO get(int testId) {
+    public TestDTO get(int testId) throws Exception {
         TestEntity testEntity = testRepository.getReferenceById(testId);
+        if(testId == 1) throw new FaultException(123, "Пользователя с таким Id не существует");
         return ConversionDTO.transformToDTO(testEntity);
     }
 
