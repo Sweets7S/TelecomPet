@@ -24,20 +24,20 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public UserDTO create(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
         log.info("Coming request {}", userDTO);
-        return userService.create(userDTO);
+        return ResponseEntity.ok(userService.create(userDTO));
     }
 
     @GetMapping("/{userId}")
-    public UserDTO get(@PathVariable("userId") int userId) {
+    public ResponseEntity<UserDTO> get(@PathVariable("userId") int userId) {
         log.info("Coming id - {}", userId);
-        return userService.get(userId);
+        return ResponseEntity.ok(userService.get(userId));
     }
 
     @GetMapping("")
-    public List<UserDTO> getAll() {
-        return userService.getAll();
+    public ResponseEntity<List<UserDTO>> getAll() {
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @PutMapping("/update")
@@ -53,8 +53,8 @@ public class UserController {
     }
 
     @PutMapping("/{msisdnId}/termination")
-    public MsisdnDTO terminationContract(@PathVariable("msisdnId") int msisdnId) {
-        return userService.terminationContract(msisdnId);
+    public ResponseEntity<MsisdnDTO> terminationContract(@PathVariable("msisdnId") int msisdnId) {
+        return ResponseEntity.ok(userService.terminationContract(msisdnId));
     }
 
     @PutMapping("/renewal")
@@ -64,8 +64,8 @@ public class UserController {
     }
 
     @PatchMapping("/{msisdnId}/change/icc")
-    public MsisdnDTO changeIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String icc) {
-        return userService.changeIcc(msisdnId, icc);
+    public ResponseEntity<MsisdnDTO> changeIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String icc) {
+        return ResponseEntity.ok(userService.changeIcc(msisdnId, icc));
     }
 
     @PostMapping("/add/msisdn")
@@ -81,9 +81,9 @@ public class UserController {
     }
 
     @PutMapping("/change/passport")
-    public UserDTO changePassport(@RequestBody UpdatePassport updatePassport) {
-        return userService.changePassport(updatePassport.getUserId(),
-                updatePassport.getDocument(), updatePassport.getFio());
+    public ResponseEntity<UserDTO> changePassport(@RequestBody UpdatePassport updatePassport) {
+        return ResponseEntity.ok(userService.changePassport(updatePassport.getUserId(),
+                updatePassport.getDocument(), updatePassport.getFio()));
     }
 
     @PatchMapping("/{userId}/change/password")
@@ -92,9 +92,9 @@ public class UserController {
     }
 
     @PostMapping("/{msisdnId}/contract")
-    public UserDTO contractWithMsisdn(@RequestBody UserDTO userDTO,
+    public ResponseEntity<UserDTO> contractWithMsisdn(@RequestBody UserDTO userDTO,
                                       @PathVariable("msisdnId") int msisdnId) {
-        return userService.contractWithMsisdn(userDTO, msisdnId);
+        return ResponseEntity.ok(userService.contractWithMsisdn(userDTO, msisdnId));
     }
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
