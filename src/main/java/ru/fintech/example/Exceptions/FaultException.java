@@ -1,10 +1,10 @@
 package ru.fintech.example.Exceptions;
 
-public class TestException extends Exception{
+public class FaultException extends Exception{
 
     private long faultCode;
 
-    public TestException(long faultCode, String message) {
+    public FaultException(long faultCode, String message) {
         super(message);
         this.faultCode = faultCode;
     }

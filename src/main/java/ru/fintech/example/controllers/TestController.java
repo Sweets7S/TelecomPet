@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.TestDTO;
-import ru.fintech.example.Exceptions.TestException;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.service.TestService;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public class TestController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(TestException e){
+    public ResponseEntity<String> handleException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
     }
 //    @DeleteMapping("") // RequestParam = QueryParam
