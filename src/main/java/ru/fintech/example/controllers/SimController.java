@@ -22,7 +22,7 @@ public class SimController {
 
     @PostMapping("/add")
     public ResponseEntity<List<SimDTO>> addSimToVacant(@RequestBody List<SimDTO> simDTOS) throws FaultException {
-        return ResponseEntity.ok(simService.addMsisdnsToVacant(simDTOS));
+        return ResponseEntity.ok(simService.addSimsToVacant(simDTOS));
     }
     @GetMapping("/get")
     public ResponseEntity<List<SimDTO>> getAllAvailibleSims() {

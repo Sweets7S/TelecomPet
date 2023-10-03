@@ -31,7 +31,7 @@ public class SimService {
     }
 
     //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
-    public List<SimDTO> addMsisdnsToVacant(List<SimDTO> simDTOS) throws FaultException {
+    public List<SimDTO> addSimsToVacant(List<SimDTO> simDTOS) throws FaultException {
         List<Sim> sims = ConversionDTO.transformToEntities(simDTOS,
                 userRepository.getReferenceById(technicalId));
         List<Sim> msisdnsResult = new ArrayList<>();

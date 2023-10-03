@@ -78,7 +78,7 @@ public class UserController {
     public ResponseEntity<SimDTO> msisdnChange(@PathVariable("userId") int userId,
                                                @RequestParam(value = "oldSimId") int oldSimId,
                                                @RequestParam(value = "newSimId") int newSimId) throws FaultException {
-        return ResponseEntity.ok(userService.changeSim(userId, oldSimId, newSimId));
+        return ResponseEntity.ok(userService.changeMsisdn(userId, oldSimId, newSimId));
     }
 
     @PutMapping("/change/passport")

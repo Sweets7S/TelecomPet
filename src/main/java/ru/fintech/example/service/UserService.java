@@ -107,7 +107,7 @@ public class UserService {
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 
-    public SimDTO changeSim(int userId, int oldSimId, int newSimId) throws FaultException {
+    public SimDTO changeMsisdn(int userId, int oldSimId, int newSimId) throws FaultException {
         Sim oldSim = simRepository.getReferenceById(oldSimId);
         Sim sim = null;
         if (oldSim.getUser().getId() == userId) {
