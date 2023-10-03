@@ -1,6 +1,5 @@
 package ru.fintech.example.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.MsisdnDTO;
@@ -23,7 +22,7 @@ public class UserService {
     private UserRepository userRepository;
     //    @Autowired
     private MsisdnRepository msisdnRepository;
-    protected static int technicalUserId = 8;
+    protected static int technicalId = 8;
 
     public UserService(UserRepository userRepository, MsisdnRepository msisdnRepository) {
         this.userRepository = userRepository;
@@ -54,7 +53,7 @@ public class UserService {
     public void delete(int userId) {
         List<Msisdn> msisdnList = userRepository.getReferenceById(userId).getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
-            msisdnList.get(i).setUser(userRepository.getReferenceById(technicalUserId));
+            msisdnList.get(i).setUser(userRepository.getReferenceById(technicalId));
             msisdnRepository.save(msisdnList.get(i));
         }
         userRepository.deleteById(userId);
@@ -75,7 +74,7 @@ public class UserService {
     }
 
     public MsisdnDTO terminationContract(int msisdnId) {
-        return ConversionDTO.transformToDTO(changeUser(msisdnId, technicalUserId));
+        return ConversionDTO.transformToDTO(changeUser(msisdnId, technicalId));
     }
 
     public void msisdnRenewal(int oldUserId, int msisdnId, int newUserId) throws FaultException {
@@ -98,7 +97,7 @@ public class UserService {
 
     public MsisdnDTO addMsisdnToUser(int newUserId, int msisdnId) throws FaultException {
         Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
-        if (msisdn.getUser().getId() != technicalUserId) {
+        if (msisdn.getUser().getId() != technicalId) {
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + msisdnId);
         }
         msisdn.setUser(userRepository.getReferenceById(newUserId));

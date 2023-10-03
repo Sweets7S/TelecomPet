@@ -1,12 +1,8 @@
 package ru.fintech.example.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.fintech.example.DTO.MsisdnDTO;
-import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.User;
@@ -17,7 +13,7 @@ import ru.fintech.example.utils.ConversionDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.fintech.example.service.UserService.technicalUserId;
+import static ru.fintech.example.service.UserService.technicalId;
 
 @Slf4j
 @Service
@@ -34,7 +30,7 @@ public class MsisdnService {
     //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
     public List<MsisdnDTO> addMsisdnsToVacant(List<MsisdnDTO> msisdnDTOS) throws FaultException {
         List<Msisdn> msisdns = ConversionDTO.transformToEntities(msisdnDTOS,
-                userRepository.getReferenceById(technicalUserId));
+                userRepository.getReferenceById(technicalId));
         List<Msisdn> msisdnsResult = new ArrayList<>();
         for (int i = 0; i < msisdns.size(); i++) {
             try {
@@ -49,7 +45,7 @@ public class MsisdnService {
 
     public List<MsisdnDTO> getAllAvailivbleMsisdns() {
         List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
-        User vacant = userRepository.getReferenceById(technicalUserId);
+        User vacant = userRepository.getReferenceById(technicalId);
         List<Msisdn> msisdnList = vacant.getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
             log.info("Count " + i);

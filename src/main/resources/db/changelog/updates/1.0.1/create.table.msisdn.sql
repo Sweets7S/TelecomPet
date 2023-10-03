@@ -4,9 +4,9 @@ ALTER TABLE users DROP COLUMN IF EXISTS number;
 ALTER TABLE users DROP COLUMN IF EXISTS icc;
 ALTER TABLE users ADD PRIMARY KEY (id);
 
-CREATE TABLE msisdn
+CREATE TABLE sim
 (
-    msisdn_id        integer         GENERATED ALWAYS AS IDENTITY,
+    sim_id           integer         GENERATED ALWAYS AS IDENTITY,
     user_id          integer         NOT NULL,
     msisdn           text            NOT NULL,
     icc              text            NOT NULL,
@@ -16,5 +16,5 @@ CREATE TABLE msisdn
     constraint icc_unique UNIQUE (icc)
 );
 
-create index ui_msisdns_msisdn on msisdn (msisdn);
-create index ui_msisdns_icc on msisdn (icc);
+create index ui_msisdns_msisdn on sim (msisdn);
+create index ui_msisdns_icc on sim (icc);
