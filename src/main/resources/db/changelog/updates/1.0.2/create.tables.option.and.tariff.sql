@@ -6,6 +6,8 @@ CREATE TABLE tariff
     package_voice    integer         NOT NULL,
     package_data     integer         NOT NULL,
     package_sms      integer         NOT NULL,
+    speed_max        integer         NOT NULL,
+    package_voice_country integer    NOT NULL,
     ACTIVE           BOOLEAN         default true,
     constraint tariff_name_unique UNIQUE (name)
 );
