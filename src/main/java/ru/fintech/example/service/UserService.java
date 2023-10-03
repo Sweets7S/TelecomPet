@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.PassportData;
@@ -96,24 +97,27 @@ public class UserService {
         ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
     }
 
-    public MsisdnDTO addOneMoreNumber(int UserId, int msisdnId) {
+    public MsisdnDTO addOneMoreNumber(int userId, int msisdnId) throws FaultException {
         MsisdnDTO msisdnDTO = new MsisdnDTO();
         Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
         if (technical == msisdn.getUser().getId()) {
-            msisdn.setUser(userRepository.getReferenceById(UserId));
+            msisdn.setUser(userRepository.getReferenceById(userId));
             msisdnDTO = ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
         } else {
-            log.info("Number is already used, UserId - {}", msisdn.getUser().getId());
+            log.info("Number is already used, userId - {}", msisdn.getUser().getId());
+            throw new FaultException(1001, "Номер уже используется другим пользователем: msisdnId - " + msisdnId);
         }
         return msisdnDTO;
     }
 
-    public MsisdnDTO reRegestrationContract(int oldUserId, int newUserId, int msisdnId) {
+    public MsisdnDTO reRegestrationContract(int oldUserId, int newUserId, int msisdnId) throws FaultException {
         MsisdnDTO msisdnDTO = new MsisdnDTO();
         Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
         if (oldUserId == msisdn.getUser().getId()) {
             msisdn.setUser(userRepository.getReferenceById(newUserId));
             msisdnDTO = ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+        } else {
+            throw new FaultException(1000, "Старый пользователь не владеет номером: msisdnId - " + msisdnId);
         }
         return msisdnDTO;
     }

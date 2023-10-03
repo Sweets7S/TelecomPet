@@ -30,9 +30,9 @@ public class MsisdnService {
     public List<MsisdnDTO> createMsisdn(List<MsisdnDTO> msisdnDTOs) {
         List<MsisdnDTO> msisdnDTOList = new ArrayList<>();
         List<Msisdn> msisdnList = ConversionDTO.transformToEntities(msisdnDTOs, userRepository.getReferenceById(technical));
+        msisdnDTOList.clear();
         for (int i = 0; i < msisdnList.size(); i++) {
-            msisdnDTOList.add(ConversionDTO.transformToDTO(msisdnList.get(i)));
-            msisdnRepository.save(msisdnList.get(i));
+            msisdnDTOList.add(ConversionDTO.transformToDTO(msisdnRepository.save(msisdnList.get(i))));
             log.info("Count " + i);
         }
         return msisdnDTOList;

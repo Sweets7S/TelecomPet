@@ -1,9 +1,12 @@
 package ru.fintech.example.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.PassportData;
 import ru.fintech.example.service.UserService;
@@ -28,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/regestrationContract")
-    public UserDTO regestrationContract(@RequestBody UserDTO userDTO, @RequestParam(value = "msisdnId") int msisdnId) {
+    public UserDTO regestrationContract(@RequestBody UserDTO userDTO, @RequestParam(value = "msisdnId") int msisdnId) throws FaultException {
         UserDTO userDTO1 = userService.create(userDTO);
         userService.addOneMoreNumber(userDTO1.getId(), msisdnId);
         log.info("Coming request {}", userDTO);
@@ -36,12 +39,12 @@ public class UserController {
     }
 
     @PostMapping("/addOneMoreNumber")
-    public MsisdnDTO addAvailableNumber(@RequestParam(value = "UserId") int UserId, @RequestParam(value = "msisdnId") int msisdnId) {
-        return userService.addOneMoreNumber(UserId, msisdnId);
+    public MsisdnDTO addAvailableNumber(@RequestParam(value = "userId") int userId, @RequestParam(value = "msisdnId") int msisdnId) throws FaultException {
+        return userService.addOneMoreNumber(userId, msisdnId);
     }
 
     @PostMapping("/reRegestrationContract")
-    public MsisdnDTO reRegestrationContract(@RequestParam(value = "oldUserId") int oldUserId, @RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
+    public MsisdnDTO reRegestrationContract(@RequestParam(value = "oldUserId") int oldUserId, @RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) throws FaultException {
         return userService.reRegestrationContract(oldUserId, newUserId, msisdnId);
     }
 
@@ -91,5 +94,15 @@ public class UserController {
     @DeleteMapping("/deleteMsisdn/{msisdnId}")
     public void deleteMsisdn(@PathVariable("msisdnId") int msisdnId) {
         userService.deleteMsisdn(msisdnId);
+    }
+
+    @ExceptionHandler(FaultException.class)
+    public ResponseEntity<String> handleFaultException(FaultException e){
+        return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e){
+        return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 }
