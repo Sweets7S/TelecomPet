@@ -21,11 +21,11 @@ public class SimController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<List<SimDTO>> addMsisdnToVacant(@RequestBody List<SimDTO> simDTOS) throws FaultException {
+    public ResponseEntity<List<SimDTO>> addSimToVacant(@RequestBody List<SimDTO> simDTOS) throws FaultException {
         return ResponseEntity.ok(simService.addMsisdnsToVacant(simDTOS));
     }
     @GetMapping("/get")
-    public ResponseEntity<List<SimDTO>> getAllAvailibleMsisdns() {
+    public ResponseEntity<List<SimDTO>> getAllAvailibleSims() {
         return ResponseEntity.ok(simService.getAllAvailivbleMsisdns());
     }
     @ExceptionHandler(FaultException.class)

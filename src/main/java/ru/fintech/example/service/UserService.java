@@ -70,48 +70,48 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private Sim changeUser(int msisdnId, int newUserId) {
-        Sim sim = simRepository.getReferenceById(msisdnId);
+    private Sim changeUser(int simId, int newUserId) {
+        Sim sim = simRepository.getReferenceById(simId);
         sim.setUser(userRepository.getReferenceById(newUserId));
         return simRepository.save(sim);
     }
 
-    public SimDTO terminationContract(int msisdnId) {
-        return ConversionDTO.transformToDTO(changeUser(msisdnId, technicalId));
+    public SimDTO terminationContract(int simId) {
+        return ConversionDTO.transformToDTO(changeUser(simId, technicalId));
     }
 
-    public void msisdnRenewal(int oldUserId, int msisdnId, int newUserId) throws FaultException {
-        Sim sim = simRepository.getReferenceById(msisdnId);
+    public void simRenewal(int oldUserId, int simId, int newUserId) throws FaultException {
+        Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != oldUserId) {
-            throw new FaultException(1000, "User doesnt own the msisdnId: " + msisdnId);
+            throw new FaultException(1000, "User doesnt own the simId: " + simId);
         }
         if (!(simRepository.existsById(newUserId))){
             throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
         }
-        changeUser(msisdnId, newUserId);
+        changeUser(simId, newUserId);
     }
 
-    public SimDTO changeIcc(int msisdnId, String icc) {
-        Sim sim = simRepository.getReferenceById(msisdnId);
+    public SimDTO changeIcc(int simId, String icc) {
+        Sim sim = simRepository.getReferenceById(simId);
         sim.setIcc(icc);
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 
 
-    public SimDTO addMsisdnToUser(int newUserId, int msisdnId) throws FaultException {
-        Sim sim = simRepository.getReferenceById(msisdnId);
+    public SimDTO addSimToUser(int newUserId, int simId) throws FaultException {
+        Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != technicalId) {
-            throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + msisdnId);
+            throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);
         }
         sim.setUser(userRepository.getReferenceById(newUserId));
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 
-    public SimDTO changeMsisdn(int userId, int oldMsisdnId, int newMsisdnId) throws FaultException {
-        Sim oldSim = simRepository.getReferenceById(oldMsisdnId);
+    public SimDTO changeSim(int userId, int oldSimId, int newSimId) throws FaultException {
+        Sim oldSim = simRepository.getReferenceById(oldSimId);
         Sim sim = null;
         if (oldSim.getUser().getId() == userId) {
-            Sim newSim = simRepository.getReferenceById(newMsisdnId);
+            Sim newSim = simRepository.getReferenceById(newSimId);
             String oldMsisdnNum = oldSim.getMsisdn();
             String newMsisdnNum = newSim.getMsisdn();
             newSim.setMsisdn("55555");
@@ -120,7 +120,7 @@ public class UserService {
             sim = simRepository.save(oldSim);
             newSim.setMsisdn(oldMsisdnNum);
             simRepository.save(newSim);
-        } else throw new FaultException(1000, "User doesnt own the msisdnId: " + oldMsisdnId);
+        } else throw new FaultException(1000, "User doesnt own the msisdnId: " + oldSimId);
         return ConversionDTO.transformToDTO(sim);
     }
 
