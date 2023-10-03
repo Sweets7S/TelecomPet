@@ -11,6 +11,8 @@ import ru.fintech.example.utils.ConversionDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.fintech.example.service.UserService.technical;
+
 
 @Slf4j
 @Service
@@ -25,17 +27,20 @@ public class MsisdnService {
     }
     //Todo возвращать List DTO
 //    @Transactional // Если не все, то откатит до изначального состояния
-    public void createMsisdn(List<MsisdnDTO> msisdnDTOs) {
-        List<Msisdn> msisdnList = ConversionDTO.transformToEntities(msisdnDTOs, userRepository.getReferenceById(8));
+    public List<MsisdnDTO> createMsisdn(List<MsisdnDTO> msisdnDTOs) {
+        List<MsisdnDTO> msisdnDTOList = new ArrayList<>();
+        List<Msisdn> msisdnList = ConversionDTO.transformToEntities(msisdnDTOs, userRepository.getReferenceById(technical));
         for (int i = 0; i < msisdnList.size(); i++) {
+            msisdnDTOList.add(ConversionDTO.transformToDTO(msisdnList.get(i)));
             msisdnRepository.save(msisdnList.get(i));
             log.info("Count " + i);
         }
+        return msisdnDTOList;
     }
 
     public List<MsisdnDTO> getAvailableMsisdns() {
         List<MsisdnDTO> msisdnDTOList = new ArrayList<>();
-        List<Msisdn> msisdnList = userRepository.getReferenceById(8).getMsisdns();
+        List<Msisdn> msisdnList = userRepository.getReferenceById(technical).getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
             log.info("Count " + i);
             msisdnDTOList.add(ConversionDTO.transformToDTO(msisdnList.get(i)));

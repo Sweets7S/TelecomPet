@@ -19,6 +19,7 @@ import java.util.List;
 @Service
 public class UserService {
 
+    protected static int technical = 8;
     private UserRepository userRepository;
     //    @Autowired
     private MsisdnRepository msisdnRepository;
@@ -52,7 +53,7 @@ public class UserService {
     public void delete(int userId) {
         List<Msisdn> msisdnList = userRepository.getReferenceById(userId).getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
-            msisdnList.get(i).setUser(userRepository.getReferenceById(8));
+            msisdnList.get(i).setUser(userRepository.getReferenceById(technical));
             msisdnRepository.save(msisdnList.get(i));
         }
         userRepository.deleteById(userId);
@@ -78,8 +79,7 @@ public class UserService {
         log.info(passportData.toString());
         user.setFio(passportData.getFio());
         user.setDocument(passportData.getDocument());
-        User userAfterSave = userRepository.save(user);
-        userRepository.save(userAfterSave);
+        userRepository.save(user);
     }
 
     public void updateIcc(int msisdnId, String msisdnIcc) {
@@ -96,11 +96,11 @@ public class UserService {
         ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
     }
 
-    public MsisdnDTO addAvailableNumber(int newUserId, int msisdnId) {
+    public MsisdnDTO addOneMoreNumber(int UserId, int msisdnId) {
         MsisdnDTO msisdnDTO = new MsisdnDTO();
         Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
-        if (8 == msisdn.getUser().getId()) {
-            msisdn.setUser(userRepository.getReferenceById(newUserId));
+        if (technical == msisdn.getUser().getId()) {
+            msisdn.setUser(userRepository.getReferenceById(UserId));
             msisdnDTO = ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
         } else {
             log.info("Number is already used, UserId - {}", msisdn.getUser().getId());
@@ -108,7 +108,7 @@ public class UserService {
         return msisdnDTO;
     }
 
-    public MsisdnDTO renuvalNumberToUser(int oldUserId, int newUserId, int msisdnId) {
+    public MsisdnDTO reRegestrationContract(int oldUserId, int newUserId, int msisdnId) {
         MsisdnDTO msisdnDTO = new MsisdnDTO();
         Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
         if (oldUserId == msisdn.getUser().getId()) {
@@ -119,11 +119,8 @@ public class UserService {
     }
 
     public void deleteMsisdn(int msisdnId) {
-        List<Msisdn> msisdnList = msisdnRepository.getReferenceById(msisdnId).getUser().getMsisdns();
-        for (int i = 0; i < msisdnList.size(); i++) {
-            msisdnList.get(i).setUser(userRepository.getReferenceById(8));
-            msisdnRepository.save(msisdnList.get(i));
-        }
-        userRepository.deleteById(msisdnId);
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        msisdn.setUser(userRepository.getReferenceById(technical));
+        msisdnRepository.save(msisdn);
     }
 }

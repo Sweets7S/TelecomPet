@@ -1,11 +1,9 @@
 package ru.fintech.example.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
-import ru.fintech.example.models.Msisdn;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.PassportData;
 import ru.fintech.example.service.UserService;
@@ -29,22 +27,22 @@ public class UserController {
         return userService.create(userDTO);
     }
 
-    @PostMapping("/addWithSim")
-    public UserDTO addWithSim(@RequestBody UserDTO userDTO, @RequestParam(value = "msisdnId") int msisdnId) {
+    @PostMapping("/regestrationContract")
+    public UserDTO regestrationContract(@RequestBody UserDTO userDTO, @RequestParam(value = "msisdnId") int msisdnId) {
         UserDTO userDTO1 = userService.create(userDTO);
-        userService.addAvailableNumber(userDTO1.getId(), msisdnId);
+        userService.addOneMoreNumber(userDTO1.getId(), msisdnId);
         log.info("Coming request {}", userDTO);
         return userService.get(userDTO1.getId());
     }
 
-    @PostMapping("/addAvailableNumber")
-    public MsisdnDTO addAvailableNumber(@RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
-        return userService.addAvailableNumber(newUserId, msisdnId);
+    @PostMapping("/addOneMoreNumber")
+    public MsisdnDTO addAvailableNumber(@RequestParam(value = "UserId") int UserId, @RequestParam(value = "msisdnId") int msisdnId) {
+        return userService.addOneMoreNumber(UserId, msisdnId);
     }
 
-    @PostMapping("/renuvalNumberToUser")
-    public MsisdnDTO renuvalNumberToUser(@RequestParam(value = "oldUserId") int oldUserId, @RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
-        return userService.renuvalNumberToUser(oldUserId, newUserId, msisdnId);
+    @PostMapping("/reRegestrationContract")
+    public MsisdnDTO reRegestrationContract(@RequestParam(value = "oldUserId") int oldUserId, @RequestParam(value = "newUserId") int newUserId, @RequestParam(value = "msisdnId") int msisdnId) {
+        return userService.reRegestrationContract(oldUserId, newUserId, msisdnId);
     }
 
     @GetMapping("/{userId}")

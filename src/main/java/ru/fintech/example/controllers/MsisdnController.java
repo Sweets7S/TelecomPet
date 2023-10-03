@@ -19,9 +19,9 @@ public class MsisdnController {
     }
 
     @PostMapping("/add")
-    public void create(@RequestBody List<MsisdnDTO> msisdnDTOs) {
+    public List<MsisdnDTO> create(@RequestBody List<MsisdnDTO> msisdnDTOs) {
         log.info("Coming request {}", msisdnDTOs);
-        msisdnService.createMsisdn(msisdnDTOs);
+        return msisdnService.createMsisdn(msisdnDTOs);
     }
 
     @GetMapping("/get")
