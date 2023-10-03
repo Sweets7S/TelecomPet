@@ -4,29 +4,29 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fintech.example.DTO.MsisdnDTO;
+import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.Exceptions.FaultException;
-import ru.fintech.example.service.MsisdnService;
+import ru.fintech.example.service.SimService;
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/msisdn")
-public class MsisdnController {
+@RequestMapping("/sim")
+public class SimController {
 
-    private MsisdnService msisdnService;
+    private SimService simService;
 
-    public MsisdnController(MsisdnService msisdnService) {
-        this.msisdnService = msisdnService;
+    public SimController(SimService simService) {
+        this.simService = simService;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<List<MsisdnDTO>> addMsisdnToVacant(@RequestBody List<MsisdnDTO> msisdnDTOS) throws FaultException {
-        return ResponseEntity.ok(msisdnService.addMsisdnsToVacant(msisdnDTOS));
+    public ResponseEntity<List<SimDTO>> addMsisdnToVacant(@RequestBody List<SimDTO> simDTOS) throws FaultException {
+        return ResponseEntity.ok(simService.addMsisdnsToVacant(simDTOS));
     }
     @GetMapping("/get")
-    public ResponseEntity<List<MsisdnDTO>> getAllAvailibleMsisdns() {
-        return ResponseEntity.ok(msisdnService.getAllAvailivbleMsisdns());
+    public ResponseEntity<List<SimDTO>> getAllAvailibleMsisdns() {
+        return ResponseEntity.ok(simService.getAllAvailivbleMsisdns());
     }
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){

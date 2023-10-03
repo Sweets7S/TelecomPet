@@ -12,7 +12,7 @@ public class UserDTO {
     private String fio;
     private String document;
     private boolean active;
-    private List<MsisdnDTO> msisdnDTOS;
+    private List<SimDTO> simDTOS;
 
     public int getId() {
         return id;
@@ -62,11 +62,11 @@ public class UserDTO {
         this.active = active;
     }
 
-    public List<MsisdnDTO> getMsisdnDTOS() {
-        return msisdnDTOS;
+    public List<SimDTO> getSimDTOS() {
+        return simDTOS;
     }
 
-    public void setMsisdnDTOS(List<MsisdnDTO> msisdnDTOS) {
-        this.msisdnDTOS = msisdnDTOS;
+    public void setSimDTOS(List<SimDTO> simDTOS) {
+        this.simDTOS = simDTOS;
     }
 }
