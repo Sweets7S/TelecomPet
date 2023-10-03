@@ -2,16 +2,15 @@ package ru.fintech.example.models;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
-@Table(name = "msisdn")
+@Table(name = "sim")
 @NoArgsConstructor
-public class Msisdn {
+public class Sim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "msisdn_id")
-    private int msisdnId;
+    @Column(name = "sim_id")
+    private int simId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -26,12 +25,20 @@ public class Msisdn {
     @Column(name = "active")
     private boolean active;
 
-    public int getMsisdnId() {
-        return msisdnId;
+    @ManyToOne
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
+
+    @ManyToOne
+    @JoinColumn(name = "option_id")
+    private Option option;
+
+    public int getSimId() {
+        return simId;
     }
 
-    public void setMsisdnId(int msisdnId) {
-        this.msisdnId = msisdnId;
+    public void setSimId(int simId) {
+        this.simId = simId;
     }
 
     public User getUser() {
@@ -69,7 +76,7 @@ public class Msisdn {
     @Override
     public String toString() {
         return "Msisdn{" +
-                "msisdnId=" + msisdnId +
+                "msisdnId=" + simId +
                 ", userId=" + user.getId() +
                 ", msisdn='" + msisdn + '\'' +
                 ", icc='" + icc + '\'' +

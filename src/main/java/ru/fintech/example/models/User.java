@@ -31,7 +31,7 @@ public class User {
     private boolean active;
 
     @OneToMany(mappedBy = "user")
-    private List<Msisdn> msisdns;
+    private List<Sim> sims;
 
     public int getId() {
         return id;
@@ -81,11 +81,11 @@ public class User {
         this.active = active;
     }
 
-    public List<Msisdn> getMsisdns() {
-        return msisdns;
+    public List<Sim> getSims() {
+        return sims;
     }
 
-    public void setMsisdns(List<Msisdn> msisdns) {
-        this.msisdns = msisdns;
+    public void setSims(List<Sim> sims) {
+        this.sims = sims;
     }
 }

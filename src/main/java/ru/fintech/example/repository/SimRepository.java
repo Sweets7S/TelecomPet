@@ -2,8 +2,8 @@ package ru.fintech.example.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.fintech.example.models.Msisdn;
+import ru.fintech.example.models.Sim;
 
 @Repository
-public interface MsisdnRepository extends JpaRepository<Msisdn, Integer> {
+public interface SimRepository extends JpaRepository<Sim, Integer> {
 }

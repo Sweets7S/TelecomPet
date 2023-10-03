@@ -1,10 +1,10 @@
 package ru.fintech.example.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.fintech.example.DTO.MsisdnDTO;
+import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.DTO.TestDTO;
 import ru.fintech.example.DTO.UserDTO;
-import ru.fintech.example.models.Msisdn;
+import ru.fintech.example.models.Sim;
 import ru.fintech.example.models.TestEntity;
 import ru.fintech.example.models.User;
 
@@ -62,46 +62,46 @@ public class ConversionDTO {
         userDTO.setFio(user.getFio());
         userDTO.setDocument(user.getDocument());
         userDTO.setActive(user.isActive());
-        userDTO.setMsisdnDTOS(transformToDTOs(user.getMsisdns()));
+        userDTO.setSimDTOS(transformToDTOs(user.getSims()));
         return userDTO;
     }
 
-    public static List<MsisdnDTO> transformToDTOs(List<Msisdn> msisdn) {
-        List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
-        if (msisdn != null) {
-            for (int i = 0; i < msisdn.size(); i++) {
-                msisdnDTOS.add(transformToDTO(msisdn.get(i)));
+    public static List<SimDTO> transformToDTOs(List<Sim> sim) {
+        List<SimDTO> simDTOS = new ArrayList<>();
+        if (sim != null) {
+            for (int i = 0; i < sim.size(); i++) {
+                simDTOS.add(transformToDTO(sim.get(i)));
             }
         }
-        return msisdnDTOS;
+        return simDTOS;
     }
-    public static List<Msisdn> transformToEntities(List<MsisdnDTO> msisdnDTOS, User user) {
-        List<Msisdn> msisdns = new ArrayList<>();
-        if (msisdnDTOS != null) {
-            for (int i = 0; i < msisdnDTOS.size(); i++) {
-                msisdns.add(transformToEntity(msisdnDTOS.get(i), user));
+    public static List<Sim> transformToEntities(List<SimDTO> simDTOS, User user) {
+        List<Sim> sims = new ArrayList<>();
+        if (simDTOS != null) {
+            for (int i = 0; i < simDTOS.size(); i++) {
+                sims.add(transformToEntity(simDTOS.get(i), user));
             }
         }
-        return msisdns;
+        return sims;
     }
 
-    public static MsisdnDTO transformToDTO(Msisdn msisdn) {
-        MsisdnDTO msisdnDTO = new MsisdnDTO();
-        msisdnDTO.setUserId(msisdn.getUser().getId());
-        msisdnDTO.setMsisdnId(msisdn.getMsisdnId());
-        msisdnDTO.setIcc(msisdn.getIcc());
-        msisdnDTO.setActive(msisdn.isActive());
-        msisdnDTO.setMsisdn(msisdn.getMsisdn());
-        return msisdnDTO;
+    public static SimDTO transformToDTO(Sim sim) {
+        SimDTO simDTO = new SimDTO();
+        simDTO.setUserId(sim.getUser().getId());
+        simDTO.setSimId(sim.getSimId());
+        simDTO.setIcc(sim.getIcc());
+        simDTO.setActive(sim.isActive());
+        simDTO.setMsisdn(sim.getMsisdn());
+        return simDTO;
     }
 
-    public static Msisdn transformToEntity(MsisdnDTO msisdnDTO, User user) {
-        Msisdn msisdn = new Msisdn();
-        msisdn.setMsisdn(msisdnDTO.getMsisdn());
-        msisdn.setIcc(msisdnDTO.getIcc());
-        msisdn.setUser(user);
-        msisdn.setActive(msisdnDTO.isActive());
-        msisdn.setMsisdnId(msisdnDTO.getMsisdnId());
-        return msisdn;
+    public static Sim transformToEntity(SimDTO simDTO, User user) {
+        Sim sim = new Sim();
+        sim.setMsisdn(simDTO.getMsisdn());
+        sim.setIcc(simDTO.getIcc());
+        sim.setUser(user);
+        sim.setActive(simDTO.isActive());
+        sim.setSimId(simDTO.getSimId());
+        return sim;
     }
 }

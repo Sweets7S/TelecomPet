@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fintech.example.DTO.MsisdnDTO;
+import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.*;
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping("/{msisdnId}/termination")
-    public ResponseEntity<MsisdnDTO> terminationContract(@PathVariable("msisdnId") int msisdnId) {
+    public ResponseEntity<SimDTO> terminationContract(@PathVariable("msisdnId") int msisdnId) {
         return ResponseEntity.ok(userService.terminationContract(msisdnId));
     }
 
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PatchMapping("/{msisdnId}/change/icc")
-    public ResponseEntity<MsisdnDTO> changeIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String icc) {
+    public ResponseEntity<SimDTO> changeIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String icc) {
         return ResponseEntity.ok(userService.changeIcc(msisdnId, icc));
     }
 
@@ -75,9 +75,9 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}/change/msisdn")
-    public ResponseEntity<MsisdnDTO> msisdnChange(@PathVariable("userId") int userId,
-                                  @RequestParam(value = "oldMsisdnId") int oldMsisdnId,
-                                  @RequestParam(value = "newMsisdnId") int newMsisdnId) throws FaultException {
+    public ResponseEntity<SimDTO> msisdnChange(@PathVariable("userId") int userId,
+                                               @RequestParam(value = "oldMsisdnId") int oldMsisdnId,
+                                               @RequestParam(value = "newMsisdnId") int newMsisdnId) throws FaultException {
         return ResponseEntity.ok(userService.changeMsisdn(userId, oldMsisdnId, newMsisdnId));
     }
 
