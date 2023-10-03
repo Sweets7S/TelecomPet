@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 public class ConversionDTO {
 
-    public static TestEntity transformToEntity(TestDTO testDTO){
+    public static TestEntity transformToEntity(TestDTO testDTO) {
         TestEntity testEntity = new TestEntity();
         testEntity.setName(testDTO.getName());
         testEntity.setAge(testDTO.getAge());
@@ -22,7 +22,7 @@ public class ConversionDTO {
         return testEntity;
     }
 
-    public static TestDTO transformToDTO(TestEntity testEntity){
+    public static TestDTO transformToDTO(TestEntity testEntity) {
         TestDTO testDTO = new TestDTO();
         testDTO.setId(testEntity.getId());
         testDTO.setName(testEntity.getName());
@@ -31,7 +31,7 @@ public class ConversionDTO {
         return testDTO;
     }
 
-    public static User transformToEntity(UserDTO userDTO){
+    public static User transformToEntity(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setPassword(userDTO.getPassword());
@@ -65,24 +65,43 @@ public class ConversionDTO {
         userDTO.setMsisdnDTOS(transformToDTOs(user.getMsisdns()));
         return userDTO;
     }
-    public static List<MsisdnDTO> transformToDTOs(List<Msisdn> msisdn){
+
+    public static List<MsisdnDTO> transformToDTOs(List<Msisdn> msisdn) {
         List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
         if (msisdn != null) {
             for (int i = 0; i < msisdn.size(); i++) {
-                MsisdnDTO msisdnDTO = new MsisdnDTO();
-//                        .msisdnId(msisdn.get(i).getMsisdnId())
-//                        .userId(msisdn.get(i).getUser().getId())
-//                        .msisdn(msisdn.get(i).getMsisdn())
-//                        .icc(msisdn.get(i).getIcc())
-//                        .active(msisdn.get(i).isActive());
-                msisdnDTO.setMsisdnId(msisdn.get(i).getMsisdnId());
-                msisdnDTO.setUserId(msisdn.get(i).getUser().getId());
-                msisdnDTO.setMsisdn(msisdn.get(i).getMsisdn());
-                msisdnDTO.setIcc(msisdn.get(i).getIcc());
-                msisdnDTO.setActive(msisdn.get(i).isActive());
-                msisdnDTOS.add(msisdnDTO);
+                msisdnDTOS.add(transformToDTO(msisdn.get(i)));
             }
         }
         return msisdnDTOS;
+    }
+    public static List<Msisdn> transformToEntities(List<MsisdnDTO> msisdnDTOS, User user) {
+        List<Msisdn> msisdns = new ArrayList<>();
+        if (msisdnDTOS != null) {
+            for (int i = 0; i < msisdnDTOS.size(); i++) {
+                msisdns.add(transformToEntity(msisdnDTOS.get(i), user));
+            }
+        }
+        return msisdns;
+    }
+
+    public static MsisdnDTO transformToDTO(Msisdn msisdn) {
+        MsisdnDTO msisdnDTO = new MsisdnDTO();
+        msisdnDTO.setUserId(msisdn.getUser().getId());
+        msisdnDTO.setMsisdnId(msisdn.getMsisdnId());
+        msisdnDTO.setIcc(msisdn.getIcc());
+        msisdnDTO.setActive(msisdn.isActive());
+        msisdnDTO.setMsisdn(msisdn.getMsisdn());
+        return msisdnDTO;
+    }
+
+    public static Msisdn transformToEntity(MsisdnDTO msisdnDTO, User user) {
+        Msisdn msisdn = new Msisdn();
+        msisdn.setMsisdn(msisdnDTO.getMsisdn());
+        msisdn.setIcc(msisdnDTO.getIcc());
+        msisdn.setUser(user);
+        msisdn.setActive(msisdnDTO.isActive());
+        msisdn.setMsisdnId(msisdnDTO.getMsisdnId());
+        return msisdn;
     }
 }

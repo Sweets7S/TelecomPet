@@ -1,11 +1,12 @@
 package ru.fintech.example.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.MsisdnDTO;
 import ru.fintech.example.DTO.UserDTO;
+import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Msisdn;
+import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.MsisdnRepository;
 import ru.fintech.example.repository.UserRepository;
@@ -19,26 +20,27 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
-//    @Autowired
+    //    @Autowired
     private MsisdnRepository msisdnRepository;
+    protected static int technicalId = 8;
 
-    public UserService(UserRepository userRepository, MsisdnRepository msisdnRepository){
+    public UserService(UserRepository userRepository, MsisdnRepository msisdnRepository) {
         this.userRepository = userRepository;
         this.msisdnRepository = msisdnRepository;
     }
 
-    public UserDTO create(UserDTO userDTO){
+    public UserDTO create(UserDTO userDTO) {
         User user = ConversionDTO.transformToEntity(userDTO);
         User userAfterSave = userRepository.save(user);
         return ConversionDTO.transformToDTO(userAfterSave);
     }
 
-    public UserDTO get(int userId){
+    public UserDTO get(int userId) {
         User user = userRepository.getReferenceById(userId);
         return ConversionDTO.transformToDTO(user);
     }
 
-    public List<UserDTO> getAll(){
+    public List<UserDTO> getAll() {
         List<UserDTO> userDTOList = new ArrayList<>();
         List<User> userList = userRepository.findAll();
         for (int i = 0; i < userList.size(); i++) {
@@ -48,23 +50,87 @@ public class UserService {
         return userDTOList;
     }
 
-    public void delete(int userId){
+    public void delete(int userId) {
         List<Msisdn> msisdnList = userRepository.getReferenceById(userId).getMsisdns();
         for (int i = 0; i < msisdnList.size(); i++) {
-            msisdnList.get(i).setUser(userRepository.getReferenceById(8));
+            msisdnList.get(i).setUser(userRepository.getReferenceById(technicalId));
             msisdnRepository.save(msisdnList.get(i));
         }
         userRepository.deleteById(userId);
     }
 
-    public UserDTO update(UserDTO userDTO){
-        User user = userRepository.getReferenceById(userDTO.getId());
-        user.setLogin(userDTO.getLogin());
-        user.setPassword(userDTO.getPassword());
-        user.setFio(userDTO.getFio());
-        user.setDocument(userDTO.getDocument());
-        user.setActive(userDTO.isActive());
+    public void update(UpdateUser updateUser) {
+        User user = userRepository.getReferenceById(updateUser.getId());
+        user.setLogin(updateUser.getLogin());
+        user.setActive(updateUser.isActive());
         log.info(user.toString());
+        userRepository.save(user);
+    }
+
+    private Msisdn changeUser(int msisdnId, int newUserId) {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        msisdn.setUser(userRepository.getReferenceById(newUserId));
+        return msisdnRepository.save(msisdn);
+    }
+
+    public MsisdnDTO terminationContract(int msisdnId) {
+        return ConversionDTO.transformToDTO(changeUser(msisdnId, technicalId));
+    }
+
+    public void msisdnRenewal(int oldUserId, int msisdnId, int newUserId) throws FaultException {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        if (msisdn.getUser().getId() != oldUserId) {
+            throw new FaultException(1000, "User doesnt own the msisdnId: " + msisdnId);
+        }
+        if (!(msisdnRepository.existsById(newUserId))){
+            throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
+        }
+        changeUser(msisdnId, newUserId);
+    }
+
+    public MsisdnDTO changeIcc(int msisdnId, String icc) {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        msisdn.setIcc(icc);
+        return ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+    }
+
+
+    public MsisdnDTO addMsisdnToUser(int newUserId, int msisdnId) throws FaultException {
+        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
+        if (msisdn.getUser().getId() != technicalId) {
+            throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + msisdnId);
+        }
+        msisdn.setUser(userRepository.getReferenceById(newUserId));
+        return ConversionDTO.transformToDTO(msisdnRepository.save(msisdn));
+    }
+
+    public MsisdnDTO changeMsisdn(int userId, int oldMsisdnId, int newMsisdnId) throws FaultException {
+        Msisdn oldMsisdn = msisdnRepository.getReferenceById(oldMsisdnId);
+        Msisdn msisdn = null;
+        if (oldMsisdn.getUser().getId() == userId) {
+            Msisdn newMsisdn = msisdnRepository.getReferenceById(newMsisdnId);
+            String oldMsisdnNum = oldMsisdn.getMsisdn();
+            String newMsisdnNum = newMsisdn.getMsisdn();
+            newMsisdn.setMsisdn("55555");
+            msisdnRepository.save(newMsisdn);
+            oldMsisdn.setMsisdn(newMsisdnNum);
+            msisdn = msisdnRepository.save(oldMsisdn);
+            newMsisdn.setMsisdn(oldMsisdnNum);
+            msisdnRepository.save(newMsisdn);
+        } else throw new FaultException(1000, "User doesnt own the msisdnId: " + oldMsisdnId);
+        return ConversionDTO.transformToDTO(msisdn);
+    }
+
+    public UserDTO changePassport(int userId, String document, String fio) {
+        User user = userRepository.getReferenceById(userId);
+        user.setDocument(document);
+        user.setFio(fio);
         return ConversionDTO.transformToDTO(userRepository.save(user));
+    }
+
+    public void changePassword(int userId, String password) {
+        User user = userRepository.getReferenceById(userId);
+        user.setPassword(password);
+        ConversionDTO.transformToDTO(userRepository.save(user));
     }
 }
