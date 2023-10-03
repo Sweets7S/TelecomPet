@@ -83,6 +83,9 @@ public class UserService {
         if (msisdn.getUser().getId() != oldUserId) {
             throw new FaultException(1000, "User doesnt own the msisdnId: " + msisdnId);
         }
+        if (!(msisdnRepository.existsById(newUserId))){
+            throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
+        }
         changeUser(msisdnId, newUserId);
     }
 
@@ -95,7 +98,7 @@ public class UserService {
 
     public MsisdnDTO addMsisdnToUser(int newUserId, int msisdnId) throws FaultException {
         Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
-        if (msisdn.getUser().getId() != technicalUserId){
+        if (msisdn.getUser().getId() != technicalUserId) {
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + msisdnId);
         }
         msisdn.setUser(userRepository.getReferenceById(newUserId));
@@ -131,22 +134,4 @@ public class UserService {
         user.setPassword(password);
         ConversionDTO.transformToDTO(userRepository.save(user));
     }
-
-//    public UserDTO contractWithMsisdn(UserDTO userDTO, int msisdnId) {
-//        User user = null;
-//        Msisdn msisdn = msisdnRepository.getReferenceById(msisdnId);
-//        try {
-//            user = userRepository.getReferenceById(userDTO.getId());
-//            log.info(user.toString()); // если User не найден в базе, бросит EntityNotFoundException
-//            msisdn.setUser(user);
-//        } catch (EntityNotFoundException e) {
-//            log.info("User with this id-{} not found", userDTO.getId());
-//            user = ConversionDTO.transformToEntity(userDTO);
-//            User userAfterSave = userRepository.save(user);
-//            user = userAfterSave;
-//            msisdn.setUser(user);
-//        }
-//        msisdnRepository.save(msisdn);
-//        return ConversionDTO.transformToDTO(user);
-//    }
 }
