@@ -9,8 +9,8 @@ public class SimDTO {
     private String msisdn;
     private String icc;
     private boolean active;
-    private int tariffId;
-    private int optionId;
+    private TariffDTO tariffDTO;
+    private OptionDTO optionDTO;
 
     public int getSimId() {
         return simId;
@@ -52,19 +52,19 @@ public class SimDTO {
         this.icc = icc;
     }
 
-    public int getTariffId() {
-        return tariffId;
+    public TariffDTO getTariffDTO() {
+        return tariffDTO;
     }
 
-    public void setTariffId(int tariffId) {
-        this.tariffId = tariffId;
+    public void setTariffDTO(TariffDTO tariffDTO) {
+        this.tariffDTO = tariffDTO;
     }
 
-    public int getOptionId() {
-        return optionId;
+    public OptionDTO getOptionDTO() {
+        return optionDTO;
     }
 
-    public void setOptionId(int optionId) {
-        this.optionId = optionId;
+    public void setOptionDTO(OptionDTO optionDTO) {
+        this.optionDTO = optionDTO;
     }
 }
