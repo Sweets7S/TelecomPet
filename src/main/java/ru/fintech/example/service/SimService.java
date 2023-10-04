@@ -21,7 +21,6 @@ import static ru.fintech.example.service.UserService.technicalId;
 @Service
 public class SimService {
     private UserRepository userRepository;
-    //    @Autowired
     private SimRepository simRepository;
     private TariffRepository tariffRepository;
     private OptionRepository optionRepository;
