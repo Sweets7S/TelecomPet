@@ -19,7 +19,7 @@ public class Renewal {
         this.oldUserId = oldUserId;
     }
 
-    public int getMsisdnId() {
+    public int getSimId() {
         return msisdnId;
     }
 

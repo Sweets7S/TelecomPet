@@ -52,33 +52,33 @@ public class UserController {
         userService.delete(userId);
     }
 
-    @PutMapping("/{msisdnId}/termination")
-    public ResponseEntity<SimDTO> terminationContract(@PathVariable("msisdnId") int msisdnId) {
-        return ResponseEntity.ok(userService.terminationContract(msisdnId));
+    @PutMapping("/{simId}/termination")
+    public ResponseEntity<SimDTO> terminationContract(@PathVariable("simId") int simId) {
+        return ResponseEntity.ok(userService.terminationContract(simId));
     }
 
     @PutMapping("/renewal")
-    public void msisdnRenewal(@RequestBody Renewal renewal) throws FaultException {
-        userService.msisdnRenewal(renewal.getOldUserId(),
-                renewal.getMsisdnId(), renewal.getNewUserId());
+    public void simRenewal(@RequestBody Renewal renewal) throws FaultException {
+        userService.simRenewal(renewal.getOldUserId(),
+                renewal.getSimId(), renewal.getNewUserId());
     }
 
-    @PatchMapping("/{msisdnId}/change/icc")
-    public ResponseEntity<SimDTO> changeIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String icc) {
-        return ResponseEntity.ok(userService.changeIcc(msisdnId, icc));
+    @PatchMapping("/{simId}/change/icc")
+    public ResponseEntity<SimDTO> changeIcc(@PathVariable("simId") int simId, @RequestParam(value = "icc") String icc) {
+        return ResponseEntity.ok(userService.changeIcc(simId, icc));
     }
 
     @PostMapping("/{newUserId}/add/msisdn")
     public void addMsisdnToUser(@PathVariable("newUserId") int newUserId,
-                                @RequestParam(value = "msisdnId") int msisdnId) throws FaultException {
-        userService.addMsisdnToUser(newUserId, msisdnId);
+                                @RequestParam(value = "simId") int simId) throws FaultException {
+        userService.addMsisdnToUser(newUserId, simId);
     }
 
     @PatchMapping("/{userId}/change/msisdn")
     public ResponseEntity<SimDTO> msisdnChange(@PathVariable("userId") int userId,
-                                               @RequestParam(value = "oldMsisdnId") int oldMsisdnId,
-                                               @RequestParam(value = "newMsisdnId") int newMsisdnId) throws FaultException {
-        return ResponseEntity.ok(userService.changeMsisdn(userId, oldMsisdnId, newMsisdnId));
+                                               @RequestParam(value = "oldSimId") int oldSimId,
+                                               @RequestParam(value = "newSimId") int newSimId) throws FaultException {
+        return ResponseEntity.ok(userService.changeMsisdn(userId, oldSimId, newSimId));
     }
 
     @PutMapping("/change/passport")
@@ -92,11 +92,11 @@ public class UserController {
         userService.changePassword(userId, password);
     }
 
-    @PostMapping("/{msisdnId}/contract")
-    public ResponseEntity<UserDTO> contractWithMsisdn(@RequestBody UserDTO userDTO,
-                                      @PathVariable("msisdnId") int msisdnId) throws FaultException {
+    @PostMapping("/{simId}/contract")
+    public ResponseEntity<UserDTO> contractWithSim(@RequestBody UserDTO userDTO,
+                                                   @PathVariable("simId") int simId) throws FaultException {
         UserDTO userDTO1 = userService.create(userDTO);
-        userService.addMsisdnToUser(userDTO1.getId(), msisdnId);
+        userService.addMsisdnToUser(userDTO1.getId(), simId);
         UserDTO user = userService.get(userDTO1.getId());
         log.info(user.toString());
         return ResponseEntity.ok(user);

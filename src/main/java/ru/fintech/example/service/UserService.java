@@ -22,7 +22,7 @@ public class UserService {
     private UserRepository userRepository;
     //    @Autowired
     private SimRepository simRepository;
-    protected static int technicalId = 8;
+    protected static int technicalId = 1;
 
     public UserService(UserRepository userRepository, SimRepository simRepository) {
         this.userRepository = userRepository;
@@ -73,23 +73,23 @@ public class UserService {
         return simRepository.save(sim);
     }
 
-    public SimDTO terminationContract(int msisdnId) {
-        return ConversionDTO.transformToDTO(changeUser(msisdnId, technicalId));
+    public SimDTO terminationContract(int simId) {
+        return ConversionDTO.transformToDTO(changeUser(simId, technicalId));
     }
 
-    public void msisdnRenewal(int oldUserId, int msisdnId, int newUserId) throws FaultException {
-        Sim sim = simRepository.getReferenceById(msisdnId);
+    public void simRenewal(int oldUserId, int simId, int newUserId) throws FaultException {
+        Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != oldUserId) {
-            throw new FaultException(1000, "User doesnt own the msisdnId: " + msisdnId);
+            throw new FaultException(1000, "User doesnt own the simId: " + simId);
         }
         if (!(simRepository.existsById(newUserId))){
             throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
         }
-        changeUser(msisdnId, newUserId);
+        changeUser(simId, newUserId);
     }
 
-    public SimDTO changeIcc(int msisdnId, String icc) {
-        Sim sim = simRepository.getReferenceById(msisdnId);
+    public SimDTO changeIcc(int simId, String icc) {
+        Sim sim = simRepository.getReferenceById(simId);
         sim.setIcc(icc);
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
@@ -104,11 +104,11 @@ public class UserService {
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 
-    public SimDTO changeMsisdn(int userId, int oldMsisdnId, int newMsisdnId) throws FaultException {
-        Sim oldSim = simRepository.getReferenceById(oldMsisdnId);
+    public SimDTO changeMsisdn(int userId, int oldSimId, int newSimId) throws FaultException {
+        Sim oldSim = simRepository.getReferenceById(oldSimId);
         Sim sim = null;
         if (oldSim.getUser().getId() == userId) {
-            Sim newSim = simRepository.getReferenceById(newMsisdnId);
+            Sim newSim = simRepository.getReferenceById(newSimId);
             String oldMsisdnNum = oldSim.getMsisdn();
             String newMsisdnNum = newSim.getMsisdn();
             newSim.setMsisdn("55555");
@@ -117,7 +117,7 @@ public class UserService {
             sim = simRepository.save(oldSim);
             newSim.setMsisdn(oldMsisdnNum);
             simRepository.save(newSim);
-        } else throw new FaultException(1000, "User doesnt own the msisdnId: " + oldMsisdnId);
+        } else throw new FaultException(1000, "User doesnt own the msisdnId: " + oldSimId);
         return ConversionDTO.transformToDTO(sim);
     }
 
