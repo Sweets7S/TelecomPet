@@ -1,12 +1,8 @@
 package ru.fintech.example.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.fintech.example.DTO.SimDTO;
-import ru.fintech.example.DTO.TestDTO;
-import ru.fintech.example.DTO.UserDTO;
-import ru.fintech.example.models.Sim;
-import ru.fintech.example.models.TestEntity;
-import ru.fintech.example.models.User;
+import ru.fintech.example.DTO.*;
+import ru.fintech.example.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,16 +88,73 @@ public class ConversionDTO {
         simDTO.setIcc(sim.getIcc());
         simDTO.setActive(sim.isActive());
         simDTO.setMsisdn(sim.getMsisdn());
+        simDTO.setTariffId(simDTO.getTariffId());
+        simDTO.setOptionId(simDTO.getOptionId());
         return simDTO;
     }
 
     public static Sim transformToEntity(SimDTO simDTO, User user) {
         Sim sim = new Sim();
+        sim.setSimId(simDTO.getSimId());
+        sim.setUser(user);
         sim.setMsisdn(simDTO.getMsisdn());
         sim.setIcc(simDTO.getIcc());
-        sim.setUser(user);
         sim.setActive(simDTO.isActive());
-        sim.setSimId(simDTO.getSimId());
         return sim;
+    }
+
+    public static TariffDTO transformToDTO(Tariff tariff) {
+        TariffDTO tariffDTO = new TariffDTO();
+        tariffDTO.setName(tariff.getName());
+        tariffDTO.setPricePerMonth(tariff.getPricePerMonth());
+        tariffDTO.setPackageVoice(tariff.getPackageVoice());
+        tariffDTO.setPackageData(tariff.getPackageData());
+        tariffDTO.setPackageSms(tariff.getPackageSms());
+        tariffDTO.setSpeedMax(tariff.getSpeedMax());
+        tariffDTO.setPackageVoiceCountry(tariff.getPackageVoiceCountry());
+        tariffDTO.setActive(tariff.isActive());
+        return tariffDTO;
+    }
+
+    public static Tariff transformToEntity(TariffDTO tariffDTO) {
+        Tariff tariff = new Tariff();
+        tariff.setTariffId(tariffDTO.getTariffId());
+        tariff.setName(tariffDTO.getName());
+        tariff.setName(tariffDTO.getName());
+        tariff.setPricePerMonth(tariffDTO.getPricePerMonth());
+        tariff.setPackageVoice(tariffDTO.getPackageVoice());
+        tariff.setPackageData(tariffDTO.getPackageData());
+        tariff.setPackageSms(tariffDTO.getPackageSms());
+        tariff.setSpeedMax(tariffDTO.getSpeedMax());
+        tariff.setPackageVoiceCountry(tariffDTO.getPackageVoiceCountry());
+        tariff.setActive(tariffDTO.isActive());
+        return tariff;
+    }
+
+    public static OptionDTO transformToDTO(Option option) {
+        OptionDTO optionDTO = new OptionDTO();
+        optionDTO.setName(option.getName());
+        optionDTO.setPricePerMonth(option.getPricePerMonth());
+        optionDTO.setPackageVoice(option.getPackageVoice());
+        optionDTO.setPackageData(option.getPackageData());
+        optionDTO.setPackageSms(option.getPackageSms());
+        optionDTO.setSpecCode(option.getSpecCode());
+        optionDTO.setActive(option.isActive());
+        return optionDTO;
+    }
+
+    public static TariffDTO transformToEntity(Tariff tariff) {
+        TariffDTO tariffDTO = new TariffDTO();
+        tariffDTO.setTariffId(tariff.getTariffId());
+        tariffDTO.setName(tariff.getName());
+        tariffDTO.setName(tariff.getName());
+        tariffDTO.setPricePerMonth(tariff.getPricePerMonth());
+        tariffDTO.setPackageVoice(tariff.getPackageVoice());
+        tariffDTO.setPackageData(tariff.getPackageData());
+        tariffDTO.setPackageSms(tariff.getPackageSms());
+        tariffDTO.setSpeedMax(tariff.getSpeedMax());
+        tariffDTO.setPackageVoiceCountry(tariff.getPackageVoiceCountry());
+        tariffDTO.setActive(tariff.isActive());
+        return tariffDTO;
     }
 }

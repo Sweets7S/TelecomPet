@@ -6,7 +6,9 @@ import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Sim;
 import ru.fintech.example.models.User;
+import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.repository.SimRepository;
+import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
@@ -21,26 +23,30 @@ public class SimService {
     private UserRepository userRepository;
     //    @Autowired
     private SimRepository simRepository;
+    private TariffRepository tariffRepository;
+    private OptionRepository optionRepository;
 
-    public SimService(UserRepository userRepository, SimRepository simRepository) {
+    public SimService(UserRepository userRepository, SimRepository simRepository, TariffRepository tariffRepository, OptionRepository optionRepository) {
         this.userRepository = userRepository;
         this.simRepository = simRepository;
+        this.tariffRepository = tariffRepository;
+        this.optionRepository = optionRepository;
     }
 
     //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
     public List<SimDTO> addSimsToVacant(List<SimDTO> simDTOS) throws FaultException {
         List<Sim> sims = ConversionDTO.transformToEntities(simDTOS,
                 userRepository.getReferenceById(technicalId));
-        List<Sim> msisdnsResult = new ArrayList<>();
+        List<Sim> simsResult = new ArrayList<>();
         for (int i = 0; i < sims.size(); i++) {
             try {
-                msisdnsResult.add(simRepository.save(sims.get(i)));
+                simsResult.add(simRepository.save(sims.get(i)));
             } catch (Throwable e) {
                 log.info("Такой Msisdn уже существует - {} ", sims.get(i));
                 throw new FaultException(1001, "Такой номер уже существует");
             }
         }
-        return ConversionDTO.transformToDTOs(msisdnsResult);
+        return ConversionDTO.transformToDTOs(simsResult);
     }
 
     public List<SimDTO> getAllAvailivbleSims() {
