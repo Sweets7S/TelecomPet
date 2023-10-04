@@ -7,7 +7,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Renewal {
     private int oldUserId;
-    private int msisdnId;
+    private int simId;
     private int newUserId;
 
 
@@ -20,11 +20,11 @@ public class Renewal {
     }
 
     public int getSimId() {
-        return msisdnId;
+        return simId;
     }
 
-    public void setMsisdnId(int msisdnId) {
-        this.msisdnId = msisdnId;
+    public void setSimId(int simId) {
+        this.simId = simId;
     }
 
     public int getNewUserId() {

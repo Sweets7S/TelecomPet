@@ -68,14 +68,14 @@ public class UserController {
         return ResponseEntity.ok(userService.changeIcc(simId, icc));
     }
 
-    @PostMapping("/{newUserId}/add/msisdn")
-    public void addMsisdnToUser(@PathVariable("newUserId") int newUserId,
-                                @RequestParam(value = "simId") int simId) throws FaultException {
-        userService.addMsisdnToUser(newUserId, simId);
+    @PostMapping("/{newUserId}/add/sim")
+    public void addSimToUser(@PathVariable("newUserId") int newUserId,
+                             @RequestParam(value = "simId") int simId) throws FaultException {
+        userService.addSimToUser(newUserId, simId);
     }
 
     @PatchMapping("/{userId}/change/msisdn")
-    public ResponseEntity<SimDTO> msisdnChange(@PathVariable("userId") int userId,
+    public ResponseEntity<SimDTO> changeMsisdn(@PathVariable("userId") int userId,
                                                @RequestParam(value = "oldSimId") int oldSimId,
                                                @RequestParam(value = "newSimId") int newSimId) throws FaultException {
         return ResponseEntity.ok(userService.changeMsisdn(userId, oldSimId, newSimId));
@@ -96,7 +96,7 @@ public class UserController {
     public ResponseEntity<UserDTO> contractWithSim(@RequestBody UserDTO userDTO,
                                                    @PathVariable("simId") int simId) throws FaultException {
         UserDTO userDTO1 = userService.create(userDTO);
-        userService.addMsisdnToUser(userDTO1.getId(), simId);
+        userService.addSimToUser(userDTO1.getId(), simId);
         UserDTO user = userService.get(userDTO1.getId());
         log.info(user.toString());
         return ResponseEntity.ok(user);

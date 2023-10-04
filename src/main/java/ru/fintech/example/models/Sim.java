@@ -73,14 +73,32 @@ public class Sim {
         this.active = active;
     }
 
+    public Tariff getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
+    }
+
+    public Option getOption() {
+        return option;
+    }
+
+    public void setOption(Option option) {
+        this.option = option;
+    }
+
     @Override
     public String toString() {
-        return "Msisdn{" +
-                "msisdnId=" + simId +
+        return "Sim{" +
+                "simId=" + simId +
                 ", userId=" + user.getId() +
                 ", msisdn='" + msisdn + '\'' +
                 ", icc='" + icc + '\'' +
                 ", active=" + active +
+                ", tariffId=" + tariff.getTariffId() +
+                ", optionId=" + option.getOptionId() +
                 '}';
     }
 }

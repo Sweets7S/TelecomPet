@@ -67,8 +67,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private Sim changeUser(int msisdnId, int newUserId) {
-        Sim sim = simRepository.getReferenceById(msisdnId);
+    private Sim changeUser(int simId, int newUserId) {
+        Sim sim = simRepository.getReferenceById(simId);
         sim.setUser(userRepository.getReferenceById(newUserId));
         return simRepository.save(sim);
     }
@@ -80,9 +80,11 @@ public class UserService {
     public void simRenewal(int oldUserId, int simId, int newUserId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != oldUserId) {
+            log.info("1");
             throw new FaultException(1000, "User doesn't own the simId: " + simId);
         }
-        if (!(simRepository.existsById(newUserId))){
+        if (!(userRepository.existsById(newUserId))){
+            log.info("2");
             throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
         }
         changeUser(simId, newUserId);
@@ -95,7 +97,7 @@ public class UserService {
     }
 
 
-    public SimDTO addMsisdnToUser(int newUserId, int simId) throws FaultException {
+    public SimDTO addSimToUser(int newUserId, int simId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != technicalId) {
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);

@@ -25,7 +25,10 @@ public class SimService {
     private TariffRepository tariffRepository;
     private OptionRepository optionRepository;
 
-    public SimService(UserRepository userRepository, SimRepository simRepository, TariffRepository tariffRepository, OptionRepository optionRepository) {
+    public SimService(UserRepository userRepository,
+                      SimRepository simRepository,
+                      TariffRepository tariffRepository,
+                      OptionRepository optionRepository) {
         this.userRepository = userRepository;
         this.simRepository = simRepository;
         this.tariffRepository = tariffRepository;
@@ -35,13 +38,15 @@ public class SimService {
     //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
     public List<SimDTO> addSimsToVacant(List<SimDTO> simDTOS) throws FaultException {
         List<Sim> sims = ConversionDTO.transformToEntities(simDTOS,
-                userRepository.getReferenceById(technicalId));
+                userRepository.getReferenceById(technicalId),
+                tariffRepository.getReferenceById(technicalId),
+                optionRepository.getReferenceById(technicalId));
         List<Sim> simsResult = new ArrayList<>();
         for (int i = 0; i < sims.size(); i++) {
             try {
                 simsResult.add(simRepository.save(sims.get(i)));
             } catch (Throwable e) {
-                log.info("Такой Msisdn уже существует - {} ", sims.get(i));
+                log.info("Такая sim уже существует - {} ", sims.get(i));
                 throw new FaultException(1001, "Такой номер уже существует");
             }
         }
