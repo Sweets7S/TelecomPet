@@ -125,7 +125,7 @@ public class UserService {
             simRepository.save(newSim);
         } else{
             log.info(1000 + "Пользователь не владеет этим номером: " + oldSimId);
-            throw new FaultException(1000, "Пользователь не владеет этим номером: " + oldSimId);
+            throw new FaultException(1000, "Пользователь не владеет этим номером: C" + oldSimId);
         }
         return ConversionDTO.transformToDTO(sim);
     }
