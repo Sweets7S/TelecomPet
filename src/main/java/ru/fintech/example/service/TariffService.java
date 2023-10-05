@@ -72,8 +72,6 @@ public class TariffService {
         tariff.setPricePerMonth(newPrice);
         return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
-    //  Метод изменения наполнения тарифа (либо все либо
-    //  что-то одно либо несколько, кроме maxSpeed) (TariffController)
 
     public void updateTariff(UpdateTariff updateTariff) {
         Tariff tariff = tariffRepository.getReferenceById(updateTariff.getTariffId());
@@ -83,5 +81,10 @@ public class TariffService {
         tariff.setPackageVoiceCountry(updateTariff.getPackageVoiceCountry());
         log.info(tariff.toString());
         tariffRepository.save(tariff);
+    }
+    public TariffDTO changeSpeedMax(int tariffId, int newMaxSpeed){
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        tariff.setSpeedMax(newMaxSpeed);
+        return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
 }

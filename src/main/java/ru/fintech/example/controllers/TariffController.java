@@ -45,6 +45,11 @@ public class TariffController {
         log.info(updateTariff.toString());
         tariffService.updateTariff(updateTariff);
     }
+    @PatchMapping("/{tariffId}/change/speed/max")
+    public ResponseEntity<TariffDTO> changeSpeedMax(@PathVariable("tariffId") int tariffId,
+                                                    @RequestParam(value = "newMaxSpeed") int newMaxSpeed){
+        return ResponseEntity.ok(tariffService.changeSpeedMax(tariffId, newMaxSpeed));
+    }
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
