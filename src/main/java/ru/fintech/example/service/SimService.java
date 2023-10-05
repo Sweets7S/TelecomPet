@@ -5,12 +5,14 @@ import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Sim;
+import ru.fintech.example.models.Tariff;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.repository.SimRepository;
 import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,4 +63,19 @@ public class SimService {
         }
         return simDTOS;
     }
+
+    public void changeTariff(int simId, int newTariffId) throws FaultException {
+        //Only active
+        Sim sim = simRepository.getReferenceById(simId);
+        if (!(tariffRepository.existsById(newTariffId))) {
+            throw new FaultException(1007, "Данный тариф не существует - " + newTariffId);
+        }
+        if (!(tariffRepository.getReferenceById(newTariffId).isActive())) {
+            log.info(1004 + "Данный тариф архивный: " + newTariffId);
+            throw new FaultException(1004, "Данный тариф архивный - " + newTariffId);
+        }
+        sim.setTariff(tariffRepository.getReferenceById(newTariffId));
+        simRepository.save(sim);
+    }
+
 }

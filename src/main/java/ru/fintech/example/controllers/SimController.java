@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.service.SimService;
+
 import java.util.List;
 
 @Slf4j
@@ -24,17 +25,25 @@ public class SimController {
     public ResponseEntity<List<SimDTO>> addSimToVacant(@RequestBody List<SimDTO> simDTOS) throws FaultException {
         return ResponseEntity.ok(simService.addSimsToVacant(simDTOS));
     }
+
     @GetMapping("/get")
     public ResponseEntity<List<SimDTO>> getAllAvailableSims() {
         return ResponseEntity.ok(simService.getAllAvailableSims());
     }
+
+    @PatchMapping("/{simId}/change/tariff")
+    public void changeTariff(@PathVariable("simId") int simId,
+                             @RequestParam(value = "newTariffId") int newTariffId) throws FaultException {
+        simService.changeTariff(simId, newTariffId);
+    }
+
     @ExceptionHandler(FaultException.class)
-    public ResponseEntity<String> handleFaultException(FaultException e){
+    public ResponseEntity<String> handleFaultException(FaultException e) {
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e){
+    public ResponseEntity<String> handleException(Exception e) {
         return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 }
