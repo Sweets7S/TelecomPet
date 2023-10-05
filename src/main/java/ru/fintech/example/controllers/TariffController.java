@@ -34,6 +34,11 @@ public class TariffController {
     public ResponseEntity<List<TariffDTO>> getAllArchiveTariffs() {
         return ResponseEntity.ok(tariffService.getAllArchiveTariffs());
     }
+    @PatchMapping("/{tariffId}/change/price")
+    public ResponseEntity<TariffDTO> changePricePerMonth(@PathVariable("tariffId") int tariffId,
+                                                         @RequestParam(value = "newPrice") int newPrice){
+        return ResponseEntity.ok(tariffService.changePricePerMonth(tariffId, newPrice));
+    }
 
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){

@@ -63,5 +63,9 @@ public class TariffService {
         }
         return tariffDTOS;
     }
-
+    public TariffDTO changePricePerMonth(int tariffId, int newPrice){
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        tariff.setPricePerMonth(newPrice);
+        return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
+    }
 }
