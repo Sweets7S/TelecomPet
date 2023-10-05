@@ -83,8 +83,8 @@ public class UserService {
     public void simRenewal(int oldUserId, int simId, int newUserId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != oldUserId) {
-            log.info(1000 + "User doesnt own the simId: " + simId);
-            throw new FaultException(1000, "User doesnt own the simId: " + simId);
+            log.info(1000 + "Пользователь не владеет этим номером: " + simId);
+            throw new FaultException(1000, "Пользователь не владеет этим номером: " + simId);
         }
         if (!(simRepository.existsById(newUserId))){
             log.info(1003 + "Такого пользователя не существует: " + newUserId);
@@ -124,8 +124,8 @@ public class UserService {
             newSim.setMsisdn(oldMsisdnNum);
             simRepository.save(newSim);
         } else{
-            log.info(1000 + "User doesnt own the simId: " + oldSimId);
-            throw new FaultException(1000, "User doesnt own the simId: " + oldSimId);
+            log.info(1000 + "Пользователь не владеет этим номером: " + oldSimId);
+            throw new FaultException(1000, "Пользователь не владеет этим номером: " + oldSimId);
         }
         return ConversionDTO.transformToDTO(sim);
     }
