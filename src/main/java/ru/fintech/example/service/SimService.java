@@ -44,14 +44,14 @@ public class SimService {
             try {
                 simsResult.add(simRepository.save(sims.get(i)));
             } catch (Throwable e) {
-                log.info("Такая Sim уже существует - {} ", sims.get(i));
-                throw new FaultException(1001, "Такой номер уже существует");
+                log.info(1001 + "Такая Sim уже существует - {} ", sims.get(i));
+                throw new FaultException(1001, "Такой номер уже существует: " + sims.get(i));
             }
         }
         return ConversionDTO.transformToDTOs(simsResult);
     }
 
-    public List<SimDTO> getAllAvailivbleMsisdns() {
+    public List<SimDTO> getAllAvailableSims() {
         List<SimDTO> simDTOS = new ArrayList<>();
         User vacant = userRepository.getReferenceById(technicalId);
         List<Sim> simList = vacant.getSims();

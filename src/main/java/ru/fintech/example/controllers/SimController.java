@@ -25,8 +25,8 @@ public class SimController {
         return ResponseEntity.ok(simService.addSimsToVacant(simDTOS));
     }
     @GetMapping("/get")
-    public ResponseEntity<List<SimDTO>> getAllAvailibleSims() {
-        return ResponseEntity.ok(simService.getAllAvailivbleMsisdns());
+    public ResponseEntity<List<SimDTO>> getAllAvailableSims() {
+        return ResponseEntity.ok(simService.getAllAvailableSims());
     }
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
