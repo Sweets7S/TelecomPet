@@ -11,6 +11,7 @@ import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -40,5 +41,15 @@ public class TariffService {
         Tariff tariffAfterSave = tariffRepository.save(tariff);
         return ConversionDTO.transformToDTO(tariffAfterSave);
     }
-
+    public List<TariffDTO> getAllAvailableTariffs(){
+        List<Tariff> tariffs = tariffRepository.findAll();
+        List<TariffDTO> tariffDTOS = new ArrayList<>();
+        for (int i = 0; i < tariffs.size(); i++) {
+            if ((tariffs.get(i).isActive())
+                    && (tariffs.get(i).getTariffId() != UserService.technicalId)){
+                tariffDTOS.add(ConversionDTO.transformToDTO(tariffs.get(i)));
+            }
+        }
+        return tariffDTOS;
+    }
 }

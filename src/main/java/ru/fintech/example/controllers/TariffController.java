@@ -25,7 +25,10 @@ public class TariffController {
         return ResponseEntity.ok(tariffService.addTariff(tariffDTO));
     }
 
-
+    @GetMapping("/get")
+    public ResponseEntity<List<TariffDTO>> getAllAvailableTariffs() {
+        return ResponseEntity.ok(tariffService.getAllAvailableTariffs());
+    }
 
 
     @ExceptionHandler(FaultException.class)
