@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
+import ru.fintech.example.models.UpdateTariff;
 import ru.fintech.example.service.TariffService;
 
 import java.util.List;
@@ -39,7 +40,11 @@ public class TariffController {
                                                          @RequestParam(value = "newPrice") int newPrice){
         return ResponseEntity.ok(tariffService.changePricePerMonth(tariffId, newPrice));
     }
-
+    @PutMapping("/update")
+    public void updateTariff(@RequestBody UpdateTariff updateTariff){
+        log.info(updateTariff.toString());
+        tariffService.updateTariff(updateTariff);
+    }
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
