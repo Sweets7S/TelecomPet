@@ -30,6 +30,10 @@ public class TariffController {
         return ResponseEntity.ok(tariffService.getAllAvailableTariffs());
     }
 
+    @GetMapping("/get_archive")
+    public ResponseEntity<List<TariffDTO>> getAllArchiveTariffs() {
+        return ResponseEntity.ok(tariffService.getAllArchiveTariffs());
+    }
 
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
