@@ -70,7 +70,7 @@ public class UserController {
 
     @PostMapping("/{newUserId}/add/sim")
     public void addSimToUser(@PathVariable("newUserId") int newUserId,
-                                @RequestParam(value = "msisdnId") int simId) throws FaultException {
+                                @RequestParam(value = "simId") int simId) throws FaultException {
         userService.addSimToUser(newUserId, simId);
     }
 

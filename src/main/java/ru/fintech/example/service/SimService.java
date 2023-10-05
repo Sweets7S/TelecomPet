@@ -25,25 +25,30 @@ public class SimService {
     private TariffRepository tariffRepository;
     private OptionRepository optionRepository;
 
-    public SimService(UserRepository userRepository, SimRepository simRepository) {
+    public SimService(UserRepository userRepository, SimRepository simRepository,
+                      TariffRepository tariffRepository, OptionRepository optionRepository) {
         this.userRepository = userRepository;
         this.simRepository = simRepository;
+        this.tariffRepository = tariffRepository;
+        this.optionRepository = optionRepository;
     }
 
     //    @Transactional аннтоация если будет ошибка, то тогда изменения не будут внесены
     public List<SimDTO> addSimsToVacant(List<SimDTO> simDTOS) throws FaultException {
         List<Sim> sims = ConversionDTO.transformToEntities(simDTOS,
-                userRepository.getReferenceById(technicalId));
-        List<Sim> msisdnsResult = new ArrayList<>();
+                userRepository.getReferenceById(technicalId),
+                tariffRepository.getReferenceById(technicalId),
+                optionRepository.getReferenceById(technicalId));
+        List<Sim> simsResult = new ArrayList<>();
         for (int i = 0; i < sims.size(); i++) {
             try {
-                msisdnsResult.add(simRepository.save(sims.get(i)));
+                simsResult.add(simRepository.save(sims.get(i)));
             } catch (Throwable e) {
-                log.info("Такой Msisdn уже существует - {} ", sims.get(i));
+                log.info("Такая Sim уже существует - {} ", sims.get(i));
                 throw new FaultException(1001, "Такой номер уже существует");
             }
         }
-        return ConversionDTO.transformToDTOs(msisdnsResult);
+        return ConversionDTO.transformToDTOs(simsResult);
     }
 
     public List<SimDTO> getAllAvailivbleMsisdns() {
