@@ -21,6 +21,7 @@ public class TariffController {
     public TariffController(TariffService tariffService) {
         this.tariffService = tariffService;
     }
+
     @PostMapping("/add")
     public ResponseEntity<TariffDTO> addTariff(@RequestBody TariffDTO tariffDTO) throws FaultException {
         return ResponseEntity.ok(tariffService.addTariff(tariffDTO));
@@ -35,28 +36,38 @@ public class TariffController {
     public ResponseEntity<List<TariffDTO>> getAllArchiveTariffs() {
         return ResponseEntity.ok(tariffService.getAllArchiveTariffs());
     }
+
     @PatchMapping("/{tariffId}/change/price")
     public ResponseEntity<TariffDTO> changePricePerMonth(@PathVariable("tariffId") int tariffId,
-                                                         @RequestParam(value = "newPrice") int newPrice){
+                                                         @RequestParam(value = "newPrice") int newPrice) {
         return ResponseEntity.ok(tariffService.changePricePerMonth(tariffId, newPrice));
     }
+
     @PutMapping("/update")
-    public void updateTariff(@RequestBody UpdateTariff updateTariff){
+    public void updateTariff(@RequestBody UpdateTariff updateTariff) {
         log.info(updateTariff.toString());
         tariffService.updateTariff(updateTariff);
     }
+
     @PatchMapping("/{tariffId}/change/speed/max")
     public ResponseEntity<TariffDTO> changeSpeedMax(@PathVariable("tariffId") int tariffId,
-                                                    @RequestParam(value = "newMaxSpeed") int newMaxSpeed){
+                                                    @RequestParam(value = "newMaxSpeed") int newMaxSpeed) {
         return ResponseEntity.ok(tariffService.changeSpeedMax(tariffId, newMaxSpeed));
     }
+
+    @PatchMapping("/{tariffId}/change/status")
+    public ResponseEntity<TariffDTO> changeStatus(@PathVariable("tariffId") int tariffId,
+                                                  @RequestParam(value = "newStatus") boolean newStatus) {
+        return ResponseEntity.ok(tariffService.changeStatus(tariffId, newStatus));
+    }
+
     @ExceptionHandler(FaultException.class)
-    public ResponseEntity<String> handleFaultException(FaultException e){
+    public ResponseEntity<String> handleFaultException(FaultException e) {
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e){
+    public ResponseEntity<String> handleException(Exception e) {
         return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 }

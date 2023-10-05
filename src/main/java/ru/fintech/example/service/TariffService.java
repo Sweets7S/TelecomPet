@@ -82,9 +82,16 @@ public class TariffService {
         log.info(tariff.toString());
         tariffRepository.save(tariff);
     }
-    public TariffDTO changeSpeedMax(int tariffId, int newMaxSpeed){
+
+    public TariffDTO changeSpeedMax(int tariffId, int newMaxSpeed) {
         Tariff tariff = tariffRepository.getReferenceById(tariffId);
         tariff.setSpeedMax(newMaxSpeed);
+        return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
+    }
+
+    public TariffDTO changeStatus(int tariffId, boolean newStatus) {
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        tariff.setActive(newStatus);
         return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
 }
