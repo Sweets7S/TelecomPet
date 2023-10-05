@@ -53,7 +53,7 @@ public class SimService {
         return ConversionDTO.transformToDTOs(simsResult);
     }
 
-    public List<SimDTO> getAllAvailivbleSims() {
+    public List<SimDTO> getAllAvailableSims() {
         List<SimDTO> simDTOS = new ArrayList<>();
         User vacant = userRepository.getReferenceById(technicalId);
         List<Sim> simList = vacant.getSims();
