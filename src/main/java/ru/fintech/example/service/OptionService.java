@@ -13,6 +13,7 @@ import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -41,5 +42,17 @@ public class OptionService {
         }
         Option optionAfterSave = optionRepository.save(option);
         return ConversionDTO.transformToDTO(optionAfterSave);
+        //Почему не пишет номер ошибки в постмане?
+    }
+    public List<OptionDTO> getAllAvailableOptions() {
+        List<Option> options = optionRepository.findAll();
+        List<OptionDTO> optionDTOS = new ArrayList<>();
+        for (int i = 0; i < options.size(); i++) {
+            if ((options.get(i).isActive())
+                    && (options.get(i).getOptionId() != UserService.technicalId)) {
+                optionDTOS.add(ConversionDTO.transformToDTO(options.get(i)));
+            }
+        }
+        return optionDTOS;
     }
 }
