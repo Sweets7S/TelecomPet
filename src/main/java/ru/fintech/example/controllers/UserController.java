@@ -70,8 +70,9 @@ public class UserController {
 
     @PostMapping("/{newUserId}/add/sim")
     public void addSimToUser(@PathVariable("newUserId") int newUserId,
-                                @RequestParam(value = "simId") int simId) throws FaultException {
-        userService.addSimToUser(newUserId, simId);
+                             @RequestParam(value = "simId") int simId,
+                             @RequestParam(value = "tariffId") int tariffId) throws FaultException {
+        userService.addSimToUser(newUserId, simId, tariffId);
     }
 
     @PatchMapping("/{userId}/change/sim")
@@ -94,20 +95,23 @@ public class UserController {
 
     @PostMapping("/{simId}/contract")
     public ResponseEntity<UserDTO> contractWithSim(@RequestBody UserDTO userDTO,
-                                                   @PathVariable("simId") int simId) throws FaultException {
+                                                   @PathVariable("simId") int simId,
+                                                   @RequestParam(value = "tariffId") int tariffId) throws FaultException {
+//        - [ ] ToDo-20: Изменить метод(contractWithSim) (в котором происходит создание юзера и привязка номера), добавить в него привязку тарифа(из доступных(если тариф архвный вернуть ошибку 1004)) к номеру
         UserDTO userDTO1 = userService.create(userDTO);
-        userService.addSimToUser(userDTO1.getId(), simId);
+        userService.addSimToUser(userDTO1.getId(), simId, tariffId);
         UserDTO user = userService.get(userDTO1.getId());
         log.info(user.toString());
         return ResponseEntity.ok(user);
     }
+
     @ExceptionHandler(FaultException.class)
-    public ResponseEntity<String> handleFaultException(FaultException e){
+    public ResponseEntity<String> handleFaultException(FaultException e) {
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e){
+    public ResponseEntity<String> handleException(Exception e) {
         return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 }

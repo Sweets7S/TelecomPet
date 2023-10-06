@@ -39,6 +39,7 @@ public class OptionController {
     @PatchMapping("/{optionId}/change/status")
     public ResponseEntity<OptionDTO> changeStatus(@PathVariable("optionId") int optionId,
                                                   @RequestParam(value = "newStatus") boolean newStatus) {
+        log.info("test");
         return ResponseEntity.ok(optionService.changeStatus(optionId, newStatus));
     }
     @PatchMapping("/{optionId}/change/price")

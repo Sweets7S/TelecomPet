@@ -27,9 +27,12 @@ public class UserService {
     private OptionRepository optionRepository;
     protected static int technicalId = 1;
 
-    public UserService(UserRepository userRepository, SimRepository simRepository) {
+    public UserService(UserRepository userRepository, SimRepository simRepository,
+                       TariffRepository tariffRepository, OptionRepository optionRepository) {
         this.userRepository = userRepository;
         this.simRepository = simRepository;
+        this.tariffRepository = tariffRepository;
+        this.optionRepository = optionRepository;
     }
 
     public UserDTO create(UserDTO userDTO) {
@@ -100,12 +103,21 @@ public class UserService {
     }
 
 
-    public SimDTO addSimToUser(int newUserId, int simId) throws FaultException {
+    public SimDTO addSimToUser(int newUserId, int simId, int tariffId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != technicalId) {
             log.info(1002 + "Этого номера нет в списке доступных номеров - " + simId);
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);
         }
+        if (!tariffRepository.getReferenceById(tariffId).isActive()){
+            log.info(1004 + "Данный тариф архивный: " + tariffId);
+            throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
+        }
+        if (!tariffRepository.existsById(tariffId)) {
+            log.info(1007 + "Данный тариф не существует: " + tariffId);
+            throw new FaultException(1007, "Данный тариф не существует - " + tariffId);
+        }
+        sim.setTariff(tariffRepository.getReferenceById(tariffId));
         sim.setUser(userRepository.getReferenceById(newUserId));
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
