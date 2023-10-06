@@ -68,6 +68,7 @@ public class SimService {
         //Only active
         Sim sim = simRepository.getReferenceById(simId);
         if (!(tariffRepository.existsById(newTariffId))) {
+            log.info(1007 + "Данный тариф не существует: " + newTariffId);
             throw new FaultException(1007, "Данный тариф не существует - " + newTariffId);
         }
         if ((tariffRepository.getReferenceById(newTariffId).isActive())) {
@@ -81,7 +82,7 @@ public class SimService {
         //Only active
         Sim sim = simRepository.getReferenceById(simId);
         if (!(optionRepository.existsById(newOptionId))) {
-            log.info(1009 + "Данная опция архивная - " + newOptionId);
+            log.info(1009 + "Данная опция не существует - " + newOptionId);
             throw new FaultException(1009, "Данная опция не существует - " + newOptionId);
         }
         if ((tariffRepository.getReferenceById(newOptionId).isActive())) {

@@ -7,6 +7,8 @@ import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Option;
 import ru.fintech.example.models.Tariff;
+import ru.fintech.example.models.UpdateOption;
+import ru.fintech.example.models.UpdateTariff;
 import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.repository.SimRepository;
 import ru.fintech.example.repository.TariffRepository;
@@ -74,5 +76,18 @@ public class OptionService {
         Option option = optionRepository.getReferenceById(optionId);
         option.setPricePerMonth(newPrice);
         return ConversionDTO.transformToDTO(optionRepository.save(option));
+    }
+    public void updateOption(UpdateOption updateOption) throws FaultException {
+        Option option = optionRepository.getReferenceById(updateOption.getOptionId());
+        if (!(optionRepository.existsById(updateOption.getOptionId()))){
+            log.info(1009 + "Данная опция не существует - " + updateOption.getOptionId());
+            throw new FaultException(1009, "Данная опция не существует - " + updateOption.getOptionId());
+        }
+        option.setPackageVoice(updateOption.getPackageVoice());
+        option.setPackageData(updateOption.getPackageData());
+        option.setPackageSms(updateOption.getPackageSms());
+        option.setSpecCode(updateOption.getSpecCode());
+        log.info(option.toString());
+        optionRepository.save(option);
     }
 }

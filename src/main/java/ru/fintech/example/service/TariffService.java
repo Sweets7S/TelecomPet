@@ -74,8 +74,12 @@ public class TariffService {
         return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
 
-    public void updateTariff(UpdateTariff updateTariff) {
+    public void updateTariff(UpdateTariff updateTariff) throws FaultException {
         Tariff tariff = tariffRepository.getReferenceById(updateTariff.getTariffId());
+        if (!(tariffRepository.existsById(updateTariff.getTariffId()))) {
+            log.info(1007 + "Данный тариф не существует: " + updateTariff.getTariffId());
+            throw new FaultException(1007, "Данный тариф не существует - " + updateTariff.getTariffId());
+        }
         tariff.setPackageVoice(updateTariff.getPackageVoice());
         tariff.setPackageData(updateTariff.getPackageData());
         tariff.setPackageSms(updateTariff.getPackageSms());

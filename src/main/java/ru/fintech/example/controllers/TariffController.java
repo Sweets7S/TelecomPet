@@ -44,7 +44,7 @@ public class TariffController {
     }
 
     @PutMapping("/update")
-    public void updateTariff(@RequestBody UpdateTariff updateTariff) {
+    public void updateTariff(@RequestBody UpdateTariff updateTariff) throws FaultException {
         log.info(updateTariff.toString());
         tariffService.updateTariff(updateTariff);
     }

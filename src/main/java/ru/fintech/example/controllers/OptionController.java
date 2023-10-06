@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.OptionDTO;
 import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
+import ru.fintech.example.models.UpdateOption;
+import ru.fintech.example.models.UpdateTariff;
 import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.service.OptionService;
 
@@ -43,6 +45,11 @@ public class OptionController {
     public ResponseEntity<OptionDTO> changePricePerMonth(@PathVariable("optionId") int optionId,
                                                          @RequestParam(value = "newPrice") int newPrice) {
         return ResponseEntity.ok(optionService.changePricePerMonth(optionId, newPrice));
+    }
+    @PutMapping("/update")
+    public void updateOption(@RequestBody UpdateOption updateOption) throws FaultException {
+        log.info(updateOption.toString());
+        optionService.updateOption(updateOption);
     }
 
     @ExceptionHandler(FaultException.class)
