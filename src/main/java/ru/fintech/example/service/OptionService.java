@@ -70,4 +70,9 @@ public class OptionService {
         option.setActive(newStatus);
         return ConversionDTO.transformToDTO(optionRepository.save(option));
     }
+    public OptionDTO changePricePerMonth(int optionId, int newPrice) {
+        Option option = optionRepository.getReferenceById(optionId);
+        option.setPricePerMonth(newPrice);
+        return ConversionDTO.transformToDTO(optionRepository.save(option));
+    }
 }

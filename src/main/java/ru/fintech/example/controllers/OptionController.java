@@ -39,6 +39,11 @@ public class OptionController {
                                                   @RequestParam(value = "newStatus") boolean newStatus) {
         return ResponseEntity.ok(optionService.changeStatus(optionId, newStatus));
     }
+    @PatchMapping("/{optionId}/change/price")
+    public ResponseEntity<OptionDTO> changePricePerMonth(@PathVariable("optionId") int optionId,
+                                                         @RequestParam(value = "newPrice") int newPrice) {
+        return ResponseEntity.ok(optionService.changePricePerMonth(optionId, newPrice));
+    }
 
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e) {
