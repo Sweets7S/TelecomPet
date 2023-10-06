@@ -29,4 +29,8 @@ public class OptionController {
     public ResponseEntity<List<OptionDTO>> getAllAvailableOptions() {
         return ResponseEntity.ok(optionService.getAllAvailableOptions());
     }
+    @GetMapping("/get_archive")
+    public ResponseEntity<List<OptionDTO>> getAllArchiveTariffs() {
+        return ResponseEntity.ok(optionService.getAllArchiveOptions());
+    }
 }

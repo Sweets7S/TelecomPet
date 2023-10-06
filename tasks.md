@@ -30,7 +30,7 @@
 - [?] ToDo-12: Метод перевода тарифа в архив (проставить Active в false) (TariffController)
 - [x] ToDo-13: Метод добавления новой опции (OptionController)
 - [x] ToDo-14: Мотед возврата всех опций(действующих) у которых Active==True (OptionController) (кроме технической)
-- [ ] ToDo-15: Мотед возврата всех опций(архивных) у которых Active==False (OptionController)
+- [x] ToDo-15: Мотед возврата всех опций(архивных) у которых Active==False (OptionController)
 - [ ] ToDo-16: Метод смены опции на любую из достуаных (только те которые активны) (SimController)
 - [ ] ToDo-17: Метод перевода опции в архив (проставить Active в false) (OptionController)
 - [ ] ToDo-18: Метод изменения стоимости опции (OptionController)

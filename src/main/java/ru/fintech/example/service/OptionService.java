@@ -55,4 +55,15 @@ public class OptionService {
         }
         return optionDTOS;
     }
+    public List<OptionDTO> getAllArchiveOptions() {
+        List<Option> options = optionRepository.findAll();
+        List<OptionDTO> optionDTOS = new ArrayList<>();
+        for (int i = 0; i < options.size(); i++) {
+            if (!(options.get(i).isActive())
+                    && (options.get(i).getOptionId() != UserService.technicalId)) {
+                optionDTOS.add(ConversionDTO.transformToDTO(options.get(i)));
+            }
+        }
+        return optionDTOS;
+    }
 }
