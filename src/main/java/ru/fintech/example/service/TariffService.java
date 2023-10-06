@@ -36,6 +36,7 @@ public class TariffService {
         List<Tariff> tariffList = tariffRepository.findAll();
         for (int i = 0; i < tariffList.size(); i++) {
             if (tariff.getName().equals(tariffList.get(i).getName())) {
+                log.info(1006 + "Тариф с таким названием уже существует: " + tariff.getName());
                 throw new FaultException(1006, "Тариф с таким названием уже существует: " + tariff.getName());
             }
         }
