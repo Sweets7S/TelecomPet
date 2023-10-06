@@ -36,6 +36,11 @@ public class SimController {
                              @RequestParam(value = "newTariffId") int newTariffId) throws FaultException {
         simService.changeTariff(simId, newTariffId);
     }
+    @PatchMapping("/{simId}/change/option")
+    public void changeOption(@PathVariable("simId") int simId,
+                             @RequestParam(value = "newOptionId") int newOptionId) throws FaultException {
+        simService.changeOption(simId, newOptionId);
+    }
 
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e) {

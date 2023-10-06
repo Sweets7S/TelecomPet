@@ -70,12 +70,26 @@ public class SimService {
         if (!(tariffRepository.existsById(newTariffId))) {
             throw new FaultException(1007, "Данный тариф не существует - " + newTariffId);
         }
-        if (!(tariffRepository.getReferenceById(newTariffId).isActive())) {
+        if ((tariffRepository.getReferenceById(newTariffId).isActive())) {
             log.info(1004 + "Данный тариф архивный: " + newTariffId);
             throw new FaultException(1004, "Данный тариф архивный - " + newTariffId);
         }
         sim.setTariff(tariffRepository.getReferenceById(newTariffId));
         simRepository.save(sim);
     }
-
+    public void changeOption(int simId, int newOptionId) throws FaultException {
+        //Only active
+        Sim sim = simRepository.getReferenceById(simId);
+        if (!(optionRepository.existsById(newOptionId))) {
+            log.info(1009 + "Данная опция архивная - " + newOptionId);
+            throw new FaultException(1009, "Данная опция не существует - " + newOptionId);
+        }
+        if ((tariffRepository.getReferenceById(newOptionId).isActive())) {
+            log.info(1010 + "Данная опция архивная - " + newOptionId);
+            throw new FaultException(1010, "Данная опция архивная - " + newOptionId);
+            //Даже архивную
+        }
+        sim.setOption(optionRepository.getReferenceById(newOptionId));
+        simRepository.save(sim);
+    }
 }
