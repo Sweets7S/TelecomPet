@@ -42,7 +42,6 @@ public class OptionService {
         }
         Option optionAfterSave = optionRepository.save(option);
         return ConversionDTO.transformToDTO(optionAfterSave);
-        //Почему не пишет номер ошибки в постмане?
     }
     public List<OptionDTO> getAllAvailableOptions() {
         List<Option> options = optionRepository.findAll();
@@ -65,5 +64,10 @@ public class OptionService {
             }
         }
         return optionDTOS;
+    }
+    public OptionDTO changeStatus(int optionId, boolean newStatus) {
+        Option option = optionRepository.getReferenceById(optionId);
+        option.setActive(newStatus);
+        return ConversionDTO.transformToDTO(optionRepository.save(option));
     }
 }

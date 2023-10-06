@@ -1,6 +1,7 @@
 package ru.fintech.example.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.OptionDTO;
@@ -32,5 +33,20 @@ public class OptionController {
     @GetMapping("/get_archive")
     public ResponseEntity<List<OptionDTO>> getAllArchiveTariffs() {
         return ResponseEntity.ok(optionService.getAllArchiveOptions());
+    }
+    @PatchMapping("/{optionId}/change/status")
+    public ResponseEntity<OptionDTO> changeStatus(@PathVariable("optionId") int optionId,
+                                                  @RequestParam(value = "newStatus") boolean newStatus) {
+        return ResponseEntity.ok(optionService.changeStatus(optionId, newStatus));
+    }
+
+    @ExceptionHandler(FaultException.class)
+    public ResponseEntity<String> handleFaultException(FaultException e) {
+        return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+        return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 }

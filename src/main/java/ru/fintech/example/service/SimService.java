@@ -87,7 +87,7 @@ public class SimService {
         if ((tariffRepository.getReferenceById(newOptionId).isActive())) {
             log.info(1010 + "Данная опция архивная - " + newOptionId);
             throw new FaultException(1010, "Данная опция архивная - " + newOptionId);
-            //Даже архивную
+            //Работал наоборот с архивными опциями
         }
         sim.setOption(optionRepository.getReferenceById(newOptionId));
         simRepository.save(sim);
