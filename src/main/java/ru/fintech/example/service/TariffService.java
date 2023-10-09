@@ -46,4 +46,15 @@ public class TariffService {
         }
         return tariffDTOList;
     }
+
+    public List<TariffDTO> getAllNotActiveTariff() {
+        List<TariffDTO> tariffDTOList = new ArrayList<>();
+        List<Tariff> tariffList = tariffRepository.findAll();
+        for (int i = 1; i < tariffList.size(); i++) {
+            if (!(tariffList.get(i).isActive())) {
+                tariffDTOList.add(ConversionDTO.transformToDTO(tariffList.get(i)));
+            }
+        }
+        return tariffDTOList;
+    }
 }

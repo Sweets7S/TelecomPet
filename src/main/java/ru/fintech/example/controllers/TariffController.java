@@ -32,6 +32,11 @@ public class TariffController {
         return  ResponseEntity.ok(tariffService.getAllActiveTariff());
     }
 
+    @GetMapping("notActive")
+    public ResponseEntity<List<TariffDTO>> getAllNotActiveTariff() {
+        return  ResponseEntity.ok(tariffService.getAllNotActiveTariff());
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
