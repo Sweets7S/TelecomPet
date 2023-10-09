@@ -8,6 +8,8 @@ import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.service.TariffService;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/tariff")
@@ -23,6 +25,11 @@ public class TariffController {
     public ResponseEntity<TariffDTO> create(@RequestBody TariffDTO tariffDTO) throws FaultException {
         log.info("Coming request {}", tariffDTO);
         return ResponseEntity.ok(tariffService.create(tariffDTO));
+    }
+
+    @GetMapping("active")
+    public ResponseEntity<List<TariffDTO>> getAllActiveTariff() {
+        return  ResponseEntity.ok(tariffService.getAllActiveTariff());
     }
 
     @ExceptionHandler(FaultException.class)
