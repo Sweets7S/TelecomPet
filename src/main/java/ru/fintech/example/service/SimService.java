@@ -46,7 +46,8 @@ public class SimService {
             try {
                 simsResult.add(simRepository.save(sims.get(i)));
             } catch (Throwable e) {
-                log.info("Такая sim уже существует - {} ", sims.get(i));
+//                log.info("Такая sim уже существует - {} ", sims.get(i));
+                log.info("1001: Такой номер уже существует: {msisdn, icc}");
                 throw new FaultException(1001, "Такой номер уже существует");
             }
         }
