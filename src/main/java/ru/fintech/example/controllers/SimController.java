@@ -28,6 +28,13 @@ public class SimController {
     public ResponseEntity<List<SimDTO>> getAllAvailableSims() {
         return ResponseEntity.ok(simService.getAllAvailableSims());
     }
+
+    @PutMapping("/{simId}/renewal")
+    public void tariffRenewal(@PathVariable("simId") int simId,
+                              @RequestParam(value = "tariffId") int tariffId) throws FaultException {
+        simService.tariffRenewal(simId, tariffId);
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));

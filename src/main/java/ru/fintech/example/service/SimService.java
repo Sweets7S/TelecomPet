@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Sim;
+import ru.fintech.example.models.Tariff;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.repository.SimRepository;
@@ -46,8 +47,7 @@ public class SimService {
             try {
                 simsResult.add(simRepository.save(sims.get(i)));
             } catch (Throwable e) {
-//                log.info("Такая sim уже существует - {} ", sims.get(i));
-                log.info("1001: Такой номер уже существует: {msisdn, icc}");
+                log.info("1001: Такой номер уже существует: {} {}", simDTOS.get(i).getMsisdn(), simDTOS.get(i).getIcc());
                 throw new FaultException(1001, "Такой номер уже существует");
             }
         }
@@ -63,5 +63,20 @@ public class SimService {
             simDTOS.add(ConversionDTO.transformToDTO(simList.get(i)));
         }
         return simDTOS;
+    }
+
+    public void tariffRenewal(int simId, int tariffId) throws FaultException {
+        Sim sim = simRepository.getReferenceById(simId);
+        if (!tariffRepository.existsById(tariffId) || tariffId == technicalId){
+            log.info("1007: Данный тариф не существует - {}", tariffId);
+            throw new FaultException(1007, "Данный тариф не существует - " + tariffId);
+        }
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        if (!tariff.isActive()) {
+            log.info("1004: Данный тариф архивный - {} - {}", tariffId, tariff.getName());
+            throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
+        }
+        sim.setTariff(tariff);
+        simRepository.save(sim);
     }
 }

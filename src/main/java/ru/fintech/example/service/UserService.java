@@ -120,8 +120,10 @@ public class UserService {
             sim = simRepository.save(oldSim);
             newSim.setMsisdn(oldMsisdnNum);
             simRepository.save(newSim);
-        } else {log.info("1000: User doesn't own the simId: {}", oldSimId);
-        throw new FaultException(1000, "User doesn't own the simId: " + oldSimId);}
+        } else {
+            log.info("1000: User doesn't own the simId: {}", oldSimId);
+            throw new FaultException(1000, "User doesn't own the simId: " + oldSimId);
+        }
         return ConversionDTO.transformToDTO(sim);
     }
 
