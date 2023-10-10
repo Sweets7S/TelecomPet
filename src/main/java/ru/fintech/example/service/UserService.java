@@ -116,13 +116,13 @@ public class UserService {
             log.info(1002 + "Этого номера нет в списке доступных номеров - " + simId);
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);
         }
-        if (!tariffRepository.getReferenceById(tariffId).isActive()) {
-            log.info(1004 + "Данный тариф архивный: " + tariffId);
-            throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
-        }
         if (!tariffRepository.existsById(tariffId)) {
             log.info(1007 + "Данный тариф не существует: " + tariffId);
             throw new FaultException(1007, "Данный тариф не существует - " + tariffId);
+        }
+        if (!tariffRepository.getReferenceById(tariffId).isActive()) {
+            log.info(1004 + "Данный тариф архивный: " + tariffId);
+            throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
         }
         sim.setTariff(tariffRepository.getReferenceById(tariffId));
         sim.setUser(userRepository.getReferenceById(newUserId));
