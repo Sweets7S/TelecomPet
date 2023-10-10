@@ -32,6 +32,11 @@ public class OptionController {
         return ResponseEntity.ok(optionService.getAllActiveOption());
     }
 
+    @GetMapping("notActive")
+    public ResponseEntity<List<OptionDTO>> getAllNotActiveOption() {
+        return  ResponseEntity.ok(optionService.getAllNotActiveOption());
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));

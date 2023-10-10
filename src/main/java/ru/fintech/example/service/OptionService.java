@@ -3,10 +3,8 @@ package ru.fintech.example.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.OptionDTO;
-import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Option;
-import ru.fintech.example.models.Tariff;
 import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
@@ -46,14 +44,14 @@ public class OptionService {
         return optionDTOList;
     }
 
-//    public List<OptionDTO> getAllNotActiveOption() {
-//        List<OptionDTO> optionDTOList = new ArrayList<>();
-//        List<Option> optionList = optionRepository.findAll();
-//        for (int i = 1; i < optionList.size(); i++) {
-//            if (!(optionList.get(i).isActive())) {
-//                optionDTOList.add(ConversionDTO.transformToDTO(optionList.get(i)));
-//            }
-//        }
-//        return optionDTOList;
-//    }
+    public List<OptionDTO> getAllNotActiveOption() {
+        List<OptionDTO> optionDTOList = new ArrayList<>();
+        List<Option> optionList = optionRepository.findAll();
+        for (int i = 1; i < optionList.size(); i++) {
+            if (!(optionList.get(i).isActive())) {
+                optionDTOList.add(ConversionDTO.transformToDTO(optionList.get(i)));
+            }
+        }
+        return optionDTOList;
+    }
 }
