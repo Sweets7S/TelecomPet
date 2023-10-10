@@ -31,6 +31,10 @@ public class SimController {
     public ResponseEntity<List<SimDTO>> getAllAvailableSims() {
         return ResponseEntity.ok(simService.getAllAvailableSims());
     }
+    @GetMapping("/get/archive")
+    public ResponseEntity<List<SimDTO>> getAllUnavailableSims() {
+        return ResponseEntity.ok(simService.getAllUnavailableSims());
+    }
 
     @PatchMapping("/{simId}/change/tariff")
     public void changeTariff(@PathVariable("simId") int simId,

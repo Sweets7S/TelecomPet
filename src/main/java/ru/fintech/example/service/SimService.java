@@ -70,6 +70,17 @@ public class SimService {
         }
         return simDTOS;
     }
+    public List<SimDTO> getAllUnavailableSims(){
+        List<SimDTO> simDTOS = new ArrayList<>();
+        User vacant = userRepository.getReferenceById(technicalId);
+        List<Sim> simList = vacant.getSims();
+        for (int i = 0; i < simList.size(); i++) {
+            log.info("Count " + i);
+            if (!simList.get(i).isActive())
+                simDTOS.add(ConversionDTO.transformToDTO(simList.get(i)));
+        }
+        return simDTOS;
+    }
 
     public void changeTariff(int simId, int newTariffId) throws FaultException {
         //Only active
