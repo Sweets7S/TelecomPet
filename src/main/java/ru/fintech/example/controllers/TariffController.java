@@ -29,12 +29,12 @@ public class TariffController {
 
     @GetMapping("/get")
     public ResponseEntity<List<TariffDTO>> getAllAvailableTariffs() {
-        return ResponseEntity.ok(tariffService.getAllAvailableTariffs());
+        return ResponseEntity.ok(tariffService.getAllByActive(true));
     }
 
     @GetMapping("/get_archive")
     public ResponseEntity<List<TariffDTO>> getAllArchiveTariffs() {
-        return ResponseEntity.ok(tariffService.getAllArchiveTariffs());
+        return ResponseEntity.ok(tariffService.getAllByActive(false));
     }
 
     @PatchMapping("/{tariffId}/change/price")

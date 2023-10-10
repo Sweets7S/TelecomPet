@@ -89,11 +89,11 @@ public class UserService {
     public void simRenewal(int oldUserId, int simId, int newUserId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != oldUserId) {
-            log.info(1000 + "Пользователь не владеет этим номером: " + simId);
+            log.info(1000 + "Пользователь {} не владеет этим номером", simId);
             throw new FaultException(1000, "Пользователь не владеет этим номером: " + simId);
         }
-        if (!(userRepository.existsById(newUserId))) {
-            log.info(1003 + "Такого пользователя не существует: " + newUserId);
+        if (!userRepository.existsById(newUserId)) {
+            log.info(1003 + "Такого пользователя {} не существует",  newUserId);
             throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
         }
         changeUser(simId, newUserId);
@@ -113,15 +113,15 @@ public class UserService {
     public SimDTO addSimToUser(int newUserId, int simId, int tariffId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (sim.getUser().getId() != technicalId) {
-            log.info(1002 + "Этого номера нет в списке доступных номеров - " + simId);
+            log.info(1002 + "Этого номера {} нет в списке доступных номеров", simId);
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);
         }
         if (!tariffRepository.existsById(tariffId)) {
-            log.info(1007 + "Данный тариф не существует: " + tariffId);
+            log.info(1007 + "Данный тариф {} не существует", tariffId);
             throw new FaultException(1007, "Данный тариф не существует - " + tariffId);
         }
         if (!tariffRepository.getReferenceById(tariffId).isActive()) {
-            log.info(1004 + "Данный тариф архивный: " + tariffId);
+            log.info(1004 + "Данный тариф {} архивный", tariffId);
             throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
         }
         sim.setTariff(tariffRepository.getReferenceById(tariffId));
@@ -143,7 +143,7 @@ public class UserService {
             newSim.setMsisdn(oldMsisdnNum);
             simRepository.save(newSim);
         } else {
-            log.info(1000 + "Пользователь не владеет этим номером: " + oldSimId);
+            log.info(1000 + "Пользователь {} не владеет этим номером {}", userId, oldSimId);
             throw new FaultException(1000, "Пользователь не владеет этим номером: C" + oldSimId);
         }
         return ConversionDTO.transformToDTO(sim);

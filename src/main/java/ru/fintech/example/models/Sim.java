@@ -93,7 +93,7 @@ public class Sim {
     public String toString() {
         return "Sim{" +
                 "simId=" + simId +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", msisdn='" + msisdn + '\'' +
                 ", icc='" + icc + '\'' +
                 ", active=" + active +

@@ -46,8 +46,8 @@ public class SimService {
             try {
                 simsResult.add(simRepository.save(sims.get(i)));
             } catch (Throwable e) {
-                log.info(1001 + "Такая Sim уже существует - {} ", sims.get(i));
-                throw new FaultException(1001, "Такой номер уже существует: " + sims.get(i));
+                log.info(1001 + "Такая Sim {} уже существует", sims.get(i));
+                throw new FaultException(1001, "Такой Sim уже существует: " + sims.get(i));
             }
         }
         for (int i = 0; i < simsResult.size(); i++) {
@@ -86,11 +86,11 @@ public class SimService {
         //Only active
         Sim sim = simRepository.getReferenceById(simId);
         if (!(tariffRepository.existsById(newTariffId))) {
-            log.info(1007 + "Данный тариф не существует: " + newTariffId);
+            log.info(1007 + "Данный тариф {} не существует",  newTariffId);
             throw new FaultException(1007, "Данный тариф не существует - " + newTariffId);
         }
         if (!tariffRepository.getReferenceById(newTariffId).isActive()) {
-            log.info(1004 + "Данный тариф архивный: " + newTariffId);
+            log.info(1004 + "Данный тариф {} архивный: ", newTariffId);
             throw new FaultException(1004, "Данный тариф архивный - " + newTariffId);
         }
         sim.setTariff(tariffRepository.getReferenceById(newTariffId));
@@ -100,13 +100,12 @@ public class SimService {
     public void changeOption(int simId, int newOptionId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (!optionRepository.existsById(newOptionId)) {
-            log.info(1009 + "Данная опция не существует - " + newOptionId);
+            log.info(1009 + "Данная опция {} не существует", newOptionId);
             throw new FaultException(1009, "Данная опция не существует - " + newOptionId);
         }
-        if (!tariffRepository.getReferenceById(newOptionId).isActive()) {
-            log.info(1010 + "Данная опция архивная - " + newOptionId);
+        if (!optionRepository.getReferenceById(newOptionId).isActive()) {
+            log.info(1010 + "Данная опция {} архивная", newOptionId);
             throw new FaultException(1010, "Данная опция архивная - " + newOptionId);
-            //Работал наоборот с архивными опциями
         }
         sim.setOption(optionRepository.getReferenceById(newOptionId));
         simRepository.save(sim);
@@ -117,7 +116,7 @@ public class SimService {
     public SimDTO changeStatus(int simId, boolean newStatus) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (sim.isActive() == newStatus) {
-            log.info(1005 + "Sim уже с этим значением - " + newStatus);
+            log.info(1005 + "Sim {} уже с этим значением {}", simId, newStatus);
             throw new FaultException(1005, "Sim уже с этим значением - " + newStatus);
         }
         sim.setActive(newStatus);

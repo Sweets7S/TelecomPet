@@ -17,6 +17,7 @@ import ru.fintech.example.utils.ConversionDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import static ru.fintech.example.service.UserService.technicalId;
 
 @Slf4j
 @Service
@@ -35,33 +36,29 @@ public class OptionService {
     }
     public OptionDTO addOption(OptionDTO optionDTO) throws FaultException {
         Option option = ConversionDTO.transformToEntity(optionDTO);
-        List<Option> optionList = optionRepository.findAll();
-        for (int i = 0; i < optionList.size(); i++) {
-            if (option.getName().equals(optionList.get(i).getName())) {
-                log.info(1008 + "Опция с таким названием уже существует: " + option.getName());
-                throw new FaultException(1008, "Опция с таким названием уже существует: " + option.getName());
-            }
+        Option optionExist = optionRepository.getByName(optionDTO.getName());
+        if (optionExist != null) {
+            log.info(1008 + "Опция с таким названием {} уже существует", option.getName());
+            throw new FaultException(1008, "Опция с таким названием уже существует: " + option.getName());
         }
         Option optionAfterSave = optionRepository.save(option);
         return ConversionDTO.transformToDTO(optionAfterSave);
     }
     public List<OptionDTO> getAllAvailableOptions() {
-        List<Option> options = optionRepository.findAll();
+        List<Option> options = optionRepository.findAllByActive(true).stream().toList();
         List<OptionDTO> optionDTOS = new ArrayList<>();
         for (int i = 0; i < options.size(); i++) {
-            if ((options.get(i).isActive())
-                    && (options.get(i).getOptionId() != UserService.technicalId)) {
+            if (options.get(i).getOptionId() != technicalId) {
                 optionDTOS.add(ConversionDTO.transformToDTO(options.get(i)));
             }
         }
         return optionDTOS;
     }
     public List<OptionDTO> getAllArchiveOptions() {
-        List<Option> options = optionRepository.findAll();
+        List<Option> options = optionRepository.findAllByActive(false).stream().toList();
         List<OptionDTO> optionDTOS = new ArrayList<>();
         for (int i = 0; i < options.size(); i++) {
-            if (!(options.get(i).isActive())
-                    && (options.get(i).getOptionId() != UserService.technicalId)) {
+            if (options.get(i).getOptionId() != technicalId) {
                 optionDTOS.add(ConversionDTO.transformToDTO(options.get(i)));
             }
         }
@@ -78,11 +75,11 @@ public class OptionService {
         return ConversionDTO.transformToDTO(optionRepository.save(option));
     }
     public void updateOption(UpdateOption updateOption) throws FaultException {
-        Option option = optionRepository.getReferenceById(updateOption.getOptionId());
-        if (!(optionRepository.existsById(updateOption.getOptionId()))){
-            log.info(1009 + "Данная опция не существует - " + updateOption.getOptionId());
+        if (!optionRepository.existsById(updateOption.getOptionId())){
+            log.info(1009 + "Данная опция {} не существует", updateOption.getOptionId());
             throw new FaultException(1009, "Данная опция не существует - " + updateOption.getOptionId());
         }
+        Option option = optionRepository.getReferenceById(updateOption.getOptionId());
         option.setPackageVoice(updateOption.getPackageVoice());
         option.setPackageData(updateOption.getPackageData());
         option.setPackageSms(updateOption.getPackageSms());

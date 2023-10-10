@@ -32,8 +32,8 @@ public class OptionController {
     public ResponseEntity<List<OptionDTO>> getAllAvailableOptions() {
         return ResponseEntity.ok(optionService.getAllAvailableOptions());
     }
-    @GetMapping("/get_archive")
-    public ResponseEntity<List<OptionDTO>> getAllArchiveTariffs() {
+    @GetMapping("/get/archive")
+    public ResponseEntity<List<OptionDTO>> getAllArchiveOptions() {
         return ResponseEntity.ok(optionService.getAllArchiveOptions());
     }
     @PatchMapping("/{optionId}/change/status")

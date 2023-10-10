@@ -12,8 +12,13 @@ import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static ru.fintech.example.service.UserService.technicalId;
 
 @Slf4j
 @Service
@@ -33,39 +38,38 @@ public class TariffService {
 
     public TariffDTO addTariff(TariffDTO tariffDTO) throws FaultException {
         Tariff tariff = ConversionDTO.transformToEntity(tariffDTO);
-        List<Tariff> tariffList = tariffRepository.findAll();
-        for (int i = 0; i < tariffList.size(); i++) {
-            if (tariff.getName().equals(tariffList.get(i).getName())) {
-                log.info(1006 + "Тариф с таким названием уже существует: " + tariff.getName());
-                throw new FaultException(1006, "Тариф с таким названием уже существует: " + tariff.getName());
-            }
+        Tariff tariffExist = tariffRepository.getByName(tariffDTO.getName());
+        if (tariffExist != null) {
+            log.info(1006 + "Тариф с таким названием {} уже существует", tariff.getName());
+            throw new FaultException(1006, "Тариф с таким названием уже существует: " + tariff.getName());
         }
-        Tariff tariffAfterSave = tariffRepository.save(tariff);
-        return ConversionDTO.transformToDTO(tariffAfterSave);
+        //Одинаковое с кодом сверху
+//        try {
+//            tariffAfterSave = tariffRepository.save(tariff);
+//        } catch (Exception exception) {
+//            log.info("1006: Тариф с таким названием уже существует - {}", tariff.getName());
+//            throw new FaultException(1006, "Тариф с таким названием уже существует - " + tariff.getName());
+//        }
+        return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
 
-    public List<TariffDTO> getAllAvailableTariffs() {
-        List<Tariff> tariffs = tariffRepository.findAll();
-        List<TariffDTO> tariffDTOS = new ArrayList<>();
-        for (int i = 0; i < tariffs.size(); i++) {
-            if ((tariffs.get(i).isActive())
-                    && (tariffs.get(i).getTariffId() != UserService.technicalId)) {
-                tariffDTOS.add(ConversionDTO.transformToDTO(tariffs.get(i)));
+    public List<TariffDTO> getAllByActive(boolean active) {
+        List<TariffDTO> tariffDTOList = new ArrayList<>();
+        List<Tariff> tariffList = tariffRepository.findAllByActive(active).stream().toList();
+        for (int i = 1; i < tariffList.size(); i++) {
+            if (tariffList.get(i).getTariffId() != technicalId) {
+                tariffDTOList.add(ConversionDTO.transformToDTO(tariffList.get(i)));
             }
         }
-        return tariffDTOS;
-    }
+        //Одинаковый с циклом сверху
+//        List<Tariff> tariffList = tariffs.stream()
+//                .filter(it -> it.getTariffId() != technicalId)
+//                .toList();
+//        for (Tariff t: tariffList) {
+//            tariffDTOS.add(ConversionDTO.transformToDTO(t));
+//        }
 
-    public List<TariffDTO> getAllArchiveTariffs() {
-        List<Tariff> tariffs = tariffRepository.findAll();
-        List<TariffDTO> tariffDTOS = new ArrayList<>();
-        for (int i = 0; i < tariffs.size(); i++) {
-            if (!(tariffs.get(i).isActive())
-                    && (tariffs.get(i).getTariffId() != UserService.technicalId)) {
-                tariffDTOS.add(ConversionDTO.transformToDTO(tariffs.get(i)));
-            }
-        }
-        return tariffDTOS;
+        return tariffDTOList;
     }
 
     public TariffDTO changePricePerMonth(int tariffId, int newPrice) {
@@ -75,11 +79,11 @@ public class TariffService {
     }
 
     public void updateTariff(UpdateTariff updateTariff) throws FaultException {
-        Tariff tariff = tariffRepository.getReferenceById(updateTariff.getTariffId());
-        if (!(tariffRepository.existsById(updateTariff.getTariffId()))) {
-            log.info(1007 + "Данный тариф не существует: " + updateTariff.getTariffId());
+        if (!tariffRepository.existsById(updateTariff.getTariffId())) {
+            log.info(1007 + "Данный тариф {} не существует", updateTariff.getTariffId());
             throw new FaultException(1007, "Данный тариф не существует - " + updateTariff.getTariffId());
         }
+        Tariff tariff = tariffRepository.getReferenceById(updateTariff.getTariffId());
         tariff.setPackageVoice(updateTariff.getPackageVoice());
         tariff.setPackageData(updateTariff.getPackageData());
         tariff.setPackageSms(updateTariff.getPackageSms());
