@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.OptionDTO;
 import ru.fintech.example.Exceptions.FaultException;
+import ru.fintech.example.models.UpdateOption;
 import ru.fintech.example.service.OptionService;
 
 import java.util.List;
@@ -55,5 +56,15 @@ public class OptionController {
     @PatchMapping("/{optionId}/changePricePerMouth")
     public void changePricePerMouth(@PathVariable("optionId") int optionId, @RequestParam(value = "pricePerMouth") int pricePerMouth) {
         optionService.changePricePerMouth(optionId, pricePerMouth);
+    }
+
+    @PutMapping("/updateOption")
+    public ResponseEntity<OptionDTO> updateOption(@RequestBody UpdateOption updateOption) {
+        return ResponseEntity.ok(optionService.updateOption(
+                updateOption.getOptionId(),
+                updateOption.getPackageVoice(),
+                updateOption.getPackageData(),
+                updateOption.getPackageSms(),
+                updateOption.getSpecCode()));
     }
 }

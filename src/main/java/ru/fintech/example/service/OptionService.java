@@ -66,4 +66,13 @@ public class OptionService {
         option.setPricePerMonth(pricePerMouth);
         ConversionDTO.transformToDTO(optionRepository.save(option));
     }
+
+    public OptionDTO updateOption(int optionId, int packageVoice, int packageData, int packageSms, int specCode) {
+        Option option = optionRepository.getReferenceById(optionId);
+        option.setPackageVoice(packageVoice);
+        option.setPackageData(packageData);
+        option.setPackageSms(packageSms);
+        option.setSpecCode(specCode);
+        return ConversionDTO.transformToDTO(optionRepository.save(option));
+    }
 }
