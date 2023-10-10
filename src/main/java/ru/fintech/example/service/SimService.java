@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.Exceptions.FaultException;
+import ru.fintech.example.models.Option;
 import ru.fintech.example.models.Sim;
 import ru.fintech.example.models.Tariff;
 import ru.fintech.example.models.User;
@@ -77,6 +78,21 @@ public class SimService {
             throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
         }
         sim.setTariff(tariff);
+        simRepository.save(sim);
+    }
+
+    public void optionRenewal(int simId, int optionId) throws FaultException {
+        Sim sim = simRepository.getReferenceById(simId);
+        if (!optionRepository.existsById(optionId) || optionId == technicalId){
+            log.info("1009: Данная опция не существует - {}", optionId);
+            throw new FaultException(1009, "Данная опция не существует - " + optionId);
+        }
+        Option option = optionRepository.getReferenceById(optionId);
+        if (!option.isActive()) {
+            log.info("1010: Данная опция архивная - {}", optionId);
+            throw new FaultException(1010, "Данная опция архивная - " + optionId);
+        }
+        sim.setOption(option);
         simRepository.save(sim);
     }
 }

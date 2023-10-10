@@ -29,10 +29,16 @@ public class SimController {
         return ResponseEntity.ok(simService.getAllAvailableSims());
     }
 
-    @PutMapping("/{simId}/renewal")
+    @PutMapping("/{simId}/tariffRenewal")
     public void tariffRenewal(@PathVariable("simId") int simId,
                               @RequestParam(value = "tariffId") int tariffId) throws FaultException {
         simService.tariffRenewal(simId, tariffId);
+    }
+
+    @PutMapping("/{simId}/optionRenewal")
+    public void optionRenewal(@PathVariable("simId") int simId,
+                              @RequestParam(value = "optionId") int optionId) throws FaultException {
+        simService.optionRenewal(simId, optionId);
     }
 
     @ExceptionHandler(FaultException.class)
