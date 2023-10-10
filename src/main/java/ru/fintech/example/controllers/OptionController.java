@@ -37,10 +37,9 @@ public class OptionController {
         return ResponseEntity.ok(optionService.getAllArchiveOptions());
     }
     @PatchMapping("/{optionId}/change/status")
-    public ResponseEntity<OptionDTO> changeStatus(@PathVariable("optionId") int optionId,
-                                                  @RequestParam(value = "newStatus") boolean newStatus) throws FaultException {
+    public ResponseEntity<OptionDTO> changeStatus(@PathVariable("optionId") int optionId) throws FaultException {
         log.info("test");
-        return ResponseEntity.ok(optionService.changeStatus(optionId, newStatus));
+        return ResponseEntity.ok(optionService.changeStatus(optionId));
     }
     @PatchMapping("/{optionId}/change/price")
     public ResponseEntity<OptionDTO> changePricePerMonth(@PathVariable("optionId") int optionId,

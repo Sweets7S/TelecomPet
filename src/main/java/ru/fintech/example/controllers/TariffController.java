@@ -56,9 +56,8 @@ public class TariffController {
     }
 
     @PatchMapping("/{tariffId}/change/status")
-    public ResponseEntity<TariffDTO> changeStatus(@PathVariable("tariffId") int tariffId,
-                                                  @RequestParam(value = "newStatus") boolean newStatus) throws FaultException {
-        return ResponseEntity.ok(tariffService.changeStatus(tariffId, newStatus));
+    public ResponseEntity<TariffDTO> changeStatus(@PathVariable("tariffId") int tariffId) throws FaultException {
+        return ResponseEntity.ok(tariffService.changeStatusToArchive(tariffId));
     }
 
     @ExceptionHandler(FaultException.class)
