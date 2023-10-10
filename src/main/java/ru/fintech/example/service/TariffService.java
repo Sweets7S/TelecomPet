@@ -57,4 +57,10 @@ public class TariffService {
         }
         return tariffDTOList;
     }
+
+    public void changePricePerMouth(int tariffId, int pricePerMouth) {
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        tariff.setPricePerMonth(pricePerMouth);
+        ConversionDTO.transformToDTO(tariffRepository.save(tariff));
+    }
 }

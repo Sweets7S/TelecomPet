@@ -37,6 +37,11 @@ public class TariffController {
         return  ResponseEntity.ok(tariffService.getAllNotActiveTariff());
     }
 
+    @PatchMapping("/{tariffId}/changePricePerMouth")
+    public void changePricePerMouth(@PathVariable("tariffId") int tariffId, @RequestParam(value = "pricePerMouth") int pricePerMouth) {
+        tariffService.changePricePerMouth(tariffId, pricePerMouth);
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
