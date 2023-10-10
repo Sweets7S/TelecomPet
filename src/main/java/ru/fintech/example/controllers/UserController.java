@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.fintech.example.DTO.MsisdnDTO;
+import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.*;
@@ -52,33 +52,34 @@ public class UserController {
         userService.delete(userId);
     }
 
-    @PutMapping("/{msisdnId}/termination")
-    public ResponseEntity<MsisdnDTO> terminationContract(@PathVariable("msisdnId") int msisdnId) {
-        return ResponseEntity.ok(userService.terminationContract(msisdnId));
+    @PutMapping("/{simId}/termination")
+    public ResponseEntity<SimDTO> terminationContract(@PathVariable("simId") int simId) {
+        return ResponseEntity.ok(userService.terminationContract(simId));
     }
 
     @PutMapping("/renewal")
-    public void msisdnRenewal(@RequestBody Renewal renewal) throws FaultException {
-        userService.msisdnRenewal(renewal.getOldUserId(),
-                renewal.getMsisdnId(), renewal.getNewUserId());
+    public void simRenewal(@RequestBody Renewal renewal) throws FaultException {
+        userService.simRenewal(renewal.getOldUserId(),
+                renewal.getSimId(), renewal.getNewUserId());
     }
 
-    @PatchMapping("/{msisdnId}/change/icc")
-    public ResponseEntity<MsisdnDTO> changeIcc(@PathVariable("msisdnId") int msisdnId, @RequestParam(value = "icc") String icc) {
-        return ResponseEntity.ok(userService.changeIcc(msisdnId, icc));
+    @PatchMapping("/{simId}/change/icc")
+    public ResponseEntity<SimDTO> changeIcc(@PathVariable("simId") int simId, @RequestParam(value = "icc") String icc) throws InterruptedException {
+        return ResponseEntity.ok(userService.changeIcc(simId, icc));
     }
 
-    @PostMapping("/{newUserId}/add/msisdn")
-    public void addMsisdnToUser(@PathVariable("newUserId") int newUserId,
-                                @RequestParam(value = "msisdnId") int msisdnId) throws FaultException {
-        userService.addMsisdnToUser(newUserId, msisdnId);
+    @PostMapping("/{newUserId}/add/sim")
+    public void addSimToUser(@PathVariable("newUserId") int newUserId,
+                             @RequestParam(value = "simId") int simId,
+                             @RequestParam(value = "tariffId") int tariffId) throws FaultException {
+        userService.addSimToUser(newUserId, simId, tariffId);
     }
 
-    @PatchMapping("/{userId}/change/msisdn")
-    public ResponseEntity<MsisdnDTO> msisdnChange(@PathVariable("userId") int userId,
-                                  @RequestParam(value = "oldMsisdnId") int oldMsisdnId,
-                                  @RequestParam(value = "newMsisdnId") int newMsisdnId) throws FaultException {
-        return ResponseEntity.ok(userService.changeMsisdn(userId, oldMsisdnId, newMsisdnId));
+    @PatchMapping("/{userId}/change/sim")
+    public ResponseEntity<SimDTO> msisdnChange(@PathVariable("userId") int userId,
+                                               @RequestParam(value = "oldSimId") int oldSimId,
+                                               @RequestParam(value = "newSimId") int newSimId) throws FaultException {
+        return ResponseEntity.ok(userService.changeMsisdn(userId, oldSimId, newSimId));
     }
 
     @PutMapping("/change/passport")
@@ -92,22 +93,24 @@ public class UserController {
         userService.changePassword(userId, password);
     }
 
-    @PostMapping("/{msisdnId}/contract")
-    public ResponseEntity<UserDTO> contractWithMsisdn(@RequestBody UserDTO userDTO,
-                                      @PathVariable("msisdnId") int msisdnId) throws FaultException {
+    @PostMapping("/{simId}/contract")
+    public ResponseEntity<UserDTO> contractWithSim(@RequestBody UserDTO userDTO,
+                                                   @PathVariable("simId") int simId,
+                                                   @RequestParam(value = "tariffId") int tariffId) throws FaultException {
         UserDTO userDTO1 = userService.create(userDTO);
-        userService.addMsisdnToUser(userDTO1.getId(), msisdnId);
+        userService.addSimToUser(userDTO1.getId(), simId, tariffId);
         UserDTO user = userService.get(userDTO1.getId());
         log.info(user.toString());
         return ResponseEntity.ok(user);
     }
+
     @ExceptionHandler(FaultException.class)
-    public ResponseEntity<String> handleFaultException(FaultException e){
+    public ResponseEntity<String> handleFaultException(FaultException e) {
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e){
+    public ResponseEntity<String> handleException(Exception e) {
         return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
 }

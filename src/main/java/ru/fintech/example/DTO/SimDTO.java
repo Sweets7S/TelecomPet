@@ -3,19 +3,21 @@ package ru.fintech.example.DTO;
 import lombok.ToString;
 
 @ToString
-public class MsisdnDTO {
-    private int msisdnId;
+public class SimDTO {
+    private int simId;
     private int userId;
     private String msisdn;
     private String icc;
     private boolean active;
+    private int tariffId;
+    private int optionId;
 
-    public int getMsisdnId() {
-        return msisdnId;
+    public int getSimId() {
+        return simId;
     }
 
-    public void setMsisdnId(int msisdnId) {
-        this.msisdnId = msisdnId;
+    public void setSimId(int simId) {
+        this.simId = simId;
     }
 
     public int getUserId() {
@@ -50,24 +52,19 @@ public class MsisdnDTO {
         this.icc = icc;
     }
 
-    public MsisdnDTO msisdnId(int msisdnId){
-        this.setMsisdnId(msisdnId);
-        return this;
+    public int getTariffId() {
+        return tariffId;
     }
-    public MsisdnDTO userId(int userId){
-        this.setUserId(userId);
-        return this;
+
+    public void setTariffId(int tariffId) {
+        this.tariffId = tariffId;
     }
-    public MsisdnDTO msisdn(String msisdn){
-        this.setMsisdn(msisdn);
-        return this;
+
+    public int getOptionId() {
+        return optionId;
     }
-    public MsisdnDTO icc(String icc){
-        this.setIcc(icc);
-        return this;
-    }
-    public MsisdnDTO active(boolean active) {
-        this.setActive(active);
-        return this;
+
+    public void setOptionId(int optionId) {
+        this.optionId = optionId;
     }
 }
