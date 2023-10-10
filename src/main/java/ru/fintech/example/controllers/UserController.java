@@ -83,8 +83,10 @@ public class UserController {
 
     @PutMapping("/change/passport")
     public ResponseEntity<UserDTO> changePassport(@RequestBody UpdatePassport updatePassport) {
-        return ResponseEntity.ok(userService.changePassport(updatePassport.getUserId(),
-                updatePassport.getDocument(), updatePassport.getFio()));
+        return ResponseEntity.ok(userService.changePassport(
+                updatePassport.getUserId(),
+                updatePassport.getDocument(),
+                updatePassport.getFio()));
     }
 
     @PatchMapping("/{userId}/change/password")

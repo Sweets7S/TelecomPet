@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
+import ru.fintech.example.models.UpdateTariff;
 import ru.fintech.example.service.TariffService;
 
 import java.util.List;
@@ -40,6 +41,16 @@ public class TariffController {
     @PatchMapping("/{tariffId}/changePricePerMouth")
     public void changePricePerMouth(@PathVariable("tariffId") int tariffId, @RequestParam(value = "pricePerMouth") int pricePerMouth) {
         tariffService.changePricePerMouth(tariffId, pricePerMouth);
+    }
+
+    @PutMapping("/updateTariff")
+    public ResponseEntity<TariffDTO> updateTariff(@RequestBody UpdateTariff updateTariff) {
+        return ResponseEntity.ok(tariffService.updateTariff(
+                updateTariff.getTariffId(),
+                updateTariff.getPackageVoice(),
+                updateTariff.getPackageData(),
+                updateTariff.getPackageSms(),
+                updateTariff.getPackageVoiceCountry()));
     }
 
     @ExceptionHandler(FaultException.class)

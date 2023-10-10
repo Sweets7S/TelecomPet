@@ -63,4 +63,13 @@ public class TariffService {
         tariff.setPricePerMonth(pricePerMouth);
         ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
+
+    public TariffDTO updateTariff(int tariffId, int packageVoice, int packageData, int packageSms, int packageVoiceCountry) {
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        tariff.setPackageVoice(packageVoice);
+        tariff.setPackageData(packageData);
+        tariff.setPackageSms(packageSms);
+        tariff.setPackageVoiceCountry(packageVoiceCountry);
+        return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
+    }
 }
