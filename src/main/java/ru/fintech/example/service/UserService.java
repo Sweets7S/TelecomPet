@@ -6,9 +6,11 @@ import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Sim;
+import ru.fintech.example.models.Tariff;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.User;
 import ru.fintech.example.repository.SimRepository;
+import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
@@ -22,11 +24,15 @@ public class UserService {
     private UserRepository userRepository;
     //    @Autowired
     private SimRepository simRepository;
+    private TariffRepository tariffRepository;
     protected static int technicalId = 1;
 
-    public UserService(UserRepository userRepository, SimRepository simRepository) {
+    public UserService(UserRepository userRepository,
+                       SimRepository simRepository,
+                       TariffRepository tariffRepository) {
         this.userRepository = userRepository;
         this.simRepository = simRepository;
+        this.tariffRepository = tariffRepository;
     }
 
     public UserDTO create(UserDTO userDTO) {
@@ -104,6 +110,21 @@ public class UserService {
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);
         }
         sim.setUser(userRepository.getReferenceById(newUserId));
+        return ConversionDTO.transformToDTO(simRepository.save(sim));
+    }
+
+    public SimDTO addTariffToSim(int simId, int tariffId) throws FaultException {
+        if (!tariffRepository.existsById(tariffId) || tariffId == technicalId){
+            log.info("1007: Данный тариф не существует - {}", tariffId);
+            throw new FaultException(1007, "Данный тариф не существует - " + tariffId);
+        }
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        if (!tariff.isActive()) {
+            log.info("1004: Данный тариф архивный - {} - {}", tariffId, tariff.getName());
+            throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
+        }
+        Sim sim = simRepository.getReferenceById(simId);
+        sim.setTariff(tariffRepository.getReferenceById(tariffId));
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 

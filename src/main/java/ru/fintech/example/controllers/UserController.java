@@ -94,11 +94,13 @@ public class UserController {
         userService.changePassword(userId, password);
     }
 
-    @PostMapping("/{simId}/contract")
+    @PostMapping("/{simId}/{tariffId}/contract")
     public ResponseEntity<UserDTO> contractWithSim(@RequestBody UserDTO userDTO,
-                                                   @PathVariable("simId") int simId) throws FaultException {
+                                                   @PathVariable("simId") int simId,
+                                                   @PathVariable("tariffId") int tariffId) throws FaultException {
         UserDTO userDTO1 = userService.create(userDTO);
         userService.addSimToUser(userDTO1.getId(), simId);
+        userService.addTariffToSim(simId, tariffId);
         UserDTO user = userService.get(userDTO1.getId());
         log.info(user.toString());
         return ResponseEntity.ok(user);
