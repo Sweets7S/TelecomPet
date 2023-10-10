@@ -60,4 +60,10 @@ public class OptionService {
         option.setActive(false);
         ConversionDTO.transformToDTO(optionRepository.save(option));
     }
+
+    public void changePricePerMouth(int optionId, int pricePerMouth) {
+        Option option = optionRepository.getReferenceById(optionId);
+        option.setPricePerMonth(pricePerMouth);
+        ConversionDTO.transformToDTO(optionRepository.save(option));
+    }
 }

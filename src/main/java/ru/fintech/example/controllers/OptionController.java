@@ -51,4 +51,9 @@ public class OptionController {
     public void changeOptionToArchive(@PathVariable("optionId") int optionId) {
         optionService.changeOptionToArchive(optionId);
     }
+
+    @PatchMapping("/{optionId}/changePricePerMouth")
+    public void changePricePerMouth(@PathVariable("optionId") int optionId, @RequestParam(value = "pricePerMouth") int pricePerMouth) {
+        optionService.changePricePerMouth(optionId, pricePerMouth);
+    }
 }
