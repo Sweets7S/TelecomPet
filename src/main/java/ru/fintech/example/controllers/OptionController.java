@@ -46,4 +46,9 @@ public class OptionController {
     public ResponseEntity<String> handleException(Exception e){
         return new ResponseEntity<String>(String.format("Massage: %s", e.getMessage()), HttpStatusCode.valueOf(500));
     }
+
+    @PatchMapping("/{optionId}/changeOptionToArchive")
+    public void changeOptionToArchive(@PathVariable("optionId") int optionId) {
+        optionService.changeOptionToArchive(optionId);
+    }
 }

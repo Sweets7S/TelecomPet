@@ -54,4 +54,10 @@ public class OptionService {
         }
         return optionDTOList;
     }
+
+    public void changeOptionToArchive(int optionId) {
+        Option option = optionRepository.getReferenceById(optionId);
+        option.setActive(false);
+        ConversionDTO.transformToDTO(optionRepository.save(option));
+    }
 }
