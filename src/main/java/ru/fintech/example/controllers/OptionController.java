@@ -8,6 +8,8 @@ import ru.fintech.example.DTO.OptionDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.service.OptionService;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/option")
@@ -23,6 +25,11 @@ public class OptionController {
     public ResponseEntity<OptionDTO> create(@RequestBody OptionDTO optionDTO) throws FaultException {
         log.info("Coming request {}", optionDTO);
         return ResponseEntity.ok(optionService.create(optionDTO));
+    }
+
+    @GetMapping("active")
+    public ResponseEntity<List<OptionDTO>> getAllActiveOption() {
+        return ResponseEntity.ok(optionService.getAllActiveOption());
     }
 
     @ExceptionHandler(FaultException.class)

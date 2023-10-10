@@ -30,7 +30,7 @@ public class TariffController {
 
     @GetMapping("active")
     public ResponseEntity<List<TariffDTO>> getAllActiveTariff() {
-        return  ResponseEntity.ok(tariffService.getAllActiveTariff());
+        return ResponseEntity.ok(tariffService.getAllActiveTariff());
     }
 
     @GetMapping("notActive")

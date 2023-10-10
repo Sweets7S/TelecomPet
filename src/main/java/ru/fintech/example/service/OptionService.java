@@ -35,17 +35,17 @@ public class OptionService {
         return ConversionDTO.transformToDTO(optionAfterSave);
     }
 
-//    public List<OptionDTO> getAllActiveOption() {
-//        List<OptionDTO> optionDTOList = new ArrayList<>();
-//        List<Option> optionList = optionRepository.findAll();
-//        for (int i = 1; i < optionList.size(); i++) {
-//            if (optionList.get(i).isActive()) {
-//                optionDTOList.add(ConversionDTO.transformToDTO(optionList.get(i)));
-//            }
-//        }
-//        return optionDTOList;
-//    }
-//
+    public List<OptionDTO> getAllActiveOption() {
+        List<OptionDTO> optionDTOList = new ArrayList<>();
+        List<Option> optionList = optionRepository.findAll();
+        for (int i = 1; i < optionList.size(); i++) {
+            if (optionList.get(i).isActive()) {
+                optionDTOList.add(ConversionDTO.transformToDTO(optionList.get(i)));
+            }
+        }
+        return optionDTOList;
+    }
+
 //    public List<OptionDTO> getAllNotActiveOption() {
 //        List<OptionDTO> optionDTOList = new ArrayList<>();
 //        List<Option> optionList = optionRepository.findAll();
