@@ -11,6 +11,8 @@ import ru.fintech.example.utils.ConversionDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.fintech.example.service.UserService.technicalId;
+
 
 @Slf4j
 @Service
@@ -32,26 +34,32 @@ public class TariffService {
         }
         return ConversionDTO.transformToDTO(tariffAfterSave);
     }
+//    public TariffDTO create(TariffDTO tariffDTO) throws FaultException {
+//        Tariff tariff = ConversionDTO.transformToEntity(tariffDTO);
+//        Tariff tariffExist = tariffRepository.getByName(tariffDTO.getName());
+//        if (tariffExist != null) {
+//            log.info(1006 + "Тариф с таким названием {} уже существует", tariff.getName());
+//            throw new FaultException(1006, "Тариф с таким названием уже существует: " + tariff.getName());
+//        }
+//        Tariff tariffAfterSave = tariffRepository.save(tariff);
+//        return ConversionDTO.transformToDTO(tariffAfterSave);
+//    }
 
-    public List<TariffDTO> getAllActiveTariff() {
+    public List<TariffDTO> getAllByActive(boolean active) {
         List<TariffDTO> tariffDTOList = new ArrayList<>();
-        List<Tariff> tariffList = tariffRepository.findAll();
-        for (int i = 1; i < tariffList.size(); i++) {
-            if (tariffList.get(i).isActive()) {
-                tariffDTOList.add(ConversionDTO.transformToDTO(tariffList.get(i)));
+        List<Tariff> tariffs = tariffRepository.findAllByActive(active).stream().toList();
+        for (int i = 1; i < tariffs.size(); i++) {
+            if (tariffs.get(i).getTariffId() != technicalId) {
+                tariffDTOList.add(ConversionDTO.transformToDTO(tariffs.get(i)));
             }
         }
-        return tariffDTOList;
-    }
-
-    public List<TariffDTO> getAllNotActiveTariff() {
-        List<TariffDTO> tariffDTOList = new ArrayList<>();
-        List<Tariff> tariffList = tariffRepository.findAll();
-        for (int i = 1; i < tariffList.size(); i++) {
-            if (!(tariffList.get(i).isActive())) {
-                tariffDTOList.add(ConversionDTO.transformToDTO(tariffList.get(i)));
-            }
-        }
+        //Одинаковые
+//        List<Tariff> tariffList = tariffs.stream()
+//                .filter(it -> it.getTariffId() != technicalId)
+//                .toList();
+//        for (Tariff t: tariffList) {
+//            tariffDTOList.add(ConversionDTO.transformToDTO(t));
+//        }
         return tariffDTOList;
     }
 

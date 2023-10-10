@@ -30,12 +30,12 @@ public class TariffController {
 
     @GetMapping("active")
     public ResponseEntity<List<TariffDTO>> getAllActiveTariff() {
-        return ResponseEntity.ok(tariffService.getAllActiveTariff());
+        return ResponseEntity.ok(tariffService.getAllByActive(true));
     }
 
     @GetMapping("notActive")
     public ResponseEntity<List<TariffDTO>> getAllNotActiveTariff() {
-        return  ResponseEntity.ok(tariffService.getAllNotActiveTariff());
+        return  ResponseEntity.ok(tariffService.getAllByActive(false));
     }
 
     @PatchMapping("/{tariffId}/changePricePerMouth")

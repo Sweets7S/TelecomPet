@@ -11,6 +11,8 @@ import ru.fintech.example.utils.ConversionDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.fintech.example.service.UserService.technicalId;
+
 
 @Slf4j
 @Service
@@ -33,22 +35,11 @@ public class OptionService {
         return ConversionDTO.transformToDTO(optionAfterSave);
     }
 
-    public List<OptionDTO> getAllActiveOption() {
+    public List<OptionDTO> getAllByActive(boolean active) {
         List<OptionDTO> optionDTOList = new ArrayList<>();
-        List<Option> optionList = optionRepository.findAll();
+        List<Option> optionList = optionRepository.findAllByActive(active).stream().toList();
         for (int i = 1; i < optionList.size(); i++) {
-            if (optionList.get(i).isActive()) {
-                optionDTOList.add(ConversionDTO.transformToDTO(optionList.get(i)));
-            }
-        }
-        return optionDTOList;
-    }
-
-    public List<OptionDTO> getAllNotActiveOption() {
-        List<OptionDTO> optionDTOList = new ArrayList<>();
-        List<Option> optionList = optionRepository.findAll();
-        for (int i = 1; i < optionList.size(); i++) {
-            if (!(optionList.get(i).isActive())) {
+            if (optionList.get(i).getOptionId() != technicalId) {
                 optionDTOList.add(ConversionDTO.transformToDTO(optionList.get(i)));
             }
         }

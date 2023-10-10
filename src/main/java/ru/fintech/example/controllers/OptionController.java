@@ -30,12 +30,12 @@ public class OptionController {
 
     @GetMapping("active")
     public ResponseEntity<List<OptionDTO>> getAllActiveOption() {
-        return ResponseEntity.ok(optionService.getAllActiveOption());
+        return ResponseEntity.ok(optionService.getAllByActive(true));
     }
 
     @GetMapping("notActive")
     public ResponseEntity<List<OptionDTO>> getAllNotActiveOption() {
-        return  ResponseEntity.ok(optionService.getAllNotActiveOption());
+        return  ResponseEntity.ok(optionService.getAllByActive(false));
     }
 
     @ExceptionHandler(FaultException.class)
