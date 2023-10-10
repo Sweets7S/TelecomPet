@@ -5,14 +5,13 @@ import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.SimDTO;
 import ru.fintech.example.DTO.UserDTO;
 import ru.fintech.example.Exceptions.FaultException;
-import ru.fintech.example.models.Sim;
-import ru.fintech.example.models.UpdateUser;
-import ru.fintech.example.models.User;
+import ru.fintech.example.models.*;
 import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.repository.SimRepository;
 import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
 import ru.fintech.example.utils.ConversionDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +79,10 @@ public class UserService {
     }
 
     public SimDTO terminationContract(int simId) {
+        Sim sim = simRepository.getReferenceById(simId);
+        sim.setTariff(tariffRepository.getReferenceById(technicalId));
+        sim.setOption(null);
+        simRepository.save(sim);
         return ConversionDTO.transformToDTO(changeUser(simId, technicalId));
     }
 
@@ -89,7 +92,7 @@ public class UserService {
             log.info(1000 + "Пользователь не владеет этим номером: " + simId);
             throw new FaultException(1000, "Пользователь не владеет этим номером: " + simId);
         }
-        if (!(simRepository.existsById(newUserId))){
+        if (!(simRepository.existsById(newUserId))) {
             log.info(1003 + "Такого пользователя не существует: " + newUserId);
             throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
         }
@@ -109,7 +112,7 @@ public class UserService {
             log.info(1002 + "Этого номера нет в списке доступных номеров - " + simId);
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);
         }
-        if (!tariffRepository.getReferenceById(tariffId).isActive()){
+        if (!tariffRepository.getReferenceById(tariffId).isActive()) {
             log.info(1004 + "Данный тариф архивный: " + tariffId);
             throw new FaultException(1004, "Данный тариф архивный - " + tariffId);
         }
@@ -135,7 +138,7 @@ public class UserService {
             sim = simRepository.save(oldSim);
             newSim.setMsisdn(oldMsisdnNum);
             simRepository.save(newSim);
-        } else{
+        } else {
             log.info(1000 + "Пользователь не владеет этим номером: " + oldSimId);
             throw new FaultException(1000, "Пользователь не владеет этим номером: C" + oldSimId);
         }

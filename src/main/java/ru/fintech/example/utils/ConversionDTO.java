@@ -71,6 +71,7 @@ public class ConversionDTO {
         }
         return simDTOS;
     }
+
     public static List<Sim> transformToEntities(List<SimDTO> simDTOS,
                                                 User user,
                                                 Tariff tariff,
@@ -93,7 +94,11 @@ public class ConversionDTO {
         simDTO.setIcc(sim.getIcc());
         simDTO.setActive(sim.isActive());
         simDTO.setTariffId(sim.getTariff().getTariffId());
-        simDTO.setOptionId(sim.getOption().getOptionId());
+        if (sim.getOption() == null) {
+            sim.setOption(null);
+        } else {
+            simDTO.setOptionId(sim.getOption().getOptionId());
+        }
         return simDTO;
     }
 
@@ -111,7 +116,7 @@ public class ConversionDTO {
         return sim;
     }
 
-    public static TariffDTO transformToDTO(Tariff tariff){
+    public static TariffDTO transformToDTO(Tariff tariff) {
         TariffDTO tariffDTO = new TariffDTO();
         tariffDTO.setTariffId(tariff.getTariffId());
         tariffDTO.setName(tariff.getName());
@@ -124,7 +129,8 @@ public class ConversionDTO {
         tariffDTO.setActive(tariff.isActive());
         return tariffDTO;
     }
-    public static Tariff transformToEntity(TariffDTO tariffDTO){
+
+    public static Tariff transformToEntity(TariffDTO tariffDTO) {
         Tariff tariff = new Tariff();
         tariff.setName(tariffDTO.getName());
         tariff.setPricePerMonth(tariffDTO.getPricePerMonth());
@@ -136,7 +142,8 @@ public class ConversionDTO {
         tariff.setActive(tariffDTO.isActive());
         return tariff;
     }
-    public static OptionDTO transformToDTO(Option option){
+
+    public static OptionDTO transformToDTO(Option option) {
         OptionDTO optionDTO = new OptionDTO();
         optionDTO.setOptionId(option.getOptionId());
         optionDTO.setName(option.getName());
@@ -148,6 +155,7 @@ public class ConversionDTO {
         optionDTO.setActive(option.isActive());
         return optionDTO;
     }
+
     public static Option transformToEntity(OptionDTO optionDTO) {
         Option option = new Option();
         option.setName(optionDTO.getName());
