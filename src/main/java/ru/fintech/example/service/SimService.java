@@ -65,7 +65,8 @@ public class SimService {
         List<Sim> simList = vacant.getSims();
         for (int i = 0; i < simList.size(); i++) {
             log.info("Count " + i);
-            simDTOS.add(ConversionDTO.transformToDTO(simList.get(i)));
+            if (simList.get(i).isActive())
+                simDTOS.add(ConversionDTO.transformToDTO(simList.get(i)));
         }
         return simDTOS;
     }
@@ -84,6 +85,7 @@ public class SimService {
         sim.setTariff(tariffRepository.getReferenceById(newTariffId));
         simRepository.save(sim);
     }
+
     public void changeOption(int simId, int newOptionId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
         if (!optionRepository.existsById(newOptionId)) {
@@ -98,11 +100,12 @@ public class SimService {
         sim.setOption(optionRepository.getReferenceById(newOptionId));
         simRepository.save(sim);
     }
+
     //Добавить метод измения у номера active на true/false
     // (если sim.active уже с этим значением вернуть ошибку 1005)
     public SimDTO changeStatus(int simId, boolean newStatus) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
-        if (sim.isActive() == newStatus){
+        if (sim.isActive() == newStatus) {
             log.info(1005 + "Sim уже с этим значением - " + newStatus);
             throw new FaultException(1005, "Sim уже с этим значением - " + newStatus);
         }
