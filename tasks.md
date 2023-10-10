@@ -26,7 +26,7 @@
 - [x] ToDo-8: Метод смены тарифа на любой из доступных (только те которые активны) (SimController)
 - [x] ToDo-9: Метод изменения стоимости тарифа (TariffController)
 - [x] ToDo-10: Метод изменения наполнения тарифа (либо все либо что-то одно либо несколько, кроме maxSpeed) (TariffController)
-- [ ] ToDo-11: Метод изменения максимальной скорости (TariffController)
+- [x] ToDo-11: Метод изменения максимальной скорости (TariffController)
 - [ ] ToDo-12: Метод перевода тарифа в архив (проставить Active в false) (TariffController)
 - [ ] ToDo-13: Метод добавления новой опции (OptionController)
 - [ ] ToDo-14: Метод возврата всех опций(действующих) у которых Active==True (OptionController) (кроме технической)

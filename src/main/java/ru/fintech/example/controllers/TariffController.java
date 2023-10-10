@@ -53,6 +53,11 @@ public class TariffController {
                 updateTariff.getPackageVoiceCountry()));
     }
 
+    @PatchMapping("/{tariffId}/changeSpeedMax")
+    public void changeSpeedMax(@PathVariable("tariffId") int tariffId, @RequestParam(value = "speedMax") int speedMax) {
+        tariffService.changeSpeedMax(tariffId, speedMax);
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));

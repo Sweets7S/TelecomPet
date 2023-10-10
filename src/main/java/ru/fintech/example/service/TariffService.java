@@ -72,4 +72,10 @@ public class TariffService {
         tariff.setPackageVoiceCountry(packageVoiceCountry);
         return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
+
+    public void changeSpeedMax(int tariffId, int speedMax) {
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        tariff.setSpeedMax(speedMax);
+        ConversionDTO.transformToDTO(tariffRepository.save(tariff));
+    }
 }
