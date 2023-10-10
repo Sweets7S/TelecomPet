@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.fintech.example.DTO.SimDTO;
+import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.service.SimService;
 
@@ -40,6 +41,11 @@ public class SimController {
     public void changeOption(@PathVariable("simId") int simId,
                              @RequestParam(value = "newOptionId") int newOptionId) throws FaultException {
         simService.changeOption(simId, newOptionId);
+    }
+    @PatchMapping("/{simId}/change/status")
+    public ResponseEntity<SimDTO> changeStatus(@PathVariable("simId") int simId,
+                                                  @RequestParam(value = "newStatus") boolean newStatus) throws FaultException {
+        return ResponseEntity.ok(simService.changeStatus(simId, newStatus));
     }
 
     @ExceptionHandler(FaultException.class)

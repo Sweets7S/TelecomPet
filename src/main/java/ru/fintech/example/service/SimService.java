@@ -85,7 +85,6 @@ public class SimService {
         simRepository.save(sim);
     }
     public void changeOption(int simId, int newOptionId) throws FaultException {
-        //Only active
         Sim sim = simRepository.getReferenceById(simId);
         if (!optionRepository.existsById(newOptionId)) {
             log.info(1009 + "Данная опция не существует - " + newOptionId);
@@ -98,5 +97,16 @@ public class SimService {
         }
         sim.setOption(optionRepository.getReferenceById(newOptionId));
         simRepository.save(sim);
+    }
+    //Добавить метод измения у номера active на true/false
+    // (если sim.active уже с этим значением вернуть ошибку 1005)
+    public SimDTO changeStatus(int simId, boolean newStatus) throws FaultException {
+        Sim sim = simRepository.getReferenceById(simId);
+        if (sim.isActive() == newStatus){
+            log.info(1005 + "Sim уже с этим значением - " + newStatus);
+            throw new FaultException(1005, "Sim уже с этим значением - " + newStatus);
+        }
+        sim.setActive(newStatus);
+        return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 }

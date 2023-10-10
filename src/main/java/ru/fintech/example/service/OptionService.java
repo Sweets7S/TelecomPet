@@ -67,8 +67,12 @@ public class OptionService {
         }
         return optionDTOS;
     }
-    public OptionDTO changeStatus(int optionId, boolean newStatus) {
+    public OptionDTO changeStatus(int optionId, boolean newStatus) throws FaultException {
         Option option = optionRepository.getReferenceById(optionId);
+        if (option.isActive() == newStatus){
+            log.info(1012 + "Option уже с этим значением - " + newStatus);
+            throw new FaultException(1012, "Option уже с этим значением - " + newStatus);
+        }
         option.setActive(newStatus);
         return ConversionDTO.transformToDTO(optionRepository.save(option));
     }
