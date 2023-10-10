@@ -99,9 +99,16 @@ public class UserService {
         changeUser(simId, newUserId);
     }
 
-    public SimDTO changeIcc(int simId, String icc) {
+    public SimDTO changeIcc(int simId, String icc) throws InterruptedException {
+        //Изменить метод (changeIcc) при смене icc должна меняться опция на
+        // техническую(name=changedSim) на 30 секунд и через 30 секунд должна
+        // вернуться прежняя опция
         Sim sim = simRepository.getReferenceById(simId);
+        int optionId = sim.getOption().getOptionId();
         sim.setIcc(icc);
+        sim.setOption(optionRepository.getReferenceById(technicalId));
+        Thread.sleep(30000);
+        sim.setOption(optionRepository.getReferenceById(optionId));
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 

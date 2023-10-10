@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @PatchMapping("/{simId}/change/icc")
-    public ResponseEntity<SimDTO> changeIcc(@PathVariable("simId") int simId, @RequestParam(value = "icc") String icc) {
+    public ResponseEntity<SimDTO> changeIcc(@PathVariable("simId") int simId, @RequestParam(value = "icc") String icc) throws InterruptedException {
         return ResponseEntity.ok(userService.changeIcc(simId, icc));
     }
 
