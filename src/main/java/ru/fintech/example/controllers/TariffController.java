@@ -58,6 +58,11 @@ public class TariffController {
         tariffService.changeSpeedMax(tariffId, speedMax);
     }
 
+    @PatchMapping("/{tariffId}/changeTariffToArchive")
+    public void changeTariffToArchive(@PathVariable("tariffId") int tariffId) {
+        tariffService.changeTariffToArchive(tariffId);
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));

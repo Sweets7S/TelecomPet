@@ -78,4 +78,10 @@ public class TariffService {
         tariff.setSpeedMax(speedMax);
         ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
+
+    public void changeTariffToArchive(int tariffId) {
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        tariff.setActive(false);
+        ConversionDTO.transformToDTO(tariffRepository.save(tariff));
+    }
 }
