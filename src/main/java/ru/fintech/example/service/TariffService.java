@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.TariffDTO;
 import ru.fintech.example.Exceptions.FaultException;
 import ru.fintech.example.models.Tariff;
-import ru.fintech.example.repository.SimRepository;
 import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.utils.ConversionDTO;
 
@@ -17,11 +16,9 @@ import java.util.List;
 @Service
 public class TariffService {
     private TariffRepository tariffRepository;
-    private SimRepository simRepository;
 
-    public TariffService(TariffRepository tariffRepository, SimRepository simRepository) {
+    public TariffService(TariffRepository tariffRepository) {
         this.tariffRepository = tariffRepository;
-        this.simRepository = simRepository;
     }
 
     public TariffDTO create(TariffDTO tariffDTO) throws FaultException {
