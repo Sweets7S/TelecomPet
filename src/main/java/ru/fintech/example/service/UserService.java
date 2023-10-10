@@ -92,7 +92,7 @@ public class UserService {
             log.info(1000 + "Пользователь не владеет этим номером: " + simId);
             throw new FaultException(1000, "Пользователь не владеет этим номером: " + simId);
         }
-        if (!(simRepository.existsById(newUserId))) {
+        if (!(userRepository.existsById(newUserId))) {
             log.info(1003 + "Такого пользователя не существует: " + newUserId);
             throw new FaultException(1003, "Такого пользователя не существует: " + newUserId);
         }
@@ -100,9 +100,6 @@ public class UserService {
     }
 
     public SimDTO changeIcc(int simId, String icc) throws InterruptedException {
-        //Изменить метод (changeIcc) при смене icc должна меняться опция на
-        // техническую(name=changedSim) на 30 секунд и через 30 секунд должна
-        // вернуться прежняя опция
         Sim sim = simRepository.getReferenceById(simId);
         int optionId = sim.getOption().getOptionId();
         sim.setIcc(icc);
