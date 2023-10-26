@@ -52,6 +52,11 @@ public class SimService {
                 throw new FaultException(1001, "Такой номер уже существует");
             }
         }
+        for (int i = 0; i < simsResult.size(); i++) {
+            simsResult.get(i).setTariff(tariffRepository.getReferenceById(technicalId));
+            simsResult.get(i).setOption(null);
+            simRepository.save(simsResult.get(i));
+        }
         return ConversionDTO.transformToDTOs(simsResult);
     }
 
