@@ -66,7 +66,9 @@ public class SimService {
         List<Sim> simList = vacant.getSims();
         for (int i = 0; i < simList.size(); i++) {
             log.info("Count " + i);
-            simDTOS.add(ConversionDTO.transformToDTO(simList.get(i)));
+            if (simList.get(i).isActive()) {
+                simDTOS.add(ConversionDTO.transformToDTO(simList.get(i)));
+            }
         }
         return simDTOS;
     }
