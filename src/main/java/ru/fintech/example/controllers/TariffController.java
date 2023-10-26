@@ -63,6 +63,12 @@ public class TariffController {
         tariffService.changeTariffToArchive(tariffId);
     }
 
+    @PatchMapping("/{tariffId}/changeActive")
+    public ResponseEntity<TariffDTO> changeActive(@PathVariable("tariffId") int tariffId,
+                                                  @RequestParam(value = "newActive") boolean newActive) throws FaultException {
+        return ResponseEntity.ok(tariffService.changeActive(tariffId, newActive));
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));

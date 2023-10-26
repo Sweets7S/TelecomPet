@@ -66,4 +66,14 @@ public class OptionService {
         option.setSpecCode(specCode);
         return ConversionDTO.transformToDTO(optionRepository.save(option));
     }
+
+    public OptionDTO changeActive(int optionId, boolean newActive) throws FaultException {
+        Option option = optionRepository.getReferenceById(optionId);
+        if (option.isActive() == newActive) {
+            log.info("1012: Option - {} уже с этим значением - {}", optionId, newActive);
+            throw new FaultException(1012, "Option - " + optionId + " уже с этим значением - " + newActive);
+        }
+        option.setActive(newActive);
+        return ConversionDTO.transformToDTO(optionRepository.save(option));
+    }
 }

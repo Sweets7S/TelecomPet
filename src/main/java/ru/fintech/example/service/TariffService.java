@@ -89,4 +89,14 @@ public class TariffService {
         tariff.setActive(false);
         ConversionDTO.transformToDTO(tariffRepository.save(tariff));
     }
+
+    public TariffDTO changeActive(int tariffId, boolean newActive) throws FaultException {
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
+        if (tariff.isActive() == newActive) {
+            log.info("1011: Tariff - {} уже с этим значением - {}", tariffId, newActive);
+            throw new FaultException(1011, "Tariff - " + tariffId + " уже с этим значением - " + newActive);
+        }
+        tariff.setActive(newActive);
+        return ConversionDTO.transformToDTO(tariffRepository.save(tariff));
+    }
 }

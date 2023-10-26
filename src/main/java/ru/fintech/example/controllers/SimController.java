@@ -41,6 +41,12 @@ public class SimController {
         simService.optionRenewal(simId, optionId);
     }
 
+    @PatchMapping("/{simId}/changeActive")
+    public ResponseEntity<SimDTO> changeActive(@PathVariable("simId") int simId,
+                                               @RequestParam(value = "newActive") boolean newActive) throws FaultException {
+        return ResponseEntity.ok(simService.changeActive(simId, newActive));
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));

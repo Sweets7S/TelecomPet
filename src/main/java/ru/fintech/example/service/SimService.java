@@ -100,4 +100,14 @@ public class SimService {
         sim.setOption(option);
         simRepository.save(sim);
     }
+
+    public SimDTO changeActive(int simId, boolean newActive) throws FaultException {
+        Sim sim = simRepository.getReferenceById(simId);
+        if (sim.isActive() == newActive) {
+            log.info("1005: Sim - {} уже с этим значением - {}", simId, newActive);
+            throw new FaultException(1005, "Sim - " + simId + " уже с этим значением - " + newActive);
+        }
+        sim.setActive(newActive);
+        return ConversionDTO.transformToDTO(simRepository.save(sim));
+    }
 }

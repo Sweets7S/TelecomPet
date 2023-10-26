@@ -38,6 +38,12 @@ public class OptionController {
         return  ResponseEntity.ok(optionService.getAllByActive(false));
     }
 
+    @PatchMapping("/{optionId}/changeActive")
+    public ResponseEntity<OptionDTO> changeActive(@PathVariable("optionId") int optionId,
+                                                  @RequestParam(value = "newActive") boolean newActive) throws FaultException {
+        return ResponseEntity.ok(optionService.changeActive(optionId, newActive));
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));
