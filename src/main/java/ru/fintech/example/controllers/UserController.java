@@ -70,8 +70,9 @@ public class UserController {
 
     @PostMapping("/{newUserId}/add/sim")
     public void addSimToUser(@PathVariable("newUserId") int newUserId,
-                             @RequestParam(value = "simId") int simId) throws FaultException {
-        userService.addSimToUser(newUserId, simId);
+                             @RequestParam(value = "simId") int simId,
+                             @RequestParam(value = "tariffId") int tariffId) throws FaultException {
+        userService.addSimToUser(newUserId, simId, tariffId);
     }
 
     @PatchMapping("/{userId}/change/msisdn")
@@ -99,7 +100,7 @@ public class UserController {
                                                    @PathVariable("simId") int simId,
                                                    @PathVariable("tariffId") int tariffId) throws FaultException {
         UserDTO userDTO1 = userService.create(userDTO);
-        userService.addSimToUser(userDTO1.getId(), simId);
+        userService.addSimToUser(userDTO1.getId(), simId, tariffId);
         userService.addTariffToSim(simId, tariffId);
         UserDTO user = userService.get(userDTO1.getId());
         log.info(user.toString());

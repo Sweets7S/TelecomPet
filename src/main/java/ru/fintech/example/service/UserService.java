@@ -103,13 +103,19 @@ public class UserService {
     }
 
 
-    public SimDTO addSimToUser(int newUserId, int simId) throws FaultException {
+    public SimDTO addSimToUser(int newUserId, int simId, int tariffId) throws FaultException {
         Sim sim = simRepository.getReferenceById(simId);
+        Tariff tariff = tariffRepository.getReferenceById(tariffId);
         if (sim.getUser().getId() != technicalId) {
             log.info("1002: Этого номера нет в списке доступных номеров - {}", simId);
             throw new FaultException(1002, "Этого номера нет в списке доступных номеров - " + simId);
         }
+        if (tariff.getTariffId() == technicalId) {
+            log.info("1004: Данный тариф архивный - {} - {}", tariffId, tariffRepository.getReferenceById(tariffId).getName());
+            throw new FaultException(1004, "Данный тариф архивный - " + tariffId + " - " + tariffRepository.getReferenceById(tariffId).getName());
+        }
         sim.setUser(userRepository.getReferenceById(newUserId));
+        sim.setTariff(tariffRepository.getReferenceById(tariffId));
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 
