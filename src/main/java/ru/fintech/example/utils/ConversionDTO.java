@@ -92,7 +92,11 @@ public class ConversionDTO {
         simDTO.setActive(sim.isActive());
         simDTO.setMsisdn(sim.getMsisdn());
         simDTO.setTariffId(sim.getTariff().getTariffId());
-        simDTO.setOptionId(sim.getOption().getOptionId());
+        if (sim.getOption() == null) {
+            sim.setOption(null);
+        } else {
+            simDTO.setOptionId(sim.getOption().getOptionId());
+        }
         return simDTO;
     }
 

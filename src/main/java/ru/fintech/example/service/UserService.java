@@ -9,6 +9,7 @@ import ru.fintech.example.models.Sim;
 import ru.fintech.example.models.Tariff;
 import ru.fintech.example.models.UpdateUser;
 import ru.fintech.example.models.User;
+import ru.fintech.example.repository.OptionRepository;
 import ru.fintech.example.repository.SimRepository;
 import ru.fintech.example.repository.TariffRepository;
 import ru.fintech.example.repository.UserRepository;
@@ -25,14 +26,17 @@ public class UserService {
     //    @Autowired
     private SimRepository simRepository;
     private TariffRepository tariffRepository;
+    private OptionRepository optionRepository;
     protected static int technicalId = 1;
 
     public UserService(UserRepository userRepository,
                        SimRepository simRepository,
-                       TariffRepository tariffRepository) {
+                       TariffRepository tariffRepository,
+                       OptionRepository optionRepository) {
         this.userRepository = userRepository;
         this.simRepository = simRepository;
         this.tariffRepository = tariffRepository;
+        this.optionRepository = optionRepository;
     }
 
     public UserDTO create(UserDTO userDTO) {
@@ -80,6 +84,10 @@ public class UserService {
     }
 
     public SimDTO terminationContract(int simId) {
+        Sim sim = simRepository.getReferenceById(simId);
+        sim.setTariff(tariffRepository.getReferenceById(technicalId));
+        sim.setOption(null);
+        simRepository.save(sim);
         return ConversionDTO.transformToDTO(changeUser(simId, technicalId));
     }
 
