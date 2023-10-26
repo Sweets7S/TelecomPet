@@ -47,6 +47,11 @@ public class SimController {
         return ResponseEntity.ok(simService.changeActive(simId, newActive));
     }
 
+    @GetMapping("/getAllNotActiveSims")
+    public ResponseEntity<List<SimDTO>> getAllNotActiveSims() {
+        return ResponseEntity.ok(simService.getAllNotActiveSims());
+    }
+
     @ExceptionHandler(FaultException.class)
     public ResponseEntity<String> handleFaultException(FaultException e){
         return new ResponseEntity<String>(String.format("FaultCode: %s, Massage: %s", e.getFaultCode(), e.getMessage()), HttpStatusCode.valueOf(444));

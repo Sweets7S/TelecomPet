@@ -112,4 +112,17 @@ public class SimService {
         sim.setActive(newActive);
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
+
+    public List<SimDTO> getAllNotActiveSims() {
+        List<SimDTO> simDTOList = new ArrayList<>();
+        User user = userRepository.getReferenceById(technicalId);
+        List<Sim> simList = user.getSims();
+        for (int i = 0; i < simList.size(); i++) {
+            log.info("Count " + i);
+            if (!simList.get(i).isActive()) {
+                simDTOList.add(ConversionDTO.transformToDTO(simList.get(i)));
+            }
+        }
+        return simDTOList;
+    }
 }
