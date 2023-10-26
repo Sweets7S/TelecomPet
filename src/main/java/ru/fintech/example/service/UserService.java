@@ -104,9 +104,13 @@ public class UserService {
         changeUser(simId, newUserId);
     }
 
-    public SimDTO changeIcc(int simId, String icc) {
+    public SimDTO changeIcc(int simId, String icc) throws InterruptedException {
         Sim sim = simRepository.getReferenceById(simId);
+        int opId = sim.getOption().getOptionId();
         sim.setIcc(icc);
+        sim.setOption(optionRepository.getReferenceById(technicalId));
+        Thread.sleep(30000);
+        sim.setOption(optionRepository.getReferenceById(opId));
         return ConversionDTO.transformToDTO(simRepository.save(sim));
     }
 
