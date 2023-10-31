@@ -1,0 +1,96 @@
+- POST -
+- description: метод добавления нового тарифа
+
+Request: localhost:8080/tariff/add
+{
+    "name": "21111",
+    "pricePerMonth": "11111",
+    "packageVoice": "11111",
+    "packageData": "11111",
+    "packageSms": "11111",
+    "speedMax": "11111",
+    "packageVoiceCountry": "11111",
+    "active": true
+}
+
+Response: 200
+{
+    "tariffId": 2,
+    "name": "21111",
+    "pricePerMonth": 11111,
+    "packageVoice": 11111,
+    "packageData": 11111,
+    "packageSms": 11111,
+    "speedMax": 11111,
+    "packageVoiceCountry": 11111,
+    "active": true
+}
+..........................................................
+
+- GET -
+- description: возвращает список доступных номеров
+
+Request: localhost:8080/sim/get
+
+Response: 200
+[
+    {
+        "simId": 1,
+        "userId": 1,
+        "msisdn": "84",
+        "icc": "84",
+        "active": true,
+        "tariffId": 1,
+        "optionId": 0
+    },
+    {
+        "simId": 2,
+        "userId": 1,
+        "msisdn": "85",
+        "icc": "85",
+        "active": true,
+        "tariffId": 1,
+        "optionId": 0
+    }
+]
+..........................................................
+
+- PUT -
+- description: обновление логина и/или статуса активности пользователя
+
+Request: localhost:8080/user/update
+{
+    "id": 2,
+    "login": "99999999",
+    "active": true
+}
+
+Response: 200
+
+..........................................................
+
+- PATCH -
+- description: метод смены сим-карты со старой на новую
+
+Request: localhost:8080/user/5/change/icc?icc=777777
+Query Params:
+icc 777777
+
+Response: 200
+{
+    "simId": 3,
+    "userId": 3,
+    "msisdn": "86",
+    "icc": "777777",
+    "active": true,
+    "tariffId": 1,
+    "optionId": 1
+}
+..........................................................
+
+- DELETE -
+- description: удаляет пользователя из базы данных, если у него был номер, переводит номер на технического пользователя
+
+Request: localhost:8080/user/4
+
+Response: 200

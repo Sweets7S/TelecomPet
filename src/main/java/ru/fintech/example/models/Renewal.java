@@ -1,5 +1,6 @@
 package ru.fintech.example.models;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -7,7 +8,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Renewal {
     private int oldUserId;
-    private int msisdnId;
+    private int simId;
     private int newUserId;
 
 
@@ -19,12 +20,12 @@ public class Renewal {
         this.oldUserId = oldUserId;
     }
 
-    public int getMsisdnId() {
-        return msisdnId;
+    public int getSimId() {
+        return simId;
     }
 
-    public void setMsisdnId(int msisdnId) {
-        this.msisdnId = msisdnId;
+    public void setSimId(int simId) {
+        this.simId = simId;
     }
 
     public int getNewUserId() {

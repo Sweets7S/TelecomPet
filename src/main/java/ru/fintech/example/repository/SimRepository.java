@@ -1,9 +1,11 @@
 package ru.fintech.example.repository;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.fintech.example.models.Msisdn;
+import ru.fintech.example.models.Sim;
 
 @Repository
-public interface MsisdnRepository extends JpaRepository<Msisdn, Integer> {
+@Hidden
+public interface SimRepository extends JpaRepository<Sim, Integer> {
 }

@@ -1,12 +1,8 @@
 package ru.fintech.example.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.fintech.example.DTO.MsisdnDTO;
-import ru.fintech.example.DTO.TestDTO;
-import ru.fintech.example.DTO.UserDTO;
-import ru.fintech.example.models.Msisdn;
-import ru.fintech.example.models.TestEntity;
-import ru.fintech.example.models.User;
+import ru.fintech.example.DTO.*;
+import ru.fintech.example.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,46 +58,109 @@ public class ConversionDTO {
         userDTO.setFio(user.getFio());
         userDTO.setDocument(user.getDocument());
         userDTO.setActive(user.isActive());
-        userDTO.setMsisdnDTOS(transformToDTOs(user.getMsisdns()));
+        userDTO.setSimDTOS(transformToDTOs(user.getSims()));
         return userDTO;
     }
 
-    public static List<MsisdnDTO> transformToDTOs(List<Msisdn> msisdn) {
-        List<MsisdnDTO> msisdnDTOS = new ArrayList<>();
-        if (msisdn != null) {
-            for (int i = 0; i < msisdn.size(); i++) {
-                msisdnDTOS.add(transformToDTO(msisdn.get(i)));
+    public static List<SimDTO> transformToDTOs(List<Sim> sim) {
+        List<SimDTO> simDTOS = new ArrayList<>();
+        if (sim != null) {
+            for (int i = 0; i < sim.size(); i++) {
+                simDTOS.add(transformToDTO(sim.get(i)));
             }
         }
-        return msisdnDTOS;
+        return simDTOS;
     }
-    public static List<Msisdn> transformToEntities(List<MsisdnDTO> msisdnDTOS, User user) {
-        List<Msisdn> msisdns = new ArrayList<>();
-        if (msisdnDTOS != null) {
-            for (int i = 0; i < msisdnDTOS.size(); i++) {
-                msisdns.add(transformToEntity(msisdnDTOS.get(i), user));
+    public static List<Sim> transformToEntities(List<SimDTO> simDTOS,
+                                                User user,
+                                                Tariff tariff,
+                                                Option option) {
+        List<Sim> sims = new ArrayList<>();
+        if (simDTOS != null) {
+            for (int i = 0; i < simDTOS.size(); i++) {
+                sims.add(transformToEntity(simDTOS.get(i), user, tariff, option));
             }
         }
-        return msisdns;
+        return sims;
     }
 
-    public static MsisdnDTO transformToDTO(Msisdn msisdn) {
-        MsisdnDTO msisdnDTO = new MsisdnDTO();
-        msisdnDTO.setUserId(msisdn.getUser().getId());
-        msisdnDTO.setMsisdnId(msisdn.getMsisdnId());
-        msisdnDTO.setIcc(msisdn.getIcc());
-        msisdnDTO.setActive(msisdn.isActive());
-        msisdnDTO.setMsisdn(msisdn.getMsisdn());
-        return msisdnDTO;
+    public static SimDTO transformToDTO(Sim sim) {
+        SimDTO simDTO = new SimDTO();
+        simDTO.setUserId(sim.getUser().getId());
+        simDTO.setSimId(sim.getSimId());
+        simDTO.setIcc(sim.getIcc());
+        simDTO.setActive(sim.isActive());
+        simDTO.setMsisdn(sim.getMsisdn());
+        simDTO.setTariffId(sim.getTariff().getTariffId());
+        if (sim.getOption() == null) {
+            sim.setOption(null);
+        } else {
+            simDTO.setOptionId(sim.getOption().getOptionId());
+        }
+        return simDTO;
     }
 
-    public static Msisdn transformToEntity(MsisdnDTO msisdnDTO, User user) {
-        Msisdn msisdn = new Msisdn();
-        msisdn.setMsisdn(msisdnDTO.getMsisdn());
-        msisdn.setIcc(msisdnDTO.getIcc());
-        msisdn.setUser(user);
-        msisdn.setActive(msisdnDTO.isActive());
-        msisdn.setMsisdnId(msisdnDTO.getMsisdnId());
-        return msisdn;
+    public static Sim transformToEntity(SimDTO simDTO, User user, Tariff tariff, Option option) {
+        Sim sim = new Sim();
+        sim.setSimId(simDTO.getSimId());
+        sim.setUser(user);
+        sim.setMsisdn(simDTO.getMsisdn());
+        sim.setIcc(simDTO.getIcc());
+        sim.setActive(simDTO.isActive());
+        sim.setTariff(tariff);
+        sim.setOption(option);
+        return sim;
+    }
+
+    public static TariffDTO transformToDTO(Tariff tariff) {
+        TariffDTO tariffDTO = new TariffDTO();
+        tariffDTO.setTariffId(tariff.getTariffId());
+        tariffDTO.setName(tariff.getName());
+        tariffDTO.setPricePerMonth(tariff.getPricePerMonth());
+        tariffDTO.setPackageVoice(tariff.getPackageVoice());
+        tariffDTO.setPackageData(tariff.getPackageData());
+        tariffDTO.setPackageSms(tariff.getPackageSms());
+        tariffDTO.setSpeedMax(tariff.getSpeedMax());
+        tariffDTO.setPackageVoiceCountry(tariff.getPackageVoiceCountry());
+        tariffDTO.setActive(tariff.isActive());
+        return tariffDTO;
+    }
+
+    public static Tariff transformToEntity(TariffDTO tariffDTO) {
+        Tariff tariff = new Tariff();
+        tariff.setName(tariffDTO.getName());
+        tariff.setPricePerMonth(tariffDTO.getPricePerMonth());
+        tariff.setPackageVoice(tariffDTO.getPackageVoice());
+        tariff.setPackageData(tariffDTO.getPackageData());
+        tariff.setPackageSms(tariffDTO.getPackageSms());
+        tariff.setSpeedMax(tariffDTO.getSpeedMax());
+        tariff.setPackageVoiceCountry(tariffDTO.getPackageVoiceCountry());
+        tariff.setActive(tariffDTO.isActive());
+        return tariff;
+    }
+
+    public static OptionDTO transformToDTO(Option option) {
+        OptionDTO optionDTO = new OptionDTO();
+        optionDTO.setOptionId(option.getOptionId());
+        optionDTO.setName(option.getName());
+        optionDTO.setPricePerMonth(option.getPricePerMonth());
+        optionDTO.setPackageVoice(option.getPackageVoice());
+        optionDTO.setPackageData(option.getPackageData());
+        optionDTO.setPackageSms(option.getPackageSms());
+        optionDTO.setSpecCode(option.getSpecCode());
+        optionDTO.setActive(option.isActive());
+        return optionDTO;
+    }
+
+    public static Option transformToEntity(OptionDTO optionDTO) {
+        Option option = new Option();
+        option.setName(optionDTO.getName());
+        option.setPricePerMonth(optionDTO.getPricePerMonth());
+        option.setPackageVoice(optionDTO.getPackageVoice());
+        option.setPackageData(optionDTO.getPackageData());
+        option.setPackageSms(optionDTO.getPackageSms());
+        option.setSpecCode(optionDTO.getSpecCode());
+        option.setActive(optionDTO.isActive());
+        return option;
     }
 }
