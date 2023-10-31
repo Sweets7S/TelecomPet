@@ -1,5 +1,6 @@
 package ru.fintech.example.models;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,6 +11,7 @@ import java.util.List;
 @Table(name = "users")
 @ToString
 @NoArgsConstructor
+@Hidden
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

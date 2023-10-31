@@ -1,8 +1,10 @@
 package ru.fintech.example.DTO;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.ToString;
 
 @ToString
+@Hidden
 public class TestDTO {
     private int id;
     private String name;

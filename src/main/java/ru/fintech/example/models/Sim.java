@@ -1,11 +1,13 @@
 package ru.fintech.example.models;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "sim")
 @NoArgsConstructor
+@Hidden
 public class Sim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
 package ru.fintech.example.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/tariff")
+@Tag(name = "TariffController", description = "Методы для работы с тарифами")
 public class TariffController {
 
     private TariffService tariffService;
@@ -23,27 +26,32 @@ public class TariffController {
     }
 
     @PostMapping("/add")
+    @Operation(summary = "Создание нового тарифа")
     public ResponseEntity<TariffDTO> create(@RequestBody TariffDTO tariffDTO) throws FaultException {
         log.info("Coming request {}", tariffDTO);
         return ResponseEntity.ok(tariffService.create(tariffDTO));
     }
 
-    @GetMapping("active")
+    @GetMapping("/active")
+    @Operation(summary = "Получение доступных тарифов")
     public ResponseEntity<List<TariffDTO>> getAllActiveTariff() {
         return ResponseEntity.ok(tariffService.getAllByActive(true));
     }
 
-    @GetMapping("notActive")
+    @GetMapping("/notActive")
+    @Operation(summary = "Получение архивных тарифов")
     public ResponseEntity<List<TariffDTO>> getAllNotActiveTariff() {
         return  ResponseEntity.ok(tariffService.getAllByActive(false));
     }
 
     @PatchMapping("/{tariffId}/changePricePerMouth")
+    @Operation(summary = "Изменение абонентской платы")
     public void changePricePerMouth(@PathVariable("tariffId") int tariffId, @RequestParam(value = "pricePerMouth") int pricePerMouth) {
         tariffService.changePricePerMouth(tariffId, pricePerMouth);
     }
 
     @PutMapping("/updateTariff")
+    @Operation(summary = "Изменение тарифного пакета")
     public ResponseEntity<TariffDTO> updateTariff(@RequestBody UpdateTariff updateTariff) {
         return ResponseEntity.ok(tariffService.updateTariff(
                 updateTariff.getTariffId(),
@@ -54,16 +62,19 @@ public class TariffController {
     }
 
     @PatchMapping("/{tariffId}/changeSpeedMax")
+    @Operation(summary = "Изменение максимальной скорости интернета")
     public void changeSpeedMax(@PathVariable("tariffId") int tariffId, @RequestParam(value = "speedMax") int speedMax) {
         tariffService.changeSpeedMax(tariffId, speedMax);
     }
 
     @PatchMapping("/{tariffId}/changeTariffToArchive")
+    @Operation(summary = "Сделать тариф архивным")
     public void changeTariffToArchive(@PathVariable("tariffId") int tariffId) {
         tariffService.changeTariffToArchive(tariffId);
     }
 
     @PatchMapping("/{tariffId}/changeActive")
+    @Operation(summary = "Восстановить тариф из архива")
     public ResponseEntity<TariffDTO> changeActive(@PathVariable("tariffId") int tariffId,
                                                   @RequestParam(value = "newActive") boolean newActive) throws FaultException {
         return ResponseEntity.ok(tariffService.changeActive(tariffId, newActive));

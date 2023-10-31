@@ -1,5 +1,6 @@
 package ru.fintech.example.models;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

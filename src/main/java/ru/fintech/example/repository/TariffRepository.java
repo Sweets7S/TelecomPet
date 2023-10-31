@@ -1,5 +1,6 @@
 package ru.fintech.example.repository;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +10,7 @@ import ru.fintech.example.models.Tariff;
 import java.util.Collection;
 
 @Repository
+@Hidden
 public interface TariffRepository extends JpaRepository<Tariff, Integer> {
     @Query(value = "SELECT * FROM tariff t WHERE t.active=:active",
             nativeQuery = true)

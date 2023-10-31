@@ -1,5 +1,6 @@
 package ru.fintech.example.service;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.fintech.example.DTO.OptionDTO;
@@ -16,6 +17,7 @@ import static ru.fintech.example.service.UserService.technicalId;
 
 @Slf4j
 @Service
+@Hidden
 public class OptionService {
     private OptionRepository optionRepository;
 

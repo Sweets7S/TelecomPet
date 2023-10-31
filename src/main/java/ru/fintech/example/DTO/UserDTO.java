@@ -1,5 +1,6 @@
 package ru.fintech.example.DTO;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.ToString;
 
 import java.util.List;
