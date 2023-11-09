@@ -34,3 +34,10 @@ databaseChangeLog:
       validCheckSum: ANY
       changes:
         - sqlFile: { dbms: postgresql, path: db/changelog/updates/1.0.2/create.tables.option.and.tariff.sql }
+  - changeSet:
+      id: add.technical.data
+      author: Yagorick
+      failOnError: true
+      validCheckSum: ANY
+      changes:
+        - sqlFile: { dbms: postgresql, path: db/changelog/updates/1.0.2/create.technical.data.sql }
