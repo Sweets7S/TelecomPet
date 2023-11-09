@@ -1,0 +1,863 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+tags:
+  - name: TariffController
+    description: Методы для работы с тарифами
+  - name: UserController
+    description: Методы для работы с пользователями
+  - name: SimController
+    description: Методы для работы с сим-картами
+  - name: OptionController
+    description: Методы для работы с опциями
+paths:
+  /user/{simId}/termination:
+    put:
+      tags:
+        - UserController
+      summary: 'Расторжение договора с пользователем '
+      operationId: terminationContract
+      parameters:
+        - name: simId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/SimDTO'
+  /user/update:
+    put:
+      tags:
+        - UserController
+      summary: Обновление логина и/или статуса активности
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+        required: true
+      responses:
+        '200':
+          description: OK
+  /user/renewal:
+    put:
+      tags:
+        - UserController
+      summary: Переоформление номера на другого пользователя
+      operationId: simRenewal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Renewal'
+        required: true
+      responses:
+        '200':
+          description: OK
+  /user/change/passport:
+    put:
+      tags:
+        - UserController
+      summary: Смена паспорта
+      operationId: changePassport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePassport'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /tariff/updateTariff:
+    put:
+      tags:
+        - TariffController
+      summary: Изменение тарифного пакета
+      operationId: updateTariff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTariff'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/TariffDTO'
+  /sim/{simId}/tariffRenewal:
+    put:
+      tags:
+        - SimController
+      summary: Смена тарифа
+      operationId: tariffRenewal
+      parameters:
+        - name: simId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: tariffId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /sim/{simId}/optionRenewal:
+    put:
+      tags:
+        - SimController
+      summary: Смена опции
+      operationId: optionRenewal
+      parameters:
+        - name: simId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: optionId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /option/updateOption:
+    put:
+      tags:
+        - OptionController
+      summary: Изменение пакета опции
+      operationId: updateOption
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOption'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/OptionDTO'
+  /user/{simId}/{tariffId}/contract:
+    post:
+      tags:
+        - UserController
+      summary: Создание нового пользователя вместе с сим-картой
+      operationId: contractWithSim
+      parameters:
+        - name: simId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: tariffId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /user/{newUserId}/add/sim:
+    post:
+      tags:
+        - UserController
+      summary: Добавление сим-карты новому пользователю
+      operationId: addSimToUser
+      parameters:
+        - name: newUserId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: simId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: tariffId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /user/add:
+    post:
+      tags:
+        - UserController
+      summary: Создание нового пользователя
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /tariff/add:
+    post:
+      tags:
+        - TariffController
+      summary: Создание нового тарифа
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TariffDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/TariffDTO'
+  /sim/add:
+    post:
+      tags:
+        - SimController
+      summary: Добавление свободных номеров
+      operationId: addSimsToVacant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SimDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SimDTO'
+  /option/add:
+    post:
+      tags:
+        - OptionController
+      summary: Создание новой опции
+      operationId: create_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptionDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/OptionDTO'
+  /user/{userId}/change/password:
+    patch:
+      tags:
+        - UserController
+      summary: Смена пароля
+      operationId: changePassword
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /user/{userId}/change/msisdn:
+    patch:
+      tags:
+        - UserController
+      summary: Смена номера
+      operationId: changeMsisdn
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: oldSimId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: newSimId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/SimDTO'
+  /user/{simId}/change/icc:
+    patch:
+      tags:
+        - UserController
+      summary: Смена сим-карты
+      operationId: changeIcc
+      parameters:
+        - name: simId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: icc
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/SimDTO'
+  /tariff/{tariffId}/changeTariffToArchive:
+    patch:
+      tags:
+        - TariffController
+      summary: Сделать тариф архивным
+      operationId: changeTariffToArchive
+      parameters:
+        - name: tariffId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /tariff/{tariffId}/changeSpeedMax:
+    patch:
+      tags:
+        - TariffController
+      summary: Изменение максимальной скорости интернета
+      operationId: changeSpeedMax
+      parameters:
+        - name: tariffId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: speedMax
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /tariff/{tariffId}/changePricePerMouth:
+    patch:
+      tags:
+        - TariffController
+      summary: Изменение абонентской платы
+      operationId: changePricePerMouth
+      parameters:
+        - name: tariffId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pricePerMouth
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /tariff/{tariffId}/changeActive:
+    patch:
+      tags:
+        - TariffController
+      summary: Восстановить тариф из архива
+      operationId: changeActive
+      parameters:
+        - name: tariffId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: newActive
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/TariffDTO'
+  /sim/{simId}/changeActive:
+    patch:
+      tags:
+        - SimController
+      summary: Смена статуса активности
+      operationId: changeActive_1
+      parameters:
+        - name: simId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: newActive
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/SimDTO'
+  /option/{optionId}/changePricePerMouth:
+    patch:
+      tags:
+        - OptionController
+      summary: Изменение абонентской платы
+      operationId: changePricePerMouth_1
+      parameters:
+        - name: optionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pricePerMouth
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /option/{optionId}/changeOptionToArchive:
+    patch:
+      tags:
+        - OptionController
+      summary: Сделать опцию архивной
+      operationId: changeOptionToArchive
+      parameters:
+        - name: optionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /option/{optionId}/changeActive:
+    patch:
+      tags:
+        - OptionController
+      summary: Изменение статуса активности опции
+      operationId: changeActive_2
+      parameters:
+        - name: optionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: newActive
+          in: query
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/OptionDTO'
+  /user:
+    get:
+      tags:
+        - UserController
+      summary: Получение всех пользователей
+      operationId: getAll
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+  /user/{userId}:
+    get:
+      tags:
+        - UserController
+      summary: Получение пользователя по Id
+      operationId: get
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    delete:
+      tags:
+        - UserController
+      summary: Удаление пользователя по Id
+      operationId: delete
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /tariff/notActive:
+    get:
+      tags:
+        - TariffController
+      summary: Получение архивных тарифов
+      operationId: getAllNotActiveTariff
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TariffDTO'
+  /tariff/active:
+    get:
+      tags:
+        - TariffController
+      summary: Получение доступных тарифов
+      operationId: getAllActiveTariff
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TariffDTO'
+  /sim/get:
+    get:
+      tags:
+        - SimController
+      summary: Получение доступных номеров
+      operationId: getAllAvailableSims
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SimDTO'
+  /sim/getAllNotActiveSims:
+    get:
+      tags:
+        - SimController
+      summary: Получение всех не активных сим-карт
+      operationId: getAllNotActiveSims
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SimDTO'
+  /option/notActive:
+    get:
+      tags:
+        - OptionController
+      summary: Получение архивных опций
+      operationId: getAllNotActiveOption
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OptionDTO'
+  /option/active:
+    get:
+      tags:
+        - OptionController
+      summary: Получение доступных опций
+      operationId: getAllActiveOption
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OptionDTO'
+components:
+  schemas:
+    SimDTO:
+      type: object
+      properties:
+        simId:
+          type: integer
+          format: int32
+        userId:
+          type: integer
+          format: int32
+        msisdn:
+          type: string
+        icc:
+          type: string
+        active:
+          type: boolean
+        tariffId:
+          type: integer
+          format: int32
+        optionId:
+          type: integer
+          format: int32
+    UpdateUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        active:
+          type: boolean
+        login:
+          type: string
+    Renewal:
+      type: object
+      properties:
+        oldUserId:
+          type: integer
+          format: int32
+        simId:
+          type: integer
+          format: int32
+        newUserId:
+          type: integer
+          format: int32
+    UpdatePassport:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int32
+        document:
+          type: string
+        fio:
+          type: string
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        login:
+          type: string
+        password:
+          type: string
+        fio:
+          type: string
+        document:
+          type: string
+        active:
+          type: boolean
+        simDTOS:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimDTO'
+    UpdateTariff:
+      type: object
+      properties:
+        tariffId:
+          type: integer
+          format: int32
+        packageVoice:
+          type: integer
+          format: int32
+        packageData:
+          type: integer
+          format: int32
+        packageSms:
+          type: integer
+          format: int32
+        packageVoiceCountry:
+          type: integer
+          format: int32
+    TariffDTO:
+      type: object
+      properties:
+        tariffId:
+          type: integer
+          format: int32
+        name:
+          type: string
+        pricePerMonth:
+          type: integer
+          format: int32
+        packageVoice:
+          type: integer
+          format: int32
+        packageData:
+          type: integer
+          format: int32
+        packageSms:
+          type: integer
+          format: int32
+        speedMax:
+          type: integer
+          format: int32
+        packageVoiceCountry:
+          type: integer
+          format: int32
+        active:
+          type: boolean
+    UpdateOption:
+      type: object
+      properties:
+        optionId:
+          type: integer
+          format: int32
+        packageVoice:
+          type: integer
+          format: int32
+        packageData:
+          type: integer
+          format: int32
+        packageSms:
+          type: integer
+          format: int32
+        specCode:
+          type: integer
+          format: int32
+    OptionDTO:
+      type: object
+      properties:
+        optionId:
+          type: integer
+          format: int32
+        name:
+          type: string
+        pricePerMonth:
+          type: integer
+          format: int32
+        packageVoice:
+          type: integer
+          format: int32
+        packageData:
+          type: integer
+          format: int32
+        packageSms:
+          type: integer
+          format: int32
+        specCode:
+          type: integer
+          format: int32
+        active:
+          type: boolean
