@@ -2,9 +2,7 @@
 
 Проект на Java SE 17 (https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 
-- IntelliJ IDEA (EDU or Ultimate)
-- Docker - Для разворота базы данных
-- Maven - Сборщик
+- Docker - Для разворота приложения и базы данных
 
 Необязательные программы:
 
@@ -13,13 +11,12 @@
 
 Для запуска приложения требуется:
 
-При первом запуске IDEA - установить плагин Docker для IDEA
+Порядок запуска:
 
-1. Запустить IDEA
-2. Запустить Docker
-3. Запустить docker-compose.yaml (с помощью плагина)
-4. Запустить TelecomApplication
-5. После этого доступны эндпоинты указанные в контракте
+1. Запустить Docker
+2. Открыть терминал и перейти в корень приложения
+3. Выполнить команду "docker compose up"
+4. Открыть контракт
 
 Контракт: http://localhost:8080/api
 
